@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
+        <StackPanel Orientation="Vertical">
+            <Button x:Name="Button1" Click="Button1_Click">Test</Button>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Column="1">
+            <TextBlock x:Name="TextBlock1"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -28,6 +28,15 @@ namespace Booking.Data
             modelBuilder.Entity<Entities.UserAccess>()
                 .HasIndex(ua => ua.Login)
                 .IsUnique();
+            modelBuilder.Entity<Entities.UserAccess>()
+                .HasOne(ua => ua.User)
+                .WithMany(u => u.userAccesses)
+                .HasForeignKey(ua => ua.UserId)
+                .HasPrincipalKey(u => u.Id);
+            modelBuilder.Entity<Entities.UserAccess>()
+                .HasOne(ua => ua.UserRole)
+                .WithMany(ur => ur.UserAccesses)
+                .HasForeignKey(ua => ua.RoleId);
 
             SeedData(modelBuilder);
         }

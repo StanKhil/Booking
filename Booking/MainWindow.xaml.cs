@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Booking.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,9 +18,22 @@ namespace Booking
     /// </summary>
     public partial class MainWindow : Window
     {
+        private DataContext _context;
         public MainWindow()
         {
+            _context = new DataContext();
             InitializeComponent();
+        }
+
+        private void Button1_Click(object sender, RoutedEventArgs e)
+        {
+            TextBlock1.Text += String.Join("\n", _context.UserRoles
+                .Where(ur => ur.CanUpdate)
+                .Include(ur => ur.UserAccesses)
+                .ThenInclude(ua => ua.User)
+                .Select(ur => String.Join("\n", ur.UserAccesses
+                    .Select(ua => ua.User.Name)))
+                );
         }
     }
 }

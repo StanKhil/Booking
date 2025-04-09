@@ -14,6 +14,7 @@ namespace Booking.Data.Entities
         public DateTime? BirthDate { get; set; }
         public DateTime? RegisteredAt { get; set; }
         public DateTime? DeletedAt { get; set; }
+        public List<UserAccess> userAccesses { get; set; } = [];
 
     }
 }
