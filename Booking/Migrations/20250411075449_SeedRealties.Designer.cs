@@ -4,6 +4,7 @@ using Booking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booking.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250411075449_SeedRealties")]
+    partial class SeedRealties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,7 +162,7 @@ namespace Booking.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1ef779e9-f515-4065-956d-770c264e718e"),
+                            Id = new Guid("f70bacf8-d12b-4710-81ab-da43d87d7ad2"),
                             Description = "Вілла \"Сонячна\" - це ідеальне місце для відпочинку на морі.",
                             GroupId = new Guid("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
                             ImageUrl = "villa_sunny.jpg",
@@ -169,7 +172,7 @@ namespace Booking.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ae421b3d-02b1-4bc1-9fdf-24fdebff09e8"),
+                            Id = new Guid("87fe09ea-5869-4262-819e-6bce50e93922"),
                             Description = "Вілла \"Лісова\" - це ідеальне місце для відпочинку на природі.",
                             GroupId = new Guid("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
                             ImageUrl = "villa_forest.jpg",

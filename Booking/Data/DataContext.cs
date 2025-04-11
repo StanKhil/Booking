@@ -15,6 +15,11 @@ namespace Booking.Data
         public DbSet<Entities.User> Users { get; set; } = null!;
         public DbSet<Entities.UserRole> UserRoles { get; set; } = null!;
         public DbSet<Entities.UserAccess> UserAccesses { get; set; } = null!;
+
+        public DbSet<Entities.RealtyGroup> RealtyGroups { get; set; }
+        public DbSet<Entities.Realty> Realties { get; set; }
+        public DbSet<Entities.ItemImage> ItemImages { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var configuration = new ConfigurationBuilder()
@@ -25,6 +30,40 @@ namespace Booking.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Entities.ItemImage>()
+                .HasKey(i => new { i.ItemId, i.ImageUrl });
+
+            modelBuilder.Entity<Entities.Realty>()
+                .HasIndex(p => p.Slug)
+                .IsUnique();
+
+            modelBuilder.Entity<Entities.RealtyGroup>()
+                .HasAlternateKey(pg => pg.Slug);
+
+            modelBuilder.Entity<Entities.Realty>()
+                .HasOne(r => r.RealtyGroup)
+                .WithMany(rg => rg.Realties)
+                .HasForeignKey(r => r.GroupId);
+
+            modelBuilder.Entity<Entities.Realty>()
+                .HasMany(r => r.Images)
+                .WithOne()
+                .HasPrincipalKey(p => p.Id)
+                .HasForeignKey(p => p.ItemId);
+
+            modelBuilder.Entity<Entities.RealtyGroup>()
+                .HasMany(r => r.Images)
+                .WithOne()
+                .HasPrincipalKey(r => r.Id)
+                .HasForeignKey(i => i.ItemId);
+
+            modelBuilder.Entity<Entities.RealtyGroup>()
+                .HasOne(rg => rg.ParentGroup)
+                .WithMany()
+                .HasForeignKey(rg => rg.ParentId);
+
+
+
             modelBuilder.Entity<Entities.UserAccess>()
                 .HasIndex(ua => ua.Login)
                 .IsUnique();
@@ -224,7 +263,174 @@ namespace Booking.Data
                     RoleId = "SelfRegistered"
                 }
             );
+
+            modelBuilder.Entity<RealtyGroup>().HasData(
+                new RealtyGroup
+                {
+                    Id = Guid.Parse("f1ea6b3f-0021-417b-95c8-f6cd333d7207"),
+                    ParentId = null,
+                    Name = "Готелі",
+                    Description = "Багатономерні готелі ",
+                    Slug = "hotels",
+                    ImageUrl = "hotel.jpg"
+                },
+                new RealtyGroup
+                {
+                    Id = Guid.Parse("8806ca58-8daa-4576-92ba-797de42ffaa7"),
+                    ParentId = null,
+                    Name = "Квартири",
+                    Description = "Квартири",
+                    Slug = "apartments",
+                    ImageUrl = "apartment.jpg"
+                },
+                new RealtyGroup
+                {
+                    Id = Guid.Parse("97191468-a02f-4a78-927b-9ea660e9ea36"),
+                    ParentId = null,
+                    Name = "Будинки",
+                    Description = "Будинки",
+                    Slug = "houses",
+                    ImageUrl = "house.jpg"
+                },
+                new RealtyGroup
+                {
+                    Id = Guid.Parse("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
+                    ParentId = null,
+                    Name = "Вілли",
+                    Description = "Вілли",
+                    Slug = "villas",
+                    ImageUrl = "villa.jpg"
+                }
+                );
+
+            SeedHotels(modelBuilder);
+            SeedApartments(modelBuilder);
+            SeedHouses(modelBuilder);
+            SeedVillas(modelBuilder);
         }
 
+        private void SeedHotels(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Realty>().HasData(
+                new Realty
+                {
+                    Id = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d"),
+                    GroupId = Guid.Parse("f1ea6b3f-0021-417b-95c8-f6cd333d7207"),
+                    Name = "Готель \"Сонячний\"",
+                    Description = "Готель \"Сонячний\" - це ідеальне місце для відпочинку на природі.",
+                    Slug = "hotel-sunny",
+                    ImageUrl = "hotel_sunny.jpg",
+                    Price = 150.00m
+                },
+                new Realty
+                {
+                    Id = Guid.Parse("bdf41cd9-c0f1-4349-8a44-4e67755d0415"),
+                    GroupId = Guid.Parse("f1ea6b3f-0021-417b-95c8-f6cd333d7207"),
+                    Name = "Готель \"Зоряний\"",
+                    Description = "Готель \"Зоряний\" - це ідеальне місце для відпочинку на природі.",
+                    Slug = "hotel-star",
+                    ImageUrl = "hotel_star.jpg",
+                    Price = 200.00m
+                },
+                new Realty
+                {
+                    Id = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                    GroupId = Guid.Parse("f1ea6b3f-0021-417b-95c8-f6cd333d7207"),
+                    Name = "Готель \"Лісовий\"",
+                    Description = "Готель \"Лісовий\" - це ідеальне місце для відпочинку на природі.",
+                    Slug = "hotel-forest",
+                    ImageUrl = "hotel_forest.jpg",
+                    Price = 250.00m
+                }
+            );
+        }
+
+        private void SeedApartments(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Realty>().HasData(
+                new Realty
+                {
+                    Id = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2"),
+                    GroupId = Guid.Parse("8806ca58-8daa-4576-92ba-797de42ffaa7"),
+                    Name = "Квартира \"Центральна\"",
+                    Description = "Квартира \"Центральна\" - це ідеальне місце для відпочинку в місті.",
+                    Slug = "apartment-central",
+                    ImageUrl = "apartment_central.jpg",
+                    Price = 100.00m
+                },
+                new Realty
+                {
+                    Id = Guid.Parse("a3c55a79-05ea-4053-ad3c-7301f3b7a7e2"),
+                    GroupId = Guid.Parse("8806ca58-8daa-4576-92ba-797de42ffaa7"),
+                    Name = "Квартира \"Люкс\"",
+                    Description = "Квартира \"Люкс\" - це ідеальне місце для відпочинку, якщо ви не хочете виходити з дому.",
+                    Slug = "apartment-luxury",
+                    ImageUrl = "apartment_luxury.jpg",
+                    Price = 150.00m
+                }
+            );
+        }
+
+        private void SeedHouses(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Realty>().HasData(
+                new Realty
+                {
+                    Id = Guid.Parse("eadb0b3b-523e-478b-88ee-b6cf57cbc05d"),
+                    GroupId = Guid.Parse("97191468-a02f-4a78-927b-9ea660e9ea36"),
+                    Name = "Будинок \"Садиба\"",
+                    Description = "Будинок \"Садиба\" - це ідеальне місце для відпочинку з друзями.",
+                    Slug = "house-mansion",
+                    ImageUrl = "house_mansion.jpg",
+                    Price = 300.00m
+                },
+                new Realty
+                {
+                    Id = Guid.Parse("a0f7b463-6eef-4a70-8444-789bbea23369"),
+                    GroupId = Guid.Parse("97191468-a02f-4a78-927b-9ea660e9ea36"),
+                    Name = "Будинок \"Лісовий\"",
+                    Description = "Будинок \"Лісовий\" - це ідеальне місце для відпочинку на природі.",
+                    Slug = "house-forest",
+                    ImageUrl = "house_forest.jpg",
+                    Price = 350.00m
+                },
+                new Realty
+                {
+                    Id = Guid.Parse("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
+                    GroupId = Guid.Parse("97191468-a02f-4a78-927b-9ea660e9ea36"),
+                    Name = "Будинок \"Гірський\"",
+                    Description = "Будинок \"Гірський\" - це ідеальне місце для відпочинку в горах.",
+                    Slug = "house-mountain",
+                    ImageUrl = "house_mountain.jpg",
+                    Price = 400.00m
+                }
+            );
+        }
+
+        private void SeedVillas(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Realty>().HasData(
+                new Realty
+                {
+                    Id = Guid.NewGuid(),
+                    GroupId = Guid.Parse("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
+                    Name = "Вілла \"Сонячна\"",
+                    Description = "Вілла \"Сонячна\" - це ідеальне місце для відпочинку на морі.",
+                    Slug = "villa-sunny",
+                    ImageUrl = "villa_sunny.jpg",
+                    Price = 500.00m
+                },
+                new Realty
+                {
+                    Id = Guid.NewGuid(),
+                    GroupId = Guid.Parse("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
+                    Name = "Вілла \"Лісова\"",
+                    Description = "Вілла \"Лісова\" - це ідеальне місце для відпочинку на природі.",
+                    Slug = "villa-forest",
+                    ImageUrl = "villa_forest.jpg",
+                    Price = 600.00m
+                }
+            );
+        }
     }
 }
