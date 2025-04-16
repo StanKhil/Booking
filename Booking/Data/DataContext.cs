@@ -412,7 +412,7 @@ namespace Booking.Data
             modelBuilder.Entity<Realty>().HasData(
                 new Realty
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("37DCC68E-B7E7-4B55-B04E-147C1A4126B7"),
                     GroupId = Guid.Parse("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
                     Name = "Вілла \"Сонячна\"",
                     Description = "Вілла \"Сонячна\" - це ідеальне місце для відпочинку на морі.",
@@ -422,7 +422,7 @@ namespace Booking.Data
                 },
                 new Realty
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("D5E36E96-0314-4B7E-9CBF-D0FAE477AE36"),
                     GroupId = Guid.Parse("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
                     Name = "Вілла \"Лісова\"",
                     Description = "Вілла \"Лісова\" - це ідеальне місце для відпочинку на природі.",

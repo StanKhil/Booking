@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booking.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250411075524_SeedRealtiesCont")]
-    partial class SeedRealtiesCont
+    [Migration("20250415165720_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,7 +162,7 @@ namespace Booking.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1ef779e9-f515-4065-956d-770c264e718e"),
+                            Id = new Guid("37dcc68e-b7e7-4b55-b04e-147c1a4126b7"),
                             Description = "Вілла \"Сонячна\" - це ідеальне місце для відпочинку на морі.",
                             GroupId = new Guid("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
                             ImageUrl = "villa_sunny.jpg",
@@ -172,7 +172,7 @@ namespace Booking.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ae421b3d-02b1-4bc1-9fdf-24fdebff09e8"),
+                            Id = new Guid("d5e36e96-0314-4b7e-9cbf-d0fae477ae36"),
                             Description = "Вілла \"Лісова\" - це ідеальне місце для відпочинку на природі.",
                             GroupId = new Guid("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
                             ImageUrl = "villa_forest.jpg",
