@@ -48,13 +48,16 @@
                 <StackPanel Orientation="Horizontal" Margin="0,5">
                     <TextBlock Text="Password" Width="70"/>
                     <PasswordBox Name="passTextBox" Width="110"/>
-                    <Button Width="100" Height="20" Content="Register" Click="SignUp"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="Register" Width="100" Height="20" Content="Register" Click="Register_Click"/>
+                    <Button x:Name="DeleteUser" Content="Delete" Width="100" Height="20" Click="Delete"/>
+                </StackPanel>
+
             </StackPanel>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-            <TextBlock Text="Sign In" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"/>
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Login" Width="70"/>
                 <TextBox Name="loginTextBoxSignIn" Width="150"/>
@@ -68,5 +71,6 @@
 
             <TextBlock Text=""></TextBlock>
         </StackPanel>
+
     </Grid>
 </Window>

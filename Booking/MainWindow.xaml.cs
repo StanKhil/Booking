@@ -1,6 +1,7 @@
 ﻿using Booking.Data;
 using Booking.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,8 @@ namespace Booking
     public partial class MainWindow : Window
     {
         private DataContext _context;
+        private UserAccess authUser;
+
         public MainWindow()
         {
             _context = new DataContext();
@@ -43,6 +46,12 @@ namespace Booking
             String email = emailTextBox.Text;
             String login = loginTextBox.Text;
             String pass = passTextBox.Password;
+
+            if (_context.UserAccesses.Any(ua => ua.Login == login && ua.User.DeletedAt == null))
+            {
+                MessageBox.Show("Login already exists");
+                return;
+            }
 
             Guid userId = Guid.NewGuid();
 
@@ -71,6 +80,11 @@ namespace Booking
             _context.SaveChanges();
 
             MessageBox.Show("Registered");
+
+            nameTextBox.Text = "";
+            emailTextBox.Text = "";
+            loginTextBox.Text = "";
+            passTextBox.Password = "";
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -79,7 +93,7 @@ namespace Booking
             String pass = passTextBoxSignIn.Password;
             var userAccess = _context.UserAccesses
                 .Include(ua => ua.User)
-                .FirstOrDefault(ua => ua.Login == login);
+                .FirstOrDefault(ua => ua.Login == login && ua.User.DeletedAt == null);
             if (userAccess == null)
             {
                 MessageBox.Show("User not found");
@@ -92,6 +106,67 @@ namespace Booking
                 return;
             }
             MessageBox.Show($"Welcome {userAccess.User.Name}");
+
+            authUser = userAccess;
+            nameTextBox.Text = authUser.User.Name;
+            emailTextBox.Text = authUser.User.Email;
+            loginTextBox.Text = userAccess.Login;
+
+            loginTextBoxSignIn.Text = "";
+            passTextBoxSignIn.Password = "";
+
+            Register.Content = "Update";
+        }
+
+        private void Update(object sender, RoutedEventArgs e)
+        {
+            String name = nameTextBox.Text;
+            String email = emailTextBox.Text;
+            String login = loginTextBox.Text;
+            String pass = passTextBox.Password;
+            if (!String.IsNullOrEmpty(login))
+            {
+                if (_context.UserAccesses.Any(ua => ua.Login == login && ua.User.DeletedAt == null))
+                {
+                    MessageBox.Show("Login already exists");
+                    return;
+                }
+                authUser.Login = login;
+            }
+            if (!String.IsNullOrEmpty(name))
+                authUser.User.Name = name;
+
+            if (!String.IsNullOrEmpty(email))
+                authUser.User.Email = email;
+
+
+            if (!String.IsNullOrEmpty(pass))
+                authUser.Dk = Crypto.kdf(authUser.Salt, pass);
+
+
+            _context.SaveChanges();
+            MessageBox.Show("Updated");
+        }
+
+        private void Delete(object sender, RoutedEventArgs e)
+        {
+            if (authUser == null)
+                return;
+            if (MessageBoxResult.Yes == MessageBox.Show("Deleted", "DB", MessageBoxButton.YesNo))
+            {
+                authUser.User.Name = "";
+                authUser.User.Email = "";
+                authUser.User.BirthDate = null;
+                authUser.User.DeletedAt = DateTime.Now;
+                _context.SaveChanges();
+                authUser = null;
+
+                Register.Content = "Register";
+                nameTextBox.Text = "";
+                emailTextBox.Text = "";
+                loginTextBox.Text = "";
+                passTextBox.Password = "";
+            }
         }
     }
 }
