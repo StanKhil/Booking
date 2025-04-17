@@ -40,6 +40,14 @@ namespace Booking
                 );
         }
 
+        private void Register_Click(object sender, RoutedEventArgs e)
+        {
+            if (authUser == null)
+                SignUp(sender, e);
+            else
+                Update(sender, e);
+        }
+
         private void SignUp(object sender, RoutedEventArgs e)
         {
             String name = nameTextBox.Text;
