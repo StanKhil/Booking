@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Booking.Data.Entities
+{
+    public class Feedback
+    {
+        public Guid Id { get; set; }
+        public Guid RealtyId { get; set; }
+        public Guid UserAccessId { get; set; }
+        public String Text { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        public Realty Realty { get; set; } = null!;
+        public UserAccess UserAccess { get; set; } = null!;
+    }
+}

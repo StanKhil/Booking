@@ -16,5 +16,7 @@ namespace Booking.Data.Entities
         public string Dk { get; set; } = null!; // Derived key by Rfc2898
         public User User { get; set; } = null!;
         public UserRole UserRole { get; set; } = null!;
+        public List<BookingItem> BookingItems { get; set; } = [];
+        public List<Feedback> Feedbacks { get; set; } = [];
     }
 }

@@ -4,6 +4,7 @@ using Booking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booking.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250501153335_New_Context")]
+    partial class New_Context
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,128 +24,6 @@ namespace Booking.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Booking.Data.Entities.BookingItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("RealtyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserAccessId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RealtyId");
-
-                    b.HasIndex("UserAccessId");
-
-                    b.ToTable("BookingItems");
-                });
-
-            modelBuilder.Entity("Booking.Data.Entities.City", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CountryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CountryId");
-
-                    b.ToTable("Cities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("03767d46-aab3-4cc4-989c-a696a7fdd434"),
-                            CountryId = new Guid("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d"),
-                            Name = "Львів"
-                        },
-                        new
-                        {
-                            Id = new Guid("0d156354-89f1-4d58-a735-876b7add59d2"),
-                            CountryId = new Guid("bdf41cd9-c0f1-4349-8a44-4e67755d0415"),
-                            Name = "Краків"
-                        });
-                });
-
-            modelBuilder.Entity("Booking.Data.Entities.Country", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Countries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d"),
-                            Name = "Україна"
-                        },
-                        new
-                        {
-                            Id = new Guid("bdf41cd9-c0f1-4349-8a44-4e67755d0415"),
-                            Name = "Польща"
-                        });
-                });
-
-            modelBuilder.Entity("Booking.Data.Entities.Feedback", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("RealtyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserAccessId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RealtyId");
-
-                    b.HasIndex("UserAccessId");
-
-                    b.ToTable("Feedbacks");
-                });
 
             modelBuilder.Entity("Booking.Data.Entities.ItemImage", b =>
                 {
@@ -193,8 +74,6 @@ namespace Booking.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId");
-
                     b.HasIndex("GroupId");
 
                     b.HasIndex("Slug")
@@ -207,7 +86,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d"),
-                            CityId = new Guid("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Готель \"Сонячний\" - це ідеальне місце для відпочинку на природі.",
                             GroupId = new Guid("f1ea6b3f-0021-417b-95c8-f6cd333d7207"),
                             ImageUrl = "hotel_sunny.jpg",
@@ -218,7 +97,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("bdf41cd9-c0f1-4349-8a44-4e67755d0415"),
-                            CityId = new Guid("0d156354-89f1-4d58-a735-876b7add59d2"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Готель \"Зоряний\" - це ідеальне місце для відпочинку на природі.",
                             GroupId = new Guid("f1ea6b3f-0021-417b-95c8-f6cd333d7207"),
                             ImageUrl = "hotel_star.jpg",
@@ -229,7 +108,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("03767d46-aab3-4cc4-989c-a696a7fdd434"),
-                            CityId = new Guid("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Готель \"Лісовий\" - це ідеальне місце для відпочинку на природі.",
                             GroupId = new Guid("f1ea6b3f-0021-417b-95c8-f6cd333d7207"),
                             ImageUrl = "hotel_forest.jpg",
@@ -240,7 +119,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("0d156354-89f1-4d58-a735-876b7add59d2"),
-                            CityId = new Guid("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Квартира \"Центральна\" - це ідеальне місце для відпочинку в місті.",
                             GroupId = new Guid("8806ca58-8daa-4576-92ba-797de42ffaa7"),
                             ImageUrl = "apartment_central.jpg",
@@ -251,7 +130,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("a3c55a79-05ea-4053-ad3c-7301f3b7a7e2"),
-                            CityId = new Guid("0d156354-89f1-4d58-a735-876b7add59d2"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Квартира \"Люкс\" - це ідеальне місце для відпочинку, якщо ви не хочете виходити з дому.",
                             GroupId = new Guid("8806ca58-8daa-4576-92ba-797de42ffaa7"),
                             ImageUrl = "apartment_luxury.jpg",
@@ -262,7 +141,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("eadb0b3b-523e-478b-88ee-b6cf57cbc05d"),
-                            CityId = new Guid("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Будинок \"Садиба\" - це ідеальне місце для відпочинку з друзями.",
                             GroupId = new Guid("97191468-a02f-4a78-927b-9ea660e9ea36"),
                             ImageUrl = "house_mansion.jpg",
@@ -273,7 +152,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("a0f7b463-6eef-4a70-8444-789bbea23369"),
-                            CityId = new Guid("0d156354-89f1-4d58-a735-876b7add59d2"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Будинок \"Лісовий\" - це ідеальне місце для відпочинку на природі.",
                             GroupId = new Guid("97191468-a02f-4a78-927b-9ea660e9ea36"),
                             ImageUrl = "house_forest.jpg",
@@ -284,7 +163,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
-                            CityId = new Guid("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Будинок \"Гірський\" - це ідеальне місце для відпочинку в горах.",
                             GroupId = new Guid("97191468-a02f-4a78-927b-9ea660e9ea36"),
                             ImageUrl = "house_mountain.jpg",
@@ -295,7 +174,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("37dcc68e-b7e7-4b55-b04e-147c1a4126b7"),
-                            CityId = new Guid("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Вілла \"Сонячна\" - це ідеальне місце для відпочинку на морі.",
                             GroupId = new Guid("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
                             ImageUrl = "villa_sunny.jpg",
@@ -306,7 +185,7 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("d5e36e96-0314-4b7e-9cbf-d0fae477ae36"),
-                            CityId = new Guid("0d156354-89f1-4d58-a735-876b7add59d2"),
+                            CityId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Description = "Вілла \"Лісова\" - це ідеальне місце для відпочинку на природі.",
                             GroupId = new Guid("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
                             ImageUrl = "villa_forest.jpg",
@@ -657,55 +536,6 @@ namespace Booking.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Booking.Data.Entities.BookingItem", b =>
-                {
-                    b.HasOne("Booking.Data.Entities.Realty", "Realty")
-                        .WithMany("BookingItems")
-                        .HasForeignKey("RealtyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Booking.Data.Entities.UserAccess", "UserAccess")
-                        .WithMany("BookingItems")
-                        .HasForeignKey("UserAccessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Realty");
-
-                    b.Navigation("UserAccess");
-                });
-
-            modelBuilder.Entity("Booking.Data.Entities.City", b =>
-                {
-                    b.HasOne("Booking.Data.Entities.Country", "Country")
-                        .WithMany("Cities")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("Booking.Data.Entities.Feedback", b =>
-                {
-                    b.HasOne("Booking.Data.Entities.Realty", "Realty")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("RealtyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Booking.Data.Entities.UserAccess", "UserAccess")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("UserAccessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Realty");
-
-                    b.Navigation("UserAccess");
-                });
-
             modelBuilder.Entity("Booking.Data.Entities.ItemImage", b =>
                 {
                     b.HasOne("Booking.Data.Entities.Realty", null)
@@ -723,19 +553,11 @@ namespace Booking.Migrations
 
             modelBuilder.Entity("Booking.Data.Entities.Realty", b =>
                 {
-                    b.HasOne("Booking.Data.Entities.City", "City")
-                        .WithMany("Realties")
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Booking.Data.Entities.RealtyGroup", "RealtyGroup")
                         .WithMany("Realties")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("City");
 
                     b.Navigation("RealtyGroup");
                 });
@@ -768,22 +590,8 @@ namespace Booking.Migrations
                     b.Navigation("UserRole");
                 });
 
-            modelBuilder.Entity("Booking.Data.Entities.City", b =>
-                {
-                    b.Navigation("Realties");
-                });
-
-            modelBuilder.Entity("Booking.Data.Entities.Country", b =>
-                {
-                    b.Navigation("Cities");
-                });
-
             modelBuilder.Entity("Booking.Data.Entities.Realty", b =>
                 {
-                    b.Navigation("BookingItems");
-
-                    b.Navigation("Feedbacks");
-
                     b.Navigation("Images");
                 });
 
@@ -797,13 +605,6 @@ namespace Booking.Migrations
             modelBuilder.Entity("Booking.Data.Entities.User", b =>
                 {
                     b.Navigation("userAccesses");
-                });
-
-            modelBuilder.Entity("Booking.Data.Entities.UserAccess", b =>
-                {
-                    b.Navigation("BookingItems");
-
-                    b.Navigation("Feedbacks");
                 });
 
             modelBuilder.Entity("Booking.Data.Entities.UserRole", b =>

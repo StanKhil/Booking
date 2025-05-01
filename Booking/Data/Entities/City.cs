@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Booking.Data.Entities
+{
+    public class City
+    {
+        public Guid Id { get; set; }
+        public String Name { get; set; } = null!;
+        public Guid CountryId { get; set; }
+
+        public Country Country { get; set; } = null!;
+        public List<Realty> Realties { get; set; } = new List<Realty>();
+    }
+}

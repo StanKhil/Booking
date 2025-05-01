@@ -20,6 +20,14 @@ namespace Booking.Data
         public DbSet<Entities.Realty> Realties { get; set; }
         public DbSet<Entities.ItemImage> ItemImages { get; set; }
 
+        public DbSet<Entities.Country> Countries { get; set; } = null!;
+
+        public DbSet<Entities.City> Cities { get; set; } = null!;
+
+        public DbSet<Entities.BookingItem> BookingItems { get; set; } = null!;
+
+        public DbSet<Entities.Feedback> Feedbacks { get; set; } = null!;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var configuration = new ConfigurationBuilder()
@@ -62,8 +70,6 @@ namespace Booking.Data
                 .WithMany()
                 .HasForeignKey(rg => rg.ParentId);
 
-
-
             modelBuilder.Entity<Entities.UserAccess>()
                 .HasIndex(ua => ua.Login)
                 .IsUnique();
@@ -76,6 +82,39 @@ namespace Booking.Data
                 .HasOne(ua => ua.UserRole)
                 .WithMany(ur => ur.UserAccesses)
                 .HasForeignKey(ua => ua.RoleId);
+
+
+            modelBuilder.Entity<Entities.City>()
+                .HasOne(c => c.Country)
+                .WithMany(c => c.Cities)
+                .HasForeignKey(c => c.CountryId);
+
+            modelBuilder.Entity<Entities.Realty>()
+                .HasOne(r => r.City)
+                .WithMany(c => c.Realties)
+                .HasForeignKey(r => r.CityId);
+
+            modelBuilder.Entity<Entities.BookingItem>()
+                .HasOne(b => b.Realty)
+                .WithMany(r => r.BookingItems)
+                .HasForeignKey(b => b.RealtyId);
+
+            modelBuilder.Entity<Entities.BookingItem>()
+                .HasOne(b => b.UserAccess)
+                .WithMany(ua => ua.BookingItems)
+                .HasForeignKey(b => b.UserAccessId);
+
+            modelBuilder.Entity<Entities.Feedback>()
+                .HasOne(f => f.Realty)
+                .WithMany(r => r.Feedbacks)
+                .HasForeignKey(f => f.RealtyId);
+
+            modelBuilder.Entity<Entities.Feedback>()
+                .HasOne(f => f.UserAccess)
+                .WithMany(ua => ua.Feedbacks)
+                .HasForeignKey(f => f.UserAccessId);
+
+
 
             SeedData(modelBuilder);
         }
@@ -303,6 +342,36 @@ namespace Booking.Data
                 }
                 );
 
+            modelBuilder.Entity<Country>().HasData(
+                new Country
+                {
+                    Id = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d"),
+                    Name = "Україна"
+                },
+                new Country
+                {
+                    Id = Guid.Parse("bdf41cd9-c0f1-4349-8a44-4e67755d0415"),
+                    Name = "Польща"
+                }
+            );
+
+            modelBuilder.Entity<City>().HasData(
+                new City
+                {
+                    Id = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                    Name = "Львів",
+                    CountryId = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d")
+                },
+                new City
+                {
+                    Id = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2"),
+                    Name = "Краків",
+                    CountryId = Guid.Parse("bdf41cd9-c0f1-4349-8a44-4e67755d0415")
+                }
+            );
+
+
+
             SeedHotels(modelBuilder);
             SeedApartments(modelBuilder);
             SeedHouses(modelBuilder);
@@ -320,7 +389,8 @@ namespace Booking.Data
                     Description = "Готель \"Сонячний\" - це ідеальне місце для відпочинку на природі.",
                     Slug = "hotel-sunny",
                     ImageUrl = "hotel_sunny.jpg",
-                    Price = 150.00m
+                    Price = 150.00m,
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
                 },
                 new Realty
                 {
@@ -330,7 +400,8 @@ namespace Booking.Data
                     Description = "Готель \"Зоряний\" - це ідеальне місце для відпочинку на природі.",
                     Slug = "hotel-star",
                     ImageUrl = "hotel_star.jpg",
-                    Price = 200.00m
+                    Price = 200.00m,
+                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2")
                 },
                 new Realty
                 {
@@ -340,7 +411,8 @@ namespace Booking.Data
                     Description = "Готель \"Лісовий\" - це ідеальне місце для відпочинку на природі.",
                     Slug = "hotel-forest",
                     ImageUrl = "hotel_forest.jpg",
-                    Price = 250.00m
+                    Price = 250.00m,
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
                 }
             );
         }
@@ -356,7 +428,8 @@ namespace Booking.Data
                     Description = "Квартира \"Центральна\" - це ідеальне місце для відпочинку в місті.",
                     Slug = "apartment-central",
                     ImageUrl = "apartment_central.jpg",
-                    Price = 100.00m
+                    Price = 100.00m,
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
                 },
                 new Realty
                 {
@@ -366,7 +439,8 @@ namespace Booking.Data
                     Description = "Квартира \"Люкс\" - це ідеальне місце для відпочинку, якщо ви не хочете виходити з дому.",
                     Slug = "apartment-luxury",
                     ImageUrl = "apartment_luxury.jpg",
-                    Price = 150.00m
+                    Price = 150.00m,
+                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2")
                 }
             );
         }
@@ -382,7 +456,8 @@ namespace Booking.Data
                     Description = "Будинок \"Садиба\" - це ідеальне місце для відпочинку з друзями.",
                     Slug = "house-mansion",
                     ImageUrl = "house_mansion.jpg",
-                    Price = 300.00m
+                    Price = 300.00m,
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
                 },
                 new Realty
                 {
@@ -392,7 +467,8 @@ namespace Booking.Data
                     Description = "Будинок \"Лісовий\" - це ідеальне місце для відпочинку на природі.",
                     Slug = "house-forest",
                     ImageUrl = "house_forest.jpg",
-                    Price = 350.00m
+                    Price = 350.00m,
+                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2")
                 },
                 new Realty
                 {
@@ -402,7 +478,8 @@ namespace Booking.Data
                     Description = "Будинок \"Гірський\" - це ідеальне місце для відпочинку в горах.",
                     Slug = "house-mountain",
                     ImageUrl = "house_mountain.jpg",
-                    Price = 400.00m
+                    Price = 400.00m,
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
                 }
             );
         }
@@ -418,7 +495,8 @@ namespace Booking.Data
                     Description = "Вілла \"Сонячна\" - це ідеальне місце для відпочинку на морі.",
                     Slug = "villa-sunny",
                     ImageUrl = "villa_sunny.jpg",
-                    Price = 500.00m
+                    Price = 500.00m,
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
                 },
                 new Realty
                 {
@@ -428,7 +506,8 @@ namespace Booking.Data
                     Description = "Вілла \"Лісова\" - це ідеальне місце для відпочинку на природі.",
                     Slug = "villa-forest",
                     ImageUrl = "villa_forest.jpg",
-                    Price = 600.00m
+                    Price = 600.00m,
+                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2")
                 }
             );
         }
