@@ -20,9 +20,11 @@ namespace Booking.Data.Entities
         public decimal Price { get; set; }
         public DateTime? DeletedAt { get; set; }
         public Guid CityId { get; set; }
+        public Guid CountryId { get; set; }
 
 
         public City City { get; set; } = null!;
+        public Country Country { get; set; } = null!;
         public List<BookingItem> BookingItems { get; set; } = [];
         public RealtyGroup RealtyGroup { get; set; } = null!;
         public List<ItemImage> Images { get; set; } = [];

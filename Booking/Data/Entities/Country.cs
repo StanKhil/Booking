@@ -11,6 +11,6 @@ namespace Booking.Data.Entities
         public Guid Id { get; set; }
         public String Name { get; set; } = null!;
 
-        public List<City> Cities { get; set; } = new List<City>();
+        public List<Realty> Realties { get; set; } = new List<Realty>();
     }
 }

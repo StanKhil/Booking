@@ -84,15 +84,15 @@ namespace Booking.Data
                 .HasForeignKey(ua => ua.RoleId);
 
 
-            modelBuilder.Entity<Entities.City>()
-                .HasOne(c => c.Country)
-                .WithMany(c => c.Cities)
-                .HasForeignKey(c => c.CountryId);
-
             modelBuilder.Entity<Entities.Realty>()
                 .HasOne(r => r.City)
                 .WithMany(c => c.Realties)
                 .HasForeignKey(r => r.CityId);
+
+            modelBuilder.Entity<Entities.Realty>()
+                .HasOne(r => r.Country)
+                .WithMany(c => c.Realties)
+                .HasForeignKey(r => r.CountryId);
 
             modelBuilder.Entity<Entities.BookingItem>()
                 .HasOne(b => b.Realty)
@@ -360,13 +360,11 @@ namespace Booking.Data
                 {
                     Id = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
                     Name = "Львів",
-                    CountryId = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d")
                 },
                 new City
                 {
                     Id = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2"),
                     Name = "Краків",
-                    CountryId = Guid.Parse("bdf41cd9-c0f1-4349-8a44-4e67755d0415")
                 }
             );
 
@@ -390,7 +388,8 @@ namespace Booking.Data
                     Slug = "hotel-sunny",
                     ImageUrl = "hotel_sunny.jpg",
                     Price = 150.00m,
-                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                    CountryId = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d")
                 },
                 new Realty
                 {
@@ -401,7 +400,8 @@ namespace Booking.Data
                     Slug = "hotel-star",
                     ImageUrl = "hotel_star.jpg",
                     Price = 200.00m,
-                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2")
+                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2"),
+                    CountryId = Guid.Parse("bdf41cd9-c0f1-4349-8a44-4e67755d0415")
                 },
                 new Realty
                 {
@@ -412,7 +412,8 @@ namespace Booking.Data
                     Slug = "hotel-forest",
                     ImageUrl = "hotel_forest.jpg",
                     Price = 250.00m,
-                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                    CountryId = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d")
                 }
             );
         }
@@ -429,7 +430,8 @@ namespace Booking.Data
                     Slug = "apartment-central",
                     ImageUrl = "apartment_central.jpg",
                     Price = 100.00m,
-                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                    CountryId = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d")
                 },
                 new Realty
                 {
@@ -440,7 +442,8 @@ namespace Booking.Data
                     Slug = "apartment-luxury",
                     ImageUrl = "apartment_luxury.jpg",
                     Price = 150.00m,
-                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2")
+                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2"),
+                    CountryId = Guid.Parse("bdf41cd9-c0f1-4349-8a44-4e67755d0415")
                 }
             );
         }
@@ -457,7 +460,8 @@ namespace Booking.Data
                     Slug = "house-mansion",
                     ImageUrl = "house_mansion.jpg",
                     Price = 300.00m,
-                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                    CountryId = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d")
                 },
                 new Realty
                 {
@@ -468,7 +472,8 @@ namespace Booking.Data
                     Slug = "house-forest",
                     ImageUrl = "house_forest.jpg",
                     Price = 350.00m,
-                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2")
+                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2"),
+                    CountryId = Guid.Parse("bdf41cd9-c0f1-4349-8a44-4e67755d0415")
                 },
                 new Realty
                 {
@@ -479,7 +484,8 @@ namespace Booking.Data
                     Slug = "house-mountain",
                     ImageUrl = "house_mountain.jpg",
                     Price = 400.00m,
-                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                    CountryId = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d")
                 }
             );
         }
@@ -496,7 +502,8 @@ namespace Booking.Data
                     Slug = "villa-sunny",
                     ImageUrl = "villa_sunny.jpg",
                     Price = 500.00m,
-                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434")
+                    CityId = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
+                    CountryId = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d")
                 },
                 new Realty
                 {
@@ -507,7 +514,8 @@ namespace Booking.Data
                     Slug = "villa-forest",
                     ImageUrl = "villa_forest.jpg",
                     Price = 600.00m,
-                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2")
+                    CityId = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2"),
+                    CountryId = Guid.Parse("bdf41cd9-c0f1-4349-8a44-4e67755d0415")
                 }
             );
         }
