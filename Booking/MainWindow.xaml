@@ -6,7 +6,14 @@
         xmlns:local="clr-namespace:Booking"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    
+    
+    
+    
+    
+    
+    
+    <!--<Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -72,5 +79,5 @@
             <TextBlock Text=""></TextBlock>
         </StackPanel>
 
-    </Grid>
+    </Grid>-->
 </Window>
