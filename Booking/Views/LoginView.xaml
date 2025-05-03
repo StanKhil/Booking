@@ -129,7 +129,7 @@
                          VerticalContentAlignment="Center"
                          Margin="0,5,0,0" Padding="30,0,0,0">
                     <TextBox.Background>
-                        <ImageBrush ImageSource="D:\ADO-NET\Booking\Booking\Images\user.png"
+                        <ImageBrush ImageSource="\Images\user.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"/>
                     </TextBox.Background>
@@ -148,7 +148,7 @@
                          VerticalContentAlignment="Center"
                          Margin="0,5,0,0" Padding="30,0,0,0">
                     <TextBox.Background>
-                        <ImageBrush ImageSource="D:\ADO-NET\Booking\Booking\Images\key.png"
+                        <ImageBrush ImageSource="\Images\key.png"
                             Stretch="Uniform"
                             AlignmentX="Left"/>
                     </TextBox.Background>
