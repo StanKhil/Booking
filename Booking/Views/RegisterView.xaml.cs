@@ -1,9 +1,5 @@
 ﻿using Booking.Data;
-using Booking.Data.Entities;
-using Booking.Models;
 using Booking.ViewModels;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,30 +17,32 @@ using System.Windows.Shapes;
 namespace Booking.Views
 {
     /// <summary>
-    /// Interaction logic for LoginView.xaml
+    /// Interaction logic for RegisterView.xaml
     /// </summary>
-    public partial class LoginView : Window
+    public partial class RegisterView : Window
     {
-        public LoginView()
+        DataContext context;
+        public RegisterView(DataContext context)
         {
             InitializeComponent();
-            LoginViewModel viewModel = new();
+            this.context = context;
+            RegisterViewModel viewModel = new();
             viewModel.OnRequestClose += (s, e) => this.Close();
             DataContext = viewModel;
         }
-
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed) DragMove();
         }
+
         private void Minimise(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
-        private void Close_Click(object sender, RoutedEventArgs e)
+
+        private void Close(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
         }
-       
     }
 }

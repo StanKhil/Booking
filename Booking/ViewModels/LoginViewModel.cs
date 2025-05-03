@@ -22,6 +22,8 @@ namespace Booking.ViewModels
         DataContext context = new();
         UserModel userModel;
 
+        public event EventHandler OnRequestClose;
+
         public string Login
         {
             get => login;
@@ -69,11 +71,21 @@ namespace Booking.ViewModels
         {
             LoginCommand = new RelayCommand(ExecuteLoginCommand);
             RegisterWindowCommand = new RelayCommand(ExecuteRegisterWindowCommand);
+            this.context = new();
             userModel = new UserModel(context);
+        }
+        public LoginViewModel(DataContext context, UserModel model)
+        {
+            LoginCommand = new RelayCommand(ExecuteLoginCommand);
+            RegisterWindowCommand = new RelayCommand(ExecuteRegisterWindowCommand);
+            this.context = context;
+            userModel = model;
         }
         private void ExecuteRegisterWindowCommand(object? obj)
         {
-            throw new NotImplementedException();
+            RegisterView register = new(context);
+            register.Show();
+            OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
         private void ExecuteLoginCommand(object? obj)
         {
@@ -83,7 +95,13 @@ namespace Booking.ViewModels
                 ErrorMessage = "Invalid login or password";
                 return;
             }
-            IsViewVisible = false;
+            else
+            {
+                MainView mainView = new(context);
+                mainView.Show();
+                OnRequestClose?.Invoke(this, EventArgs.Empty);
+            }
+                
         }
     }
 }

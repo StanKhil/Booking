@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Booking.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,11 @@ namespace Booking.Views
     /// </summary>
     public partial class MainView : Window
     {
-        public MainView()
+        DataContext context;
+        public MainView(DataContext context)
         {
             InitializeComponent();
+            this.context = context;
         }
     }
 }

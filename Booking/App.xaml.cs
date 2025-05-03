@@ -10,20 +10,23 @@ namespace Booking
     /// </summary>
     public partial class App : Application
     {
-        private void ApplicationStart(object sender, StartupEventArgs e)
-        {
-            LoginView loginView = new();
-            loginView.Show();
-            loginView.IsVisibleChanged += (s, ev) =>
-            {
-                if(loginView.IsVisible == false && loginView.IsLoaded)
-                {
-                    MainView mainView = new();
-                    mainView.Show();
-                    //loginView.Close();
-                }
-            };
-        }
+        //private void ApplicationStart(object sender, StartupEventArgs e)
+        //{
+        //    LoginView loginView = new();
+        //    loginView.Show();
+        //    //loginView.IsVisibleChanged += (s, ev) =>
+        //    //{
+        //    //    if(loginView.IsVisible == false && loginView.IsLoaded)
+        //    //    {
+        //    //        //MainView mainView = new();
+        //    //        //mainView.Show();
+        //    //        //loginView.Close();
+        //    //    }
+        //    //    if(loginView.IsVisible == true)
+        //    //    {
+        //    //        loginView.Show();
+        //    //    }
+        //    //};
+        //}
     }
-
 }
