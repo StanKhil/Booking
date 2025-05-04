@@ -1,4 +1,6 @@
 ﻿using Booking.Data;
+using Booking.ViewModels;
+using Booking.ViewModels.admin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,26 +14,24 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Booking.ViewModels;
 
-namespace Booking.Views
+namespace Booking.Views.admin
 {
     /// <summary>
-    /// Interaction logic for MainView.xaml
+    /// Логика взаимодействия для AdminCreate.xaml
     /// </summary>
-    public partial class MainView : Window
+    public partial class AdminCreateView : Window
     {
         DataContext context;
-        public MainView(DataContext context)
+        public AdminCreateView(DataContext context)
         {
             InitializeComponent();
             this.context = context;
-            MainViewModel viewModel = new();
+            AdminCreateViewModel viewModel = new();
             viewModel.OnRequestClose += (s, e) => this.Close();
+            viewModel.OnRequestClearUserCreateForm += (s, e) => ClearCreateUserForm();
             DataContext = viewModel;
         }
-
-
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed) DragMove();
@@ -45,6 +45,15 @@ namespace Booking.Views
         private void Close(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
+        }
+
+        public void ClearCreateUserForm()
+        {
+            /*NameTextBox.Text = string.Empty;
+            EmailTextBox.Text = string.Empty;
+            LoginTextBox.Text = string.Empty;
+            PasswordTextBox.Text = string.Empty;
+            UserRoleComboBox.SelectedIndex = -1;*/
         }
     }
 }
