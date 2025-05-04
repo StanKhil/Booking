@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Booking.ViewModels;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace Booking.Views
 {
@@ -30,21 +32,49 @@ namespace Booking.Views
             viewModel.OnRequestClose += (s, e) => this.Close();
             DataContext = viewModel;
         }
-
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Home_Checked(object sender, RoutedEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed) DragMove();
+
         }
 
-        private void Minimise(object sender, RoutedEventArgs e)
+        private void Applications_Checked(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+
         }
 
-        private void Close(object sender, RoutedEventArgs e)
+        private void Settings_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+        private void pnlControlBar_MouseButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            WindowInteropHelper helper = new(this);
+            SendMessage(helper.Handle, 161, 2, 0);
+            //DragMove();
+        }
+
+        private void pnlControlBar_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+        }
+
+        private void buttonClose_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
+        }
+
+        private void buttonMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Normal) this.WindowState = WindowState.Maximized;
+            else this.WindowState = WindowState.Normal;
+        }
+
+        private void buttonMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
         }
     }
 }
