@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Booking.ViewModels;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using Booking.Data.Entities;
 
 namespace Booking.Views
 {
@@ -27,24 +28,20 @@ namespace Booking.Views
         public MainView(DataContext context)
         {
             InitializeComponent();
+            //MessageBox.Show("Another");
             this.context = context;
             MainViewModel viewModel = new();
             viewModel.OnRequestClose += (s, e) => this.Close();
             DataContext = viewModel;
         }
-        private void Home_Checked(object sender, RoutedEventArgs e)
+        public MainView(DataContext context, UserAccess access)
         {
-
-        }
-
-        private void Applications_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Settings_Checked(object sender, RoutedEventArgs e)
-        {
-
+            InitializeComponent();
+            //MessageBox.Show(access.Login);
+            this.context = context;
+            MainViewModel viewModel = new(access);
+            viewModel.OnRequestClose += (s, e) => this.Close();
+            DataContext = viewModel;
         }
 
         [DllImport("user32.dll")]

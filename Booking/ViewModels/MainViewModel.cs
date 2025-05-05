@@ -10,6 +10,7 @@ using System.Windows.Input;
 using FontAwesome.Sharp;
 using System.Windows.Controls;
 using Booking.Views.Scenes;
+using Booking.Data.Entities;
 
 
 namespace Booking.ViewModels
@@ -17,11 +18,12 @@ namespace Booking.ViewModels
     public class MainViewModel : ViewModel
     {
         public DataContext context;
+        UserAccess access;
         string content = "Home";
         IconChar topIcon = new();
         ContentControl sceneContainer = new();
 
-        HomeScene home = new();
+        HomeScene home;
         Scheduled scheduled = new();
         Catalogue catalogue = new();
         Settings settings = new();
@@ -29,6 +31,15 @@ namespace Booking.ViewModels
         private string? errorMessage = "";
         private bool isViewVisible = true;
 
+        public UserAccess Access
+        {
+            get => access;
+            set
+            {
+                access = value;
+                OnPropertyChanged(nameof(Access));
+            }
+        }
         public string Content
         {
             get => content;
@@ -99,9 +110,27 @@ namespace Booking.ViewModels
             RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
 
             this.context = new();
+            this.access = new();
             topIcon = IconChar.Home;
+            home = new(this);
             sceneContainer.Content = home;
             //content = "Home";
+        }
+        public MainViewModel(UserAccess access)
+        {
+            HomeChecked = new RelayCommand(HomeCheckedCommand);
+            ScheduledChecked = new RelayCommand(ScheduledCheckedCommand);
+            CatalogueChecked = new RelayCommand(CatalogueCheckedCommand);
+            SettingsChecked = new RelayCommand(SettingsCheckedCommand);
+
+            UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
+            RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
+
+            this.context = new();
+            this.access = access;
+            topIcon = IconChar.Home;
+            home = new(this);
+            sceneContainer.Content = home;
         }
         public MainViewModel(DataContext context, UserModel model)
         {
@@ -114,7 +143,9 @@ namespace Booking.ViewModels
             RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
 
             this.context = context;
+            this.access = new();
             topIcon = IconChar.Home;
+            home = new(this);
             sceneContainer.Content = home;
             //content = "Home";
         }

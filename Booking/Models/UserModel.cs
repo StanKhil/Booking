@@ -16,7 +16,7 @@ namespace Booking.Models
     public class UserModel
     {
         DataContext context;
-        public UserAccess? userAccess = null;
+        public UserAccess? userAccess;
         public UserModel(DataContext context)
         {
             this.context = context;
@@ -28,9 +28,10 @@ namespace Booking.Models
                .FirstOrDefault(ua => ua.Login == login && ua.User.DeletedAt == null);
             if (userAccess == null)
             {
-                System.Windows.MessageBox.Show("Signed in", "System", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Login Not Found", "System", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 this.userAccess = userAccess;
-                return true;
+                //System.Windows.MessageBox.Show(this.userAccess.Login);
+                return false;
             }
             String dk = Crypto.kdf(userAccess.Salt, password);
             if (dk != userAccess.Dk)
@@ -38,6 +39,8 @@ namespace Booking.Models
                 System.Windows.MessageBox.Show("Wrong password");
                 return false;
             }
+            this.userAccess = userAccess;
+            //System.Windows.MessageBox.Show(this.userAccess.Login);
             System.Windows.MessageBox.Show($"Welcome {userAccess.User.Name}");
 
             return true;

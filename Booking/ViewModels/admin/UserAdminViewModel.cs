@@ -142,7 +142,7 @@ namespace Booking.ViewModels.admin
             this.userModel = model;
         }
 
-        private void ExecuteMainWindowCommand(object obj)
+        private void ExecuteMainWindowCommand(object? obj)
         {
             MainView mainView = new MainView(context);
             mainView.Show();
@@ -151,7 +151,7 @@ namespace Booking.ViewModels.admin
             OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteCreateUserCommand(object obj)
+        private void ExecuteCreateUserCommand(object? obj)
         {
             bool success = userModel.CreateUser(name, email, login, password, userRole);
             if (!success)
@@ -162,7 +162,7 @@ namespace Booking.ViewModels.admin
             OnRequestClearUserCreateForm?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteDeleteUserCommand(object obj)
+        private void ExecuteDeleteUserCommand(object? obj)
         {
             bool success = userModel.DeleteUser(login);
             if (!success)
@@ -173,7 +173,7 @@ namespace Booking.ViewModels.admin
             OnRequestClearUserDeleteForm?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteUpdateUserCommand(object obj)
+        private void ExecuteUpdateUserCommand(object? obj)
         {
             bool success = userModel.UpdateUser(name, email, login, password, userRole);
             if (!success)

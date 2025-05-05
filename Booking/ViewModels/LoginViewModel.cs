@@ -1,4 +1,5 @@
 ﻿using Booking.Data;
+using Booking.Data.Entities;
 using Booking.Models;
 using Booking.Views;
 using System;
@@ -97,9 +98,13 @@ namespace Booking.ViewModels
             }
             else
             {
-                MainView mainView = new(context);
-                mainView.Show();
-                OnRequestClose?.Invoke(this, EventArgs.Empty);
+                //MessageBox.Show(userModel.userAccess.Login);
+                if(userModel.userAccess != null)
+                {
+                    MainView mainView = new(context, userModel.userAccess);
+                    mainView.Show();
+                    OnRequestClose?.Invoke(this, EventArgs.Empty);
+                }
             }
                 
         }
