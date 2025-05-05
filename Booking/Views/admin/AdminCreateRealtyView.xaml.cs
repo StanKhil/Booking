@@ -1,5 +1,4 @@
 ﻿using Booking.Data;
-using Booking.ViewModels;
 using Booking.ViewModels.admin;
 using System;
 using System.Collections.Generic;
@@ -18,18 +17,18 @@ using System.Windows.Shapes;
 namespace Booking.Views.admin
 {
     /// <summary>
-    /// Логика взаимодействия для AdminCreate.xaml
+    /// Логика взаимодействия для AdminCreateRealtyView.xaml
     /// </summary>
-    public partial class AdminCreateView : Window
+    public partial class AdminCreateRealtyView : Window
     {
         DataContext context;
-        public AdminCreateView(DataContext context)
+        public AdminCreateRealtyView(DataContext context)
         {
             InitializeComponent();
             this.context = context;
-            AdminCreateViewModel viewModel = new();
+            AdminCreateRealtyViewModel viewModel = new();
             viewModel.OnRequestClose += (s, e) => this.Close();
-            viewModel.OnRequestClearUserCreateForm += (s, e) => ClearCreateUserForm();
+            viewModel.OnRequestClearRealtyCreateForm += (s, e) => ClearCreateRealtyForm();
             DataContext = viewModel;
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -47,13 +46,9 @@ namespace Booking.Views.admin
             System.Windows.Application.Current.Shutdown();
         }
 
-        public void ClearCreateUserForm()
+        public void ClearCreateRealtyForm()
         {
-            /*NameTextBox.Text = string.Empty;
-            EmailTextBox.Text = string.Empty;
-            LoginTextBox.Text = string.Empty;
-            PasswordTextBox.Text = string.Empty;
-            UserRoleComboBox.SelectedIndex = -1;*/
+
         }
     }
 }

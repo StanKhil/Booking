@@ -6,13 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Booking.Models.admin;
 using Booking.Views;
 using System.Collections.ObjectModel;
 
 namespace Booking.ViewModels.admin
 {
-    public class AdminCreateViewModel : ViewModel
+    public class AdminCreateUserViewModel : ViewModel
     {
         private string name;
         private string email;
@@ -24,7 +23,7 @@ namespace Booking.ViewModels.admin
         private bool isViewVisible = true;
 
         DataContext context = new();
-        CreateUserModel userModel;
+        UserModel userModel;
 
         public string Name
         {
@@ -119,7 +118,7 @@ namespace Booking.ViewModels.admin
         public ICommand MainWindowCommand { get; }
         public ICommand CreateUserCommand { get; }
 
-        public AdminCreateViewModel()
+        public AdminCreateUserViewModel()
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
             CreateUserCommand = new RelayCommand(ExecuteCreateUserCommand);
@@ -127,7 +126,7 @@ namespace Booking.ViewModels.admin
             this.userModel = new(context);
         }
 
-        public AdminCreateViewModel(DataContext context, CreateUserModel model)
+        public AdminCreateUserViewModel(DataContext context, UserModel model)
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
             CreateUserCommand = new RelayCommand(ExecuteCreateUserCommand);

@@ -150,7 +150,7 @@ namespace Booking.ViewModels
 
         private void ExecuteCreateWindowCommand(object? obj)
         {
-            AdminCreateView adminCreateView = new AdminCreateView(context);
+            AdminCreateUserView adminCreateView = new AdminCreateUserView(context);
             adminCreateView.Show();
 
             IsViewVisible = false;
