@@ -22,7 +22,6 @@ namespace Booking.Data.Entities
         public Guid CityId { get; set; }
         public Guid CountryId { get; set; }
 
-
         public City City { get; set; } = null!;
         public Country Country { get; set; } = null!;
         public List<BookingItem> BookingItems { get; set; } = [];

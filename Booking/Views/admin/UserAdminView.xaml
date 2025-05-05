@@ -20,13 +20,14 @@
         <Binding Path="IsViewVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibility}"/>
     </Window.Visibility>
 
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Border CornerRadius="15" Grid.Column="0"
-BorderThickness="3">
+                BorderThickness="3">
             <Border.BorderBrush>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="#313131" Offset="0"/>
@@ -177,7 +178,7 @@ BorderThickness="3">
                         SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
                         FontSize="12" FontWeight="Medium"
                         Foreground="White"
-                        Background="Transparent"
+                        Background="Gray"
                         BorderThickness="0,0,0,1"
                         Height="28"
                         VerticalContentAlignment="Center"
