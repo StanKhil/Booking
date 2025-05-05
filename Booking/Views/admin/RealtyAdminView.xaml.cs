@@ -12,25 +12,28 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Booking.Views.admin
 {
     /// <summary>
-    /// Логика взаимодействия для AdminUpdateView.xaml
+    /// Логика взаимодействия для RealtyAdminView.xaml
     /// </summary>
-    public partial class AdminUpdateUserView : Window
+    public partial class RealtyAdminView : Window
     {
         DataContext context;
-        public AdminUpdateUserView(DataContext context)
+        public RealtyAdminView(DataContext context)
         {
             InitializeComponent();
             this.context = context;
-            AdminUpdateUserViewModel viewModel = new();
-            viewModel.OnRequestClose += (s, e) => this.Close();
-            viewModel.OnRequestClearUserUpdateForm += (s, e) => ClearUpdateUserForm();
-            DataContext = viewModel;
+            RealtyAdminViewModel realtyAdminViewModel = new();
+            realtyAdminViewModel.OnRequestClose += (s, e) => this.Close();
+            realtyAdminViewModel.OnRequestClearRealtyCreateForm += (s, e) => ClearCreateRealtyForm();
+            realtyAdminViewModel.OnRequestClearRealtyUpdateForm += (s, e) => ClearUpdateRealtyForm();
+            realtyAdminViewModel.OnRequestClearRealtyDeleteForm += (s, e) => ClearDeleteRealtyForm();
+
+
+            DataContext = realtyAdminViewModel;
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -47,13 +50,17 @@ namespace Booking.Views.admin
             System.Windows.Application.Current.Shutdown();
         }
 
-        public void ClearUpdateUserForm()
+        public void ClearCreateRealtyForm()
         {
-            /*NameTextBox.Text = string.Empty;
-            EmailTextBox.Text = string.Empty;
-            LoginTextBox.Text = string.Empty;
-            PasswordTextBox.Text = string.Empty;
-            UserRoleComboBox.SelectedIndex = -1;*/
+
+        }
+
+        public void ClearUpdateRealtyForm()
+        {
+        }
+
+        public void ClearDeleteRealtyForm()
+        {
         }
     }
 }

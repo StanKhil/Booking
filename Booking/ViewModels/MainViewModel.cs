@@ -85,9 +85,8 @@ namespace Booking.ViewModels
         public ICommand CatalogueChecked { get; }
         public ICommand SettingsChecked { get; }
 
-        public ICommand CreateWindowCommand { get; }
-        public ICommand UpdateWindowCommand { get; }
-        public ICommand DeleteWindowCommand { get; }
+        public ICommand UserAdminWindowCommand { get; }
+        public ICommand RealtyAdminWindowCommand { get; }
      
         public MainViewModel()
         {
@@ -96,9 +95,8 @@ namespace Booking.ViewModels
             CatalogueChecked = new RelayCommand(CatalogueCheckedCommand);
             SettingsChecked = new RelayCommand(SettingsCheckedCommand);
 
-            CreateWindowCommand = new RelayCommand(ExecuteCreateWindowCommand);
-            UpdateWindowCommand = new RelayCommand(ExecuteUpdateWindowCommand);
-            DeleteWindowCommand = new RelayCommand(ExecuteDeleteWindowCommand);
+            UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
+            RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
 
             this.context = new();
             topIcon = IconChar.Home;
@@ -112,9 +110,8 @@ namespace Booking.ViewModels
             CatalogueChecked = new RelayCommand(CatalogueCheckedCommand);
             SettingsChecked = new RelayCommand(SettingsCheckedCommand);
 
-            CreateWindowCommand = new RelayCommand(ExecuteCreateWindowCommand);
-            UpdateWindowCommand = new RelayCommand(ExecuteUpdateWindowCommand);
-            DeleteWindowCommand = new RelayCommand(ExecuteDeleteWindowCommand);
+            UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
+            RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
 
             this.context = context;
             topIcon = IconChar.Home;
@@ -148,28 +145,19 @@ namespace Booking.ViewModels
             sceneContainer.Content = catalogue;
         }
 
-        private void ExecuteCreateWindowCommand(object? obj)
+        private void ExecuteUserAdminWindowCommand(object? obj)
         {
-            AdminCreateUserView adminCreateView = new AdminCreateUserView(context);
-            adminCreateView.Show();
+            UserAdminView userAdminView = new UserAdminView(context);
+            userAdminView.Show();
 
             IsViewVisible = false;
             OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteUpdateWindowCommand(object? obj)
+        private void ExecuteRealtyAdminWindowCommand(object? obj)
         {
-            /*AdminUpdateView adminUpdateView = new AdminUpdateView(context);
-            adminUpdateView.Show();*/
-
-            IsViewVisible = false;
-            OnRequestClose?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void ExecuteDeleteWindowCommand(object? obj)
-        {
-            /*AdminDeleteView adminDeleteView = new AdminDeleteView(context);
-             adminDeleteView.Show();*/
+            RealtyAdminView realtyAdminView = new RealtyAdminView(context);
+            realtyAdminView.Show();
 
             IsViewVisible = false;
             OnRequestClose?.Invoke(this, EventArgs.Empty);

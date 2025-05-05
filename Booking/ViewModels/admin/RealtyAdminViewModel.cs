@@ -10,11 +10,12 @@ using System.Windows.Input;
 
 namespace Booking.ViewModels.admin
 {
-    public class AdminCreateRealtyViewModel : ViewModel
+    public class RealtyAdminViewModel : ViewModel
     {
         private string name;
         private string? description;
         private string? slug;
+        private string? newSlug;
         private string? imageUrl;
         private decimal price;
         private string city;
@@ -41,6 +42,11 @@ namespace Booking.ViewModels.admin
         {
             get => slug;
             set { slug = value; OnPropertyChanged(nameof(Slug)); }
+        }
+        public string? NewSlug
+        {
+            get => newSlug;
+            set { newSlug = value; OnPropertyChanged(nameof(NewSlug)); }
         }
         public string? ImageUrl
         {
@@ -81,22 +87,30 @@ namespace Booking.ViewModels.admin
 
         public event EventHandler OnRequestClose;
         public event EventHandler OnRequestClearRealtyCreateForm;
+        public event EventHandler OnRequestClearRealtyDeleteForm;
+        public event EventHandler OnRequestClearRealtyUpdateForm;
 
         public ICommand MainWindowCommand { get; }
         public ICommand CreateRealtyCommand { get; }
+        public ICommand DeleteRealtyCommand { get; }
+        public ICommand UpdateRealtyCommand { get; }
 
-        public AdminCreateRealtyViewModel()
+        public RealtyAdminViewModel()
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
             CreateRealtyCommand = new RelayCommand(ExecuteCreateRealtyCommand);
+            DeleteRealtyCommand = new RelayCommand(ExecuteDeleteRealtyCommand);
+            UpdateRealtyCommand = new RelayCommand(ExecuteUpdateRealtyCommand);
             this.context = new();
             this.realtyModel = new(context);
         }
 
-        public AdminCreateRealtyViewModel(DataContext context, RealtyModel model)
+        public RealtyAdminViewModel(DataContext context, RealtyModel model)
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
             CreateRealtyCommand = new RelayCommand(ExecuteCreateRealtyCommand);
+            DeleteRealtyCommand = new RelayCommand(ExecuteDeleteRealtyCommand);
+            UpdateRealtyCommand = new RelayCommand(ExecuteUpdateRealtyCommand);
             this.context = context;
             this.realtyModel = model;
         }
@@ -119,6 +133,28 @@ namespace Booking.ViewModels.admin
                 return;
             }
             OnRequestClearRealtyCreateForm?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ExecuteDeleteRealtyCommand(object obj)
+        {
+            bool success = realtyModel.DeleteRealty(slug);
+            if (!success)
+            {
+                ErrorMessage = "Invalid slug";
+                return;
+            }
+            OnRequestClearRealtyDeleteForm?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ExecuteUpdateRealtyCommand(object obj)
+        {
+            bool success = realtyModel.UpdateRealty(slug, name, description, newSlug, imageUrl, price, city, country, group);
+            if (!success)
+            {
+                ErrorMessage = "Invalid data";
+                return;
+            }
+            OnRequestClearRealtyUpdateForm?.Invoke(this, EventArgs.Empty);
         }
     }
 }

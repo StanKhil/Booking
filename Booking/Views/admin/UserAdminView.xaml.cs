@@ -17,19 +17,21 @@ using System.Windows.Shapes;
 namespace Booking.Views.admin
 {
     /// <summary>
-    /// Логика взаимодействия для AdminCreateRealtyView.xaml
+    /// Логика взаимодействия для UserAdmin.xaml
     /// </summary>
-    public partial class AdminCreateRealtyView : Window
+    public partial class UserAdminView : Window
     {
         DataContext context;
-        public AdminCreateRealtyView(DataContext context)
+        public UserAdminView(DataContext context)
         {
             InitializeComponent();
             this.context = context;
-            AdminCreateRealtyViewModel viewModel = new();
-            viewModel.OnRequestClose += (s, e) => this.Close();
-            viewModel.OnRequestClearRealtyCreateForm += (s, e) => ClearCreateRealtyForm();
-            DataContext = viewModel;
+            UserAdminViewModel userAdminViewModel = new();
+            userAdminViewModel.OnRequestClose += (s, e) => this.Close();
+            userAdminViewModel.OnRequestClearUserCreateForm += (s, e) => ClearCreateUserForm();
+            userAdminViewModel.OnRequestClearUserUpdateForm += (s, e) => ClearCreateUserForm();
+            userAdminViewModel.OnRequestClearUserDeleteForm += (s, e) => ClearCreateUserForm();
+            DataContext = userAdminViewModel;
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -46,9 +48,17 @@ namespace Booking.Views.admin
             System.Windows.Application.Current.Shutdown();
         }
 
-        public void ClearCreateRealtyForm()
+        public void ClearCreateUserForm()
         {
 
+        }
+
+        public void ClearUpdateUserForm()
+        {
+        }
+
+        public void ClearDeleteUserForm()
+        {
         }
     }
 }
