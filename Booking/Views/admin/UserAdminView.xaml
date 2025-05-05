@@ -187,15 +187,15 @@ BorderThickness="3">
                     <TextBlock Text="{Binding ErrorMessage}"
                        Foreground="#D7596D" FontSize="12"
                        FontWeight="Medium" 
-                       Margin="0,15,0,0" TextWrapping="Wrap"/>
+                       Margin="0,5,0,2" TextWrapping="Wrap"/>
 
                     <Button x:Name="buttonCreate"
-            BorderThickness="0"
-            Content="Create" Foreground="White"
-            FontSize="12" Cursor="Hand"
-            Grid.Column="2"
-            Margin="0,15,0,0"
-            Command="{Binding CreateUserCommand}">
+                            BorderThickness="0"
+                            Content="Create" Foreground="White"
+                            FontSize="12" Cursor="Hand"
+                            Grid.Column="2"
+                            Margin="0,0,0,0"
+                            Command="{Binding CreateUserCommand}">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="#2e2e2e"></Setter>
@@ -209,7 +209,7 @@ BorderThickness="3">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Width="150" Height="40"
-                        CornerRadius="20" Background="{TemplateBinding Background}">
+                                        CornerRadius="20" Background="{TemplateBinding Background}">
                                     <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Border>
                             </ControlTemplate>
