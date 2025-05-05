@@ -106,7 +106,6 @@ namespace Booking.ViewModels
                     OnRequestClose?.Invoke(this, EventArgs.Empty);
                 }
             }
-                
         }
     }
 }

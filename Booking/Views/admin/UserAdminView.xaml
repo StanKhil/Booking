@@ -6,7 +6,7 @@
         xmlns:viewModel="clr-namespace:Booking.ViewModels.admin"
         xmlns:local="clr-namespace:Booking.Views.admin"
         mc:Ignorable="d"
-        Title="UserAdmin" Height="450" Width="800" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        Title="UserAdmin" Height="450" Width="400" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         MouseDown="Window_MouseDown" Background="Transparent" AllowsTransparency="True">
     <Window.DataContext>
         <viewModel:UserAdminViewModel/>
@@ -22,7 +22,6 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
