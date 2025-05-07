@@ -115,7 +115,7 @@ namespace Booking.ViewModels.admin
             this.realtyModel = model;
         }
 
-        private void ExecuteMainWindowCommand(object obj)
+        private void ExecuteMainWindowCommand(object? obj)
         {
             MainView mainView = new MainView(context);
             mainView.Show();
@@ -124,7 +124,7 @@ namespace Booking.ViewModels.admin
             OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteCreateRealtyCommand(object obj)
+        private void ExecuteCreateRealtyCommand(object? obj)
         {
             bool success = realtyModel.CreateRealty(name, description, slug, imageUrl, price, city, country, group);
             if (!success)
@@ -135,7 +135,7 @@ namespace Booking.ViewModels.admin
             OnRequestClearRealtyCreateForm?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteDeleteRealtyCommand(object obj)
+        private void ExecuteDeleteRealtyCommand(object? obj)
         {
             bool success = realtyModel.DeleteRealty(slug);
             if (!success)
@@ -146,7 +146,7 @@ namespace Booking.ViewModels.admin
             OnRequestClearRealtyDeleteForm?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteUpdateRealtyCommand(object obj)
+        private void ExecuteUpdateRealtyCommand(object? obj)
         {
             bool success = realtyModel.UpdateRealty(slug, name, description, newSlug, imageUrl, price, city, country, group);
             if (!success)

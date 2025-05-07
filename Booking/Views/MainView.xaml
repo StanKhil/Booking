@@ -72,6 +72,12 @@
                             <TextBlock Text="Scheduled" Style="{StaticResource menuButtonText}"></TextBlock>
                         </StackPanel>
                     </RadioButton>
+                    <RadioButton x:Name="adminRadioButton" Command="{Binding AdministratorChecked}" Style="{StaticResource menuButton}" Tag="{StaticResource color1}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="FeatherAlt" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
+                            <TextBlock Text="Administrator" Style="{StaticResource menuButtonText}"></TextBlock>
+                        </StackPanel>
+                    </RadioButton>
                     <RadioButton Command="{Binding SettingsChecked}" Style="{StaticResource menuButton}" Tag="{StaticResource color1}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Gear" Style="{StaticResource menuButtonIcon}"></fa:IconImage>

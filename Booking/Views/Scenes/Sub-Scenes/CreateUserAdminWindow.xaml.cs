@@ -14,19 +14,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Booking.Views.admin
+namespace Booking.Views.Scenes.Sub_Scenes
 {
     /// <summary>
-    /// Логика взаимодействия для UserAdmin.xaml
+    /// Interaction logic for CreateUserAdminWindow.xaml
     /// </summary>
-    public partial class UserAdminView : Window
+    public partial class CreateUserAdminWindow : Window
     {
         DataContext context;
-        public UserAdminView(DataContext context)
+        public CreateUserAdminWindow(DataContext context)
         {
             InitializeComponent();
             this.context = context;
-            UserAdminViewModel userAdminViewModel = new();
+            CreateUserAdminViewModel userAdminViewModel = new();
             userAdminViewModel.OnRequestClose += (s, e) => this.Close();
             userAdminViewModel.OnRequestClearUserCreateForm += (s, e) => ClearCreateUserForm();
             userAdminViewModel.OnRequestClearUserUpdateForm += (s, e) => ClearCreateUserForm();
@@ -45,18 +45,15 @@ namespace Booking.Views.admin
 
         private void Close(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            this.Close();
         }
 
         public void ClearCreateUserForm()
         {
-
         }
-
         public void ClearUpdateUserForm()
         {
         }
-
         public void ClearDeleteUserForm()
         {
         }
