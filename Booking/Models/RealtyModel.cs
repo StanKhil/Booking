@@ -18,6 +18,12 @@ namespace Booking.Models
             this.context = context;
         }
 
+        public RealtyModel(DataContext context, string slug)
+        {
+            this.context = context;
+            realty = context.Realties.FirstOrDefault(r => r.Slug == slug && r.DeletedAt == null);
+        }
+
         public bool CreateRealty(string name, string? description, string? slug, string? imageUrl, decimal price, string cityName, string countryName, string groupName)
         {
             if (context.Realties.Any(r => r.Slug == slug && r.DeletedAt == null))
@@ -110,5 +116,86 @@ namespace Booking.Models
             System.Windows.MessageBox.Show("Deleted", "System", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
         }
-    }   
+
+        public List<Realty> GetRealties()
+        {
+            return context.Realties.Where(r => r.DeletedAt == null).ToList();
+        }
+
+        public Realty? GetRealtyBySlug(string slug)
+        {
+            return context.Realties.FirstOrDefault(r => r.Slug == slug && r.DeletedAt == null);
+        }
+
+        public List<Feedback> GetFeedbacks(string slug)
+        {
+            var realty = context.Realties.FirstOrDefault(r => r.Slug == slug && r.DeletedAt == null);
+            if (realty == null)
+            {
+                System.Windows.MessageBox.Show("Realty not found");
+                return new List<Feedback>();
+            }
+            return context.Feedbacks.Where(f => f.RealtyId == realty.Id).ToList();
+        }
+
+        public List<Realty> GetRealtiesByGroup(string groupName)
+        {
+            var group = context.RealtyGroups.FirstOrDefault(g => g.Name == groupName);
+            if (group == null)
+            {
+                System.Windows.MessageBox.Show("Group not found");
+                return new List<Realty>();
+            }
+            return context.Realties.Where(r => r.GroupId == group.Id && r.DeletedAt == null).ToList();
+        }
+
+        public List<Realty> GetRealtiesByCity(string cityName)
+        {
+            var city = context.Cities.FirstOrDefault(c => c.Name == cityName);
+            if (city == null)
+            {
+                System.Windows.MessageBox.Show("City not found");
+                return new List<Realty>();
+            }
+            return context.Realties.Where(r => r.CityId == city.Id && r.DeletedAt == null).ToList();
+        }
+
+        public List<Realty> GetRealtiesByCountry(string countryName)
+        {
+            var country = context.Countries.FirstOrDefault(c => c.Name == countryName);
+            if (country == null)
+            {
+                System.Windows.MessageBox.Show("Country not found");
+                return new List<Realty>();
+            }
+            return context.Realties.Where(r => r.CountryId == country.Id && r.DeletedAt == null).ToList();
+        }
+
+        public List<Realty> GetRealtiesByPrice(decimal minPrice, decimal maxPrice)
+        {
+            return context.Realties.Where(r => r.Price >= minPrice && r.Price <= maxPrice && r.DeletedAt == null).ToList();
+        }
+
+        public List<ItemImage> GetImages(string slug)
+        {
+            var realty = context.Realties.FirstOrDefault(r => r.Slug == slug && r.DeletedAt == null);
+            if (realty == null)
+            {
+                System.Windows.MessageBox.Show("Realty not found");
+                return new List<ItemImage>();
+            }
+            return context.ItemImages.Where(i => i.ItemId == realty.Id).ToList();
+        }
+
+        public List<BookingItem> GetBookings(string slug)
+        {
+            var realty = context.Realties.FirstOrDefault(r => r.Slug == slug && r.DeletedAt == null);
+            if (realty == null)
+            {
+                System.Windows.MessageBox.Show("Realty not found");
+                return new List<BookingItem>();
+            }
+            return context.BookingItems.Where(b => b.RealtyId == realty.Id).ToList();
+        }
+    }
 }
