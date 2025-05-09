@@ -28,5 +28,7 @@ namespace Booking.Data.Entities
         public RealtyGroup RealtyGroup { get; set; } = null!;
         public List<ItemImage> Images { get; set; } = [];
         public List<Feedback> Feedbacks { get; set; } = [];
+
+        public List<AccRates> AccRates { get; set; } = [];
     }
 }

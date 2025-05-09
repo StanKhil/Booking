@@ -28,6 +28,8 @@ namespace Booking.Data
 
         public DbSet<Entities.Feedback> Feedbacks { get; set; } = null!;
 
+        public DbSet<Entities.AccRates> AccRates { get; set; } = null!;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var configuration = new ConfigurationBuilder()
@@ -114,6 +116,10 @@ namespace Booking.Data
                 .WithMany(ua => ua.Feedbacks)
                 .HasForeignKey(f => f.UserAccessId);
 
+            modelBuilder.Entity<Entities.AccRates>()
+                .HasOne(ar => ar.Realty)
+                .WithMany(r => r.AccRates)
+                .HasForeignKey(ar => ar.RealtyId);
 
 
             SeedData(modelBuilder);

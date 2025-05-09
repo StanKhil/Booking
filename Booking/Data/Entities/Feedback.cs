@@ -12,6 +12,7 @@ namespace Booking.Data.Entities
         public Guid RealtyId { get; set; }
         public Guid UserAccessId { get; set; }
         public String Text { get; set; } = null!;
+        public int Rate { get; set; } 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
