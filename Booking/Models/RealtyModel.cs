@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.ComponentModel.DataAnnotations;
 
 namespace Booking.Models
 {
@@ -196,6 +197,23 @@ namespace Booking.Models
                 return new List<BookingItem>();
             }
             return context.BookingItems.Where(b => b.RealtyId == realty.Id).ToList();
+        }
+
+        public float GetAvgRate(string slug)
+        {
+            var realty = context.Realties.FirstOrDefault(r => r.Slug == slug && r.DeletedAt == null);
+            if (realty == null)
+            {
+                System.Windows.MessageBox.Show("Realty not found");
+                return 0;
+            }
+            var accRate = context.AccRates.FirstOrDefault(ar => ar.RealtyId == realty.Id);
+            if (accRate == null)
+            {
+                return 0;
+            }
+
+            return accRate.AvgRate;
         }
     }
 }
