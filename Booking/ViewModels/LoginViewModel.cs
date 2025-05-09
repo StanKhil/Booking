@@ -102,7 +102,7 @@ namespace Booking.ViewModels
                 if(userModel.userAccess != null)
                 {
                     MainView mainView = new(context, userModel.userAccess);
-                    if(userModel.userAccess.Login != "admin") // TO DO define "admin" somewhere in global scope, I dunno
+                    if(userModel.userAccess.RoleId != "SelfRegistered") // TO DO define "admin" somewhere in global scope, I dunno
                     {
                         mainView.adminRadioButton.Height = 0;
                         mainView.adminRadioButton.Margin = new Thickness(0,0,0,0);
