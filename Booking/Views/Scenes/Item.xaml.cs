@@ -1,4 +1,5 @@
-﻿using Booking.ViewModels;
+﻿using Booking.Data.Entities;
+using Booking.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,21 @@ using System.Windows.Shapes;
 namespace Booking.Views.Scenes
 {
     /// <summary>
-    /// Interaction logic for Catalogue.xaml
+    /// Interaction logic for Item.xaml
     /// </summary>
-    public partial class Catalogue : UserControl
+    public partial class Item : UserControl
     {
-        public Catalogue(MainViewModel mainViewModel)
+        public Item()
         {
             InitializeComponent();
-            CatalogueViewModel catalogueViewModel = new(mainViewModel);
-            DataContext = catalogueViewModel;
+            ItemViewModel itemViewModel = new();
+            DataContext = itemViewModel;
+        }
+        public Item(Realty realty)
+        {
+            InitializeComponent();
+            ItemViewModel itemViewModel = new(realty);
+            DataContext = itemViewModel;
         }
     }
 }

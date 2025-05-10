@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Booking.Views.Scenes.Sub_Scenes
+namespace Booking.Views.Scenes.Admin_Scenes
 {
     /// <summary>
-    /// Interaction logic for UserAdmin.xaml
+    /// Interaction logic for UserScene.xaml
     /// </summary>
-    public partial class UserAdmin : UserControl
+    public partial class UserScene : UserControl
     {
-        public UserAdmin()
+        public UserScene()
         {
             InitializeComponent();
         }

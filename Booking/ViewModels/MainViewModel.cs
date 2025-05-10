@@ -26,7 +26,8 @@ namespace Booking.ViewModels
 
         HomeScene home;
         Scheduled scheduled = new();
-        Catalogue catalogue = new();
+        Catalogue catalogue;
+        Item item = new();
         Administrator administrator = new();
         Settings settings = new();
 
@@ -40,6 +41,14 @@ namespace Booking.ViewModels
             {
                 access = value;
                 OnPropertyChanged(nameof(Access));
+            }
+        }
+        public Item Item
+        {
+            get => item;
+            set
+            {
+                item = value;
             }
         }
         public string Content
@@ -96,28 +105,29 @@ namespace Booking.ViewModels
         public ICommand HomeChecked { get; }
         public ICommand ScheduledChecked { get; }
         public ICommand CatalogueChecked { get; }
+        public ICommand ItemChecked { get; set; }
         public ICommand AdministratorChecked { get; }
         public ICommand SettingsChecked { get; }
 
-        public ICommand UserAdminWindowCommand { get; }
-        public ICommand RealtyAdminWindowCommand { get; }
+        //public ICommand UserAdminWindowCommand { get; }
+        //public ICommand RealtyAdminWindowCommand { get; }
      
-        public MainViewModel()
+        public MainViewModel() : this(new UserAccess())
         {
-            HomeChecked = new RelayCommand(HomeCheckedCommand);
-            ScheduledChecked = new RelayCommand(ScheduledCheckedCommand);
-            CatalogueChecked = new RelayCommand(CatalogueCheckedCommand);
-            AdministratorChecked = new RelayCommand(AdministratorCheckedCommand);
-            SettingsChecked = new RelayCommand(SettingsCheckedCommand);
+            //HomeChecked = new RelayCommand(HomeCheckedCommand);
+            //ScheduledChecked = new RelayCommand(ScheduledCheckedCommand);
+            //CatalogueChecked = new RelayCommand(CatalogueCheckedCommand);
+            //AdministratorChecked = new RelayCommand(AdministratorCheckedCommand);
+            //SettingsChecked = new RelayCommand(SettingsCheckedCommand);
 
-            UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
-            RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
+            //UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
+            //RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
 
-            this.context = new();
-            this.access = new();
-            topIcon = IconChar.Home;
-            home = new(this);
-            sceneContainer.Content = home;
+            //this.context = new();
+            //this.access = new();
+            //topIcon = IconChar.Home;
+            //home = new(this);
+            //sceneContainer.Content = home;
             //content = "Home";
         }
 
@@ -126,28 +136,34 @@ namespace Booking.ViewModels
             HomeChecked = new RelayCommand(HomeCheckedCommand);
             ScheduledChecked = new RelayCommand(ScheduledCheckedCommand);
             CatalogueChecked = new RelayCommand(CatalogueCheckedCommand);
+            ItemChecked = new RelayCommand(ItemCheckedCommand);
             AdministratorChecked = new RelayCommand(AdministratorCheckedCommand);
             SettingsChecked = new RelayCommand(SettingsCheckedCommand);
 
-            UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
-            RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
+            //UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
+            //RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
 
             this.context = new();
             this.access = access;
             topIcon = IconChar.Home;
             home = new(this);
+            catalogue = new(this);
             sceneContainer.Content = home;
         }
+
+     
+
         public MainViewModel(DataContext context, UserModel model)
         {
             HomeChecked = new RelayCommand(HomeCheckedCommand);
             ScheduledChecked = new RelayCommand(ScheduledCheckedCommand);
             CatalogueChecked = new RelayCommand(CatalogueCheckedCommand);
+            ItemChecked = new RelayCommand(ItemCheckedCommand);
             AdministratorChecked = new RelayCommand(AdministratorCheckedCommand);
             SettingsChecked = new RelayCommand(SettingsCheckedCommand);
 
-            UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
-            RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
+            //UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
+            //RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
 
             this.context = context;
             this.access = new();
@@ -187,6 +203,12 @@ namespace Booking.ViewModels
             TopIcon = IconChar.Compass;
             Content = "Catalogue";
             sceneContainer.Content = catalogue;
+        }
+        private void ItemCheckedCommand(object? obj)
+        {
+            TopIcon = IconChar.Landmark;
+            Content = "Item";
+            sceneContainer.Content = item;
         }
 
         private void ExecuteUserAdminWindowCommand(object? obj)

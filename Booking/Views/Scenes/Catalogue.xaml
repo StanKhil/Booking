@@ -4,11 +4,89 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Booking.Views.Scenes"
+             xmlns:viewModels="clr-namespace:Booking.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <ScrollViewer VerticalScrollBarVisibility="Visible">
-        <Grid>
-            <TextBlock FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Catalogue"></TextBlock>
-        </Grid>
+
+    <UserControl.Resources>
+        <Style x:Key="ModernScrollBar" TargetType="ScrollBar">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="#1E1E1E" Width="8">
+                            <Track Name="PART_Track" IsDirectionReversed="true">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.LineUpCommand"
+                                          Style="{x:Null}" Height="0"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Background="#666" MinHeight="20">
+                                        <Thumb.Style>
+                                            <Style TargetType="Thumb">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Thumb">
+                                                            <Border Background="{TemplateBinding Background}"
+                                                            CornerRadius="4"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#999"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Thumb.Style>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.LineDownCommand"
+                                          Style="{x:Null}" Height="0"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer.Resources>
+            <Style TargetType="ScrollBar" BasedOn="{StaticResource ModernScrollBar}"/>
+        </ScrollViewer.Resources>
+        <ItemsControl HorizontalAlignment="Center" ItemsSource="{Binding Realties}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" Margin="10" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="10" Width="300" Background="#333" Padding="10" CornerRadius="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{Binding ImagePath}" Width="80" Height="80" Margin="5"/>
+
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Bold" Foreground="White"/>
+                                <TextBlock FontStyle="Italic" Text="{Binding Description}" FontSize="12" Foreground="LightGray" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Price}" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource color3}" Margin="0,5,0,0"/>
+                                <Button Content="View" Command="{Binding DataContext.ViewItemInfoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" CommandParameter="{Binding}"
+                                        Background="#444" Foreground="White" Padding="6,3" Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </ScrollViewer>
 </UserControl>

@@ -46,7 +46,7 @@ namespace Booking.Models
             return true;
         }
 
-        public bool Register(string name, string email, string login, string password)
+        public bool Register(string? name, string? email, string? login, string? password)
         {
             if (context.UserAccesses.Any(ua => ua.Login == login && ua.User.DeletedAt == null))
             {
@@ -81,42 +81,46 @@ namespace Booking.Models
             return true;
         }
 
-        public bool CreateUser(string name, string email, string login, string password, string userRole)
+        public bool CreateUser(string? name, string? email, string? login, string? password, string? userRole)
         {
-            if (context.UserAccesses.Any(ua => ua.Login == login && ua.User.DeletedAt == null))
+            if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(userRole))
             {
-                System.Windows.MessageBox.Show("Login already exists");
-                return false;
+                if (context.UserAccesses.Any(ua => ua.Login == login && ua.User.DeletedAt == null))
+                {
+                    System.Windows.MessageBox.Show("Login already exists");
+                    return false;
+                }
+
+                Guid userId = Guid.NewGuid();
+                User user = new()
+                {
+                    Id = userId,
+                    Name = name,
+                    Email = email,
+                    RegisteredAt = DateTime.Now,
+                };
+                String salt = Random.Shared.Next().ToString();
+                UserAccess userAccess = new()
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                    Login = login,
+                    Salt = salt,
+                    Dk = Crypto.kdf(salt, password),
+                    RoleId = userRole
+                };
+
+                context.Users.Add(user);
+                context.UserAccesses.Add(userAccess);
+                context.SaveChanges();
+
+                System.Windows.MessageBox.Show("Created", "System", MessageBoxButton.OK, MessageBoxImage.Information);
+                return true;
             }
-
-            Guid userId = Guid.NewGuid();
-            User user = new()
-            {
-                Id = userId,
-                Name = name,
-                Email = email,
-                RegisteredAt = DateTime.Now,
-            };
-            String salt = Random.Shared.Next().ToString();
-            UserAccess userAccess = new()
-            {
-                Id = Guid.NewGuid(),
-                UserId = userId,
-                Login = login,
-                Salt = salt,
-                Dk = Crypto.kdf(salt, password),
-                RoleId = userRole
-            };
-
-            context.Users.Add(user);
-            context.UserAccesses.Add(userAccess);
-            context.SaveChanges();
-
-            System.Windows.MessageBox.Show("Created", "System", MessageBoxButton.OK, MessageBoxImage.Information);
-            return true;
+            return false;
         }
 
-        public bool UpdateUser(string name, string email, string login, string password, string userRole)
+        public bool UpdateUser(string? nameNew, string? emailNew, string? loginNew, string? passwordNew, string? userRoleNew, string? login)
         {
             var userAccess = context.UserAccesses
                 .Include(ua => ua.User)
@@ -127,23 +131,23 @@ namespace Booking.Models
                 return false;
             }
 
-            if(!String.IsNullOrEmpty(name)) userAccess.User.Name = name;
-            if(!String.IsNullOrEmpty(email)) userAccess.User.Email = email;
-            if (!String.IsNullOrEmpty(login)) userAccess.Login = login;
-            if (!String.IsNullOrEmpty(password))
+            if(!String.IsNullOrEmpty(nameNew)) userAccess.User.Name = nameNew;
+            if(!String.IsNullOrEmpty(emailNew)) userAccess.User.Email = emailNew;
+            if (!String.IsNullOrEmpty(loginNew)) userAccess.Login = loginNew;
+            if (!String.IsNullOrEmpty(passwordNew))
             {
                 String salt = Random.Shared.Next().ToString();
                 userAccess.Salt = salt;
-                userAccess.Dk = Crypto.kdf(salt, password);
+                userAccess.Dk = Crypto.kdf(salt, passwordNew);
             }
-            if (!String.IsNullOrEmpty(userRole)) userAccess.RoleId = userRole;
+            if (!String.IsNullOrEmpty(userRoleNew)) userAccess.RoleId = userRoleNew;
             context.SaveChanges();
 
             System.Windows.MessageBox.Show("Updated", "System", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
         }
 
-        public bool DeleteUser(string login)
+        public bool DeleteUser(string? login)
         {
             var userAccess = context.UserAccesses
                 .Include(ua => ua.User)

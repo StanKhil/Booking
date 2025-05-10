@@ -15,6 +15,7 @@
         <viewModel:MainViewModel/>
     </Window.DataContext>
 
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
     </Window.Resources>
@@ -64,6 +65,12 @@
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Compass" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
                             <TextBlock Text="Catalogue" Style="{StaticResource menuButtonText}"></TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Command="{Binding ItemChecked}" Style="{StaticResource menuButton}" Tag="{StaticResource color1}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Landmark" Style="{StaticResource menuButtonIcon}"></fa:IconImage>
+                            <TextBlock Text="Item" Style="{StaticResource menuButtonText}"></TextBlock>
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Command="{Binding ScheduledChecked}" Style="{StaticResource menuButton}" Tag="{StaticResource color1}">

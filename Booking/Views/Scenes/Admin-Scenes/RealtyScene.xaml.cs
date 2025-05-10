@@ -1,5 +1,4 @@
-﻿using Booking.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,18 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Booking.Views.Scenes
+namespace Booking.Views.Scenes.Admin_Scenes
 {
     /// <summary>
-    /// Interaction logic for Catalogue.xaml
+    /// Interaction logic for RealtyScene.xaml
     /// </summary>
-    public partial class Catalogue : UserControl
+    public partial class RealtyScene : UserControl
     {
-        public Catalogue(MainViewModel mainViewModel)
+        public RealtyScene()
         {
             InitializeComponent();
-            CatalogueViewModel catalogueViewModel = new(mainViewModel);
-            DataContext = catalogueViewModel;
         }
     }
 }

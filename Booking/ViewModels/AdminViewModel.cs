@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Booking.Views.Scenes.Sub_Scenes;
+using Booking.Views.Scenes.Admin_Scenes;
 
 namespace Booking.ViewModels
 {
@@ -16,8 +16,8 @@ namespace Booking.ViewModels
         public DataContext context;
         ContentControl sceneContainer = new();
 
-        UserAdmin userAdmin = new();
-        RealtyAdmin realtyAdmin = new();
+        UserScene userAdmin = new();
+        RealtyScene realtyAdmin = new();
         public ContentControl SceneContainer
         {
             get => sceneContainer;
