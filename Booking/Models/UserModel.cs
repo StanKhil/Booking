@@ -131,9 +131,17 @@ namespace Booking.Models
                 return false;
             }
 
-            if(!String.IsNullOrEmpty(nameNew)) userAccess.User.Name = nameNew;
+            if (!String.IsNullOrEmpty(loginNew))
+            {
+                if (context.UserAccesses.Any(ua => ua.Login == login && ua.User.DeletedAt == null))
+                {
+                    System.Windows.MessageBox.Show("Login already exists");
+                    return false;
+                }
+                userAccess.Login = loginNew;
+            }
+            if (!String.IsNullOrEmpty(nameNew)) userAccess.User.Name = nameNew;
             if(!String.IsNullOrEmpty(emailNew)) userAccess.User.Email = emailNew;
-            if (!String.IsNullOrEmpty(loginNew)) userAccess.Login = loginNew;
             if (!String.IsNullOrEmpty(passwordNew))
             {
                 String salt = Random.Shared.Next().ToString();
