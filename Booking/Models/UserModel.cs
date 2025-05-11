@@ -21,34 +21,33 @@ namespace Booking.Models
         {
             this.context = context;
         }
-        public bool Login(string login, string password)
+        public async Task<bool> LoginAsync(string login, string password)
         {
-            var userAccess = context.UserAccesses
-               .Include(ua => ua.User)
-               .FirstOrDefault(ua => ua.Login == login && ua.User.DeletedAt == null);
+            var userAccess = await context.UserAccesses
+                .Include(ua => ua.User)
+                .FirstOrDefaultAsync(ua => ua.Login == login && ua.User.DeletedAt == null);
+
             if (userAccess == null)
             {
                 System.Windows.MessageBox.Show("Login Not Found", "System", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                this.userAccess = userAccess;
-                //System.Windows.MessageBox.Show(this.userAccess.Login);
                 return false;
             }
-            String dk = Crypto.kdf(userAccess.Salt, password);
+
+            string dk = Crypto.kdf(userAccess.Salt, password);
             if (dk != userAccess.Dk)
             {
                 System.Windows.MessageBox.Show("Wrong password");
                 return false;
             }
-            this.userAccess = userAccess;
-            //System.Windows.MessageBox.Show(this.userAccess.Login);
-            System.Windows.MessageBox.Show($"Welcome {userAccess.User.Name}");
 
+            this.userAccess = userAccess;
+            System.Windows.MessageBox.Show($"Welcome {userAccess.User.Name}");
             return true;
         }
 
-        public bool Register(string? name, string? email, string? login, string? password)
+        public async Task<bool> RegisterAsync(string? name, string? email, string? login, string? password)
         {
-            if (context.UserAccesses.Any(ua => ua.Login == login && ua.User.DeletedAt == null))
+            if (await context.UserAccesses.AnyAsync(ua => ua.Login == login && ua.User.DeletedAt == null))
             {
                 System.Windows.MessageBox.Show("Login already exists");
                 return false;
@@ -62,7 +61,8 @@ namespace Booking.Models
                 Email = email,
                 RegisteredAt = DateTime.Now,
             };
-            String salt = Random.Shared.Next().ToString();
+
+            string salt = Random.Shared.Next().ToString();
             UserAccess userAccess = new()
             {
                 Id = Guid.NewGuid(),
@@ -75,17 +75,17 @@ namespace Booking.Models
 
             context.Users.Add(user);
             context.UserAccesses.Add(userAccess);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             System.Windows.MessageBox.Show("Registered", "System", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
         }
 
-        public bool CreateUser(string? name, string? email, string? login, string? password, string? userRole)
+        public async Task<bool> CreateUserAsync(string? name, string? email, string? login, string? password, string? userRole)
         {
-            if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(userRole))
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(userRole))
             {
-                if (context.UserAccesses.Any(ua => ua.Login == login && ua.User.DeletedAt == null))
+                if (await context.UserAccesses.AnyAsync(ua => ua.Login == login && ua.User.DeletedAt == null))
                 {
                     System.Windows.MessageBox.Show("Login already exists");
                     return false;
@@ -99,7 +99,8 @@ namespace Booking.Models
                     Email = email,
                     RegisteredAt = DateTime.Now,
                 };
-                String salt = Random.Shared.Next().ToString();
+
+                string salt = Random.Shared.Next().ToString();
                 UserAccess userAccess = new()
                 {
                     Id = Guid.NewGuid(),
@@ -112,7 +113,7 @@ namespace Booking.Models
 
                 context.Users.Add(user);
                 context.UserAccesses.Add(userAccess);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
 
                 System.Windows.MessageBox.Show("Created", "System", MessageBoxButton.OK, MessageBoxImage.Information);
                 return true;
@@ -120,53 +121,58 @@ namespace Booking.Models
             return false;
         }
 
-        public bool UpdateUser(string? nameNew, string? emailNew, string? loginNew, string? passwordNew, string? userRoleNew, string? login)
+        public async Task<bool> UpdateUserAsync(string? nameNew, string? emailNew, string? loginNew, string? passwordNew, string? userRoleNew, string? login)
         {
-            var userAccess = context.UserAccesses
+            var userAccess = await context.UserAccesses
                 .Include(ua => ua.User)
-                .FirstOrDefault(ua => ua.Login == login && ua.User.DeletedAt == null);
+                .FirstOrDefaultAsync(ua => ua.Login == login && ua.User.DeletedAt == null);
+
             if (userAccess == null)
             {
                 System.Windows.MessageBox.Show("User not found");
                 return false;
             }
 
-            if (!String.IsNullOrEmpty(loginNew))
+            if (!string.IsNullOrEmpty(loginNew))
             {
-                if (context.UserAccesses.Any(ua => ua.Login == login && ua.User.DeletedAt == null))
+                if (await context.UserAccesses.AnyAsync(ua => ua.Login == loginNew && ua.User.DeletedAt == null))
                 {
                     System.Windows.MessageBox.Show("Login already exists");
                     return false;
                 }
                 userAccess.Login = loginNew;
             }
-            if (!String.IsNullOrEmpty(nameNew)) userAccess.User.Name = nameNew;
-            if(!String.IsNullOrEmpty(emailNew)) userAccess.User.Email = emailNew;
-            if (!String.IsNullOrEmpty(passwordNew))
+            if (!string.IsNullOrEmpty(nameNew)) userAccess.User.Name = nameNew;
+            if (!string.IsNullOrEmpty(emailNew)) userAccess.User.Email = emailNew;
+            if (!string.IsNullOrEmpty(passwordNew))
             {
-                String salt = Random.Shared.Next().ToString();
+                string salt = Random.Shared.Next().ToString();
                 userAccess.Salt = salt;
                 userAccess.Dk = Crypto.kdf(salt, passwordNew);
             }
-            if (!String.IsNullOrEmpty(userRoleNew)) userAccess.RoleId = userRoleNew;
-            context.SaveChanges();
+            if (!string.IsNullOrEmpty(userRoleNew)) userAccess.RoleId = userRoleNew;
+
+            await context.SaveChangesAsync();
 
             System.Windows.MessageBox.Show("Updated", "System", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
         }
 
-        public bool DeleteUser(string? login)
+        public async Task<bool> DeleteUserAsync(string? login)
         {
-            var userAccess = context.UserAccesses
+            var userAccess = await context.UserAccesses
                 .Include(ua => ua.User)
-                .FirstOrDefault(ua => ua.Login == login && ua.User.DeletedAt == null);
+                .FirstOrDefaultAsync(ua => ua.Login == login && ua.User.DeletedAt == null);
+
             if (userAccess == null)
             {
                 System.Windows.MessageBox.Show("User not found");
                 return false;
             }
+
             userAccess.User.DeletedAt = DateTime.Now;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
+
             System.Windows.MessageBox.Show("Deleted", "System", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
         }
