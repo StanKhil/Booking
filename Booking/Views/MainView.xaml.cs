@@ -17,6 +17,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Booking.Data.Entities;
 using Booking.Models;
+using System.IO;
 
 namespace Booking.Views
 {
@@ -71,6 +72,13 @@ namespace Booking.Views
         private void buttonMinimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            LogoutButton.Visibility = LogoutButton.Visibility == Visibility.Visible
+                ? Visibility.Collapsed
+                : Visibility.Visible;
         }
     }
 }

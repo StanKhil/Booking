@@ -45,6 +45,13 @@ namespace Booking.Models
             return true;
         }
 
+        public async Task<bool> LogoutAsync()
+        {
+            if (this.userAccess == null) return false;
+            this.userAccess = null;
+            return true;
+        }
+
         public async Task<bool> RegisterAsync(string? name, string? email, string? login, string? password)
         {
             if (await context.UserAccesses.AnyAsync(ua => ua.Login == login && ua.User.DeletedAt == null))

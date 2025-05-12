@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using Booking.Views.Scenes;
 using Booking.Data.Entities;
 using System.Windows;
+using Booking.Views;
 
 
 namespace Booking.ViewModels
@@ -108,6 +109,7 @@ namespace Booking.ViewModels
         public ICommand ItemChecked { get; set; }
         public ICommand AdministratorChecked { get; }
         public ICommand SettingsChecked { get; }
+        public ICommand Logout { get; }
 
         //public ICommand UserAdminWindowCommand { get; }
         //public ICommand RealtyAdminWindowCommand { get; }
@@ -139,6 +141,7 @@ namespace Booking.ViewModels
             ItemChecked = new RelayCommand(ItemCheckedCommand);
             AdministratorChecked = new RelayCommand(AdministratorCheckedCommand);
             SettingsChecked = new RelayCommand(SettingsCheckedCommand);
+            Logout = new RelayCommand(LogoutCommand);
 
             //UserAdminWindowCommand = new RelayCommand(ExecuteUserAdminWindowCommand);
             //RealtyAdminWindowCommand = new RelayCommand(ExecuteRealtyAdminWindowCommand);
@@ -172,18 +175,21 @@ namespace Booking.ViewModels
             sceneContainer.Content = home;
             //content = "Home";
         }
+
         private void HomeCheckedCommand(object? obj)
         {
             TopIcon = IconChar.Home;
             Content = "Home";
             sceneContainer.Content = home;
         }
+
         private void ScheduledCheckedCommand(object? obj)
         {
             TopIcon = IconChar.Calendar;
             Content = "Scheduled";
             sceneContainer.Content = scheduled;
         }
+
         private void AdministratorCheckedCommand(object? obj)
         {
             TopIcon = IconChar.FeatherAlt;
@@ -204,11 +210,21 @@ namespace Booking.ViewModels
             Content = "Catalogue";
             sceneContainer.Content = catalogue;
         }
+
         private void ItemCheckedCommand(object? obj)
         {
             TopIcon = IconChar.Landmark;
             Content = "Item";
             sceneContainer.Content = item;
+        }
+
+        private void LogoutCommand(object? obj)
+        {
+            LoginView loginView = new LoginView();
+            loginView.Show();
+
+            IsViewVisible = false;
+            OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
 
         private void ExecuteUserAdminWindowCommand(object? obj)

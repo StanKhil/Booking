@@ -156,11 +156,23 @@
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
                                 FlowDirection="RightToLeft" VerticalAlignment="Center" Margin="0,0,10,0">
 
-                            <Button Style="{StaticResource iconButton}"
-                                Tag="{StaticResource color1}">
-                                <fa:IconImage Icon="AngleDown"
-                                          Width="12" Height="12" Style="{StaticResource iconButtonIcon}"></fa:IconImage>
-                            </Button>
+                            <StackPanel>
+                                <Button x:Name="ToggleButton"
+                                    Click="ToggleButton_Click"
+                                    Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color1}">
+                                    <fa:IconImage Icon="AngleDown"
+                                        Width="12" Height="12"
+                                        Style="{StaticResource iconButtonIcon}"/>
+                                </Button>
+
+                                <Button x:Name="LogoutButton"
+                                    Content="Logout"
+                                    Visibility="Collapsed"
+                                    Margin="0,5,0,0"
+                                    Command = "{Binding Logout}"
+                                    Background="DarkRed" Foreground="White"/>
+                            </StackPanel>
 
                             <TextBlock Text="{Binding Access.Login}" 
                                    Foreground="{StaticResource titleColor3}"
