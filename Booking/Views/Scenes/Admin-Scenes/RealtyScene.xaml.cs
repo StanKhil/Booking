@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Booking.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -18,11 +20,28 @@ namespace Booking.Views.Scenes.Admin_Scenes
     /// <summary>
     /// Interaction logic for RealtyScene.xaml
     /// </summary>
-    public partial class RealtyScene : UserControl
+    public partial class RealtyScene : System.Windows.Controls.UserControl
     {
         public RealtyScene()
         {
             InitializeComponent();
         }
+        private void ChooseFile_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = "Select a file",
+                Filter = "All files (*.*)|*.*",
+                Multiselect = false
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedPath = openFileDialog.FileName;
+                System.Windows.Forms.MessageBox.Show(selectedPath);
+                SelectedFileText.Text = selectedPath;
+            }
+        }
     }
+    
 }

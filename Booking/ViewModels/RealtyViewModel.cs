@@ -2,15 +2,7 @@
 using Booking.Data.Entities;
 using Booking.Models;
 using Booking.Views;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using System.IO;
 
 namespace Booking.ViewModels
 {

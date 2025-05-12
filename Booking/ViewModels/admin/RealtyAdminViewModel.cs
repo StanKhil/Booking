@@ -1,11 +1,6 @@
 ﻿using Booking.Data;
 using Booking.Models;
 using Booking.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Booking.ViewModels.admin
@@ -36,6 +31,8 @@ namespace Booking.ViewModels.admin
         private string? errorMessageOnUpdate = "";
         private string? errorMessageOnDelete = "";
         private bool isViewVisible = true;
+
+        private string? selectedFilePath = "";
 
         DataContext context = new();
         RealtyModel realtyModel;
@@ -163,6 +160,16 @@ namespace Booking.ViewModels.admin
             }
         }
 
+        public string? SelectedFilePath
+        {
+            get => selectedFilePath;
+            set
+            {
+                selectedFilePath = value;
+                OnPropertyChanged(nameof(SelectedFilePath));
+            }
+        }
+
         public string? ErrorMessageOnCreate
         {
             get => errorMessageOnCreate;
@@ -190,6 +197,7 @@ namespace Booking.ViewModels.admin
         public event EventHandler OnRequestClearRealtyUpdateForm;
 
         public ICommand MainWindowCommand { get; }
+        public ICommand AddImageOnCreateCommand { get; set; }
         public ICommand CreateRealtyCommand { get; }
         public ICommand DeleteRealtyCommand { get; }
         public ICommand UpdateRealtyCommand { get; }
@@ -197,6 +205,7 @@ namespace Booking.ViewModels.admin
         public RealtyAdminViewModel()
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
+            AddImageOnCreateCommand = new RelayCommand(ExecuteAddImageOnCreateCommand);
             CreateRealtyCommand = new RelayCommand(ExecuteCreateRealtyCommand);
             DeleteRealtyCommand = new RelayCommand(ExecuteDeleteRealtyCommand);
             UpdateRealtyCommand = new RelayCommand(ExecuteUpdateRealtyCommand);
@@ -204,15 +213,19 @@ namespace Booking.ViewModels.admin
             this.realtyModel = new(context);
         }
 
+       
+
         public RealtyAdminViewModel(DataContext context, RealtyModel model)
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
+            AddImageOnCreateCommand = new RelayCommand(ExecuteAddImageOnCreateCommand);
             CreateRealtyCommand = new RelayCommand(ExecuteCreateRealtyCommand);
             DeleteRealtyCommand = new RelayCommand(ExecuteDeleteRealtyCommand);
             UpdateRealtyCommand = new RelayCommand(ExecuteUpdateRealtyCommand);
             this.context = context;
             this.realtyModel = model;
         }
+
 
         private void ExecuteMainWindowCommand(object? obj)
         {
@@ -221,6 +234,10 @@ namespace Booking.ViewModels.admin
 
             IsViewVisible = false;
             OnRequestClose?.Invoke(this, EventArgs.Empty);
+        }
+        private void ExecuteAddImageOnCreateCommand(object? obj)
+        {
+            
         }
 
         private async void ExecuteCreateRealtyCommand(object? obj)
