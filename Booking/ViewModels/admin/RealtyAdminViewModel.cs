@@ -124,9 +124,9 @@ namespace Booking.ViewModels.admin
             OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteCreateRealtyCommand(object? obj)
+        private async void ExecuteCreateRealtyCommand(object? obj)
         {
-            bool success = realtyModel.CreateRealty(name, description, slug, imageUrl, price, city, country, group);
+            bool success = await realtyModel.CreateRealtyAsync(name, description, slug, imageUrl, price, city, country, group);
             if (!success)
             {
                 ErrorMessage = "Invalid data";
@@ -135,9 +135,9 @@ namespace Booking.ViewModels.admin
             OnRequestClearRealtyCreateForm?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteDeleteRealtyCommand(object? obj)
+        private async void ExecuteDeleteRealtyCommand(object? obj)
         {
-            bool success = realtyModel.DeleteRealty(slug);
+            bool success = await realtyModel.DeleteRealtyAsync(slug);
             if (!success)
             {
                 ErrorMessage = "Invalid slug";
@@ -146,9 +146,9 @@ namespace Booking.ViewModels.admin
             OnRequestClearRealtyDeleteForm?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteUpdateRealtyCommand(object? obj)
+        private async void ExecuteUpdateRealtyCommand(object? obj)
         {
-            bool success = realtyModel.UpdateRealty(slug, name, description, newSlug, imageUrl, price, city, country, group);
+            bool success = await realtyModel.UpdateRealtyAsync(slug, name, description, newSlug, imageUrl, price, city, country, group);
             if (!success)
             {
                 ErrorMessage = "Invalid data";

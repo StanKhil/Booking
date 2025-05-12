@@ -16,6 +16,7 @@ using Booking.ViewModels;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Booking.Data.Entities;
+using Booking.Models;
 
 namespace Booking.Views
 {
@@ -42,6 +43,9 @@ namespace Booking.Views
             MainViewModel viewModel = new(access);
             viewModel.OnRequestClose += (s, e) => this.Close();
             DataContext = viewModel;
+
+            /*ImageModel imageModel = new ImageModel(context);
+            imageModel.LoadImageAsync("sun-villa", "‪C:\\Users\\user\\Downloads\\sun-villa.jpg");*/
         }
 
         [DllImport("user32.dll")]

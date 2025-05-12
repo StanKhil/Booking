@@ -9,23 +9,40 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Booking.Views.Scenes;
+using System.ComponentModel;
+
 
 namespace Booking.ViewModels
 {
-    class CatalogueViewModel
+    class CatalogueViewModel : INotifyPropertyChanged
     {
         DataContext context = new();
         MainViewModel mainViewModel;
         RealtyModel realtyModel;
-        public List<Realty> Realties { get; set; }
+        private List<Realty> realties;
+        public List<Realty> Realties
+        {
+            get => realties;
+            set
+            {
+                realties = value;
+                OnPropertyChanged(nameof(Realties));
+            }
+        }
 
         public ICommand ViewItemInfoCommand { get; }
         public CatalogueViewModel(MainViewModel mainViewModel)
         {
             ViewItemInfoCommand = new RelayCommand(ExecuteViewItemInfoCommand);
-            realtyModel = new(context);
-            Realties = realtyModel.GetRealties();
             this.mainViewModel = mainViewModel;
+            realtyModel = new RealtyModel(new DataContext());
+        }
+
+
+        public async Task InitializeAsync()
+        {
+
+            Realties = await realtyModel.GetRealtiesAsync();
         }
 
         private void ExecuteViewItemInfoCommand(object? obj)
@@ -42,5 +59,10 @@ namespace Booking.ViewModels
             mainViewModel.ItemChecked.Execute(new object());
             
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

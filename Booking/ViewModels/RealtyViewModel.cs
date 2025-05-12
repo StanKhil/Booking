@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace Booking.ViewModels
 {
@@ -32,7 +34,7 @@ namespace Booking.ViewModels
         List<BookingItem> bookings;
         List<ItemImage> itemImages;
 
-
+        
         public string Name
         {
             get => name;
@@ -93,11 +95,8 @@ namespace Booking.ViewModels
         public RealtyViewModel(string slug)
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
-            this.context = new();
-            this.realtyModel = new(context, slug);
-            feedbacks = realtyModel.GetFeedbacks(slug);
-            bookings = realtyModel.GetBookings(slug);
-            itemImages = realtyModel.GetImages(slug);
+            this.context = new DataContext();
+            this.realtyModel = new RealtyModel(context, slug);
         }
 
         public RealtyViewModel(DataContext context, RealtyModel model, string slug)
@@ -105,9 +104,13 @@ namespace Booking.ViewModels
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
             this.context = context;
             this.realtyModel = model;
-            feedbacks = realtyModel.GetFeedbacks(slug);
-            bookings = realtyModel.GetBookings(slug);
-            itemImages = realtyModel.GetImages(slug);
+        }
+
+        public async Task InitializeAsync(string slug)
+        {
+            feedbacks = await realtyModel.GetFeedbacksAsync(slug);
+            bookings = await realtyModel.GetBookingsAsync(slug);
+            itemImages = await realtyModel.GetImagesAsync(slug);
         }
 
         private void ExecuteMainWindowCommand(object? obj)

@@ -88,9 +88,9 @@ namespace Booking.ViewModels
             register.Show();
             OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
-        private void ExecuteLoginCommand(object? obj)
+        private async void ExecuteLoginCommand(object? obj)
         {
-            bool success = userModel.Login(login, password);
+            bool success = await userModel.LoginAsync(login, password);
             if(!success)
             {
                 ErrorMessage = "Invalid login or password";

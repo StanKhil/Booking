@@ -226,9 +226,9 @@ namespace Booking.ViewModels.admin
             this.context = context;
             this.userModel = model;
         }
-        private void ExecuteCreateUserCommand(object? obj)
+        private async void ExecuteCreateUserCommand(object? obj)
         {
-            bool success = userModel.CreateUser(name, email, login, password, userRole);
+            bool success = await userModel.CreateUserAsync(name, email, login, password, userRole);
             if (!success)
             {
                 ErrorMessageOnCreate = "Invalid data";
@@ -236,9 +236,9 @@ namespace Booking.ViewModels.admin
             }
             //OnRequestClearUserCreateForm?.Invoke(this, EventArgs.Empty);
         }
-        private void ExecuteUpdateUserCommand(object? obj)
+        private async void ExecuteUpdateUserCommand(object? obj)
         {
-            bool success = userModel.UpdateUser(newName, newEmail, newLogin, newPassword, newRole, login);
+            bool success = await userModel.UpdateUserAsync(newName, newEmail, newLogin, newPassword, newRole, login);
             if (!success)
             {
                 ErrorMessageOnUpdate = "Invalid data";
@@ -246,9 +246,9 @@ namespace Booking.ViewModels.admin
             }
             //OnRequestClearUserUpdateForm?.Invoke(this, EventArgs.Empty);
         }
-        private void ExecuteDeleteUserCommand(object? obj)
+        private async void ExecuteDeleteUserCommand(object? obj)
         {
-            bool success = userModel.DeleteUser(updateLogin);
+            bool success = await userModel.DeleteUserAsync(updateLogin);
             if (!success)
             {
                 ErrorMessageOnDelete = "Invalid data";

@@ -27,5 +27,13 @@ namespace Booking.Views.Scenes
             CatalogueViewModel catalogueViewModel = new(mainViewModel);
             DataContext = catalogueViewModel;
         }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is CatalogueViewModel vm)
+            {
+                await vm.InitializeAsync();
+            }
+        }
     }
 }

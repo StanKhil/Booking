@@ -1,4 +1,5 @@
 ﻿<UserControl x:Class="Booking.Views.Scenes.Catalogue"
+             Loaded="Window_Loaded"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -75,6 +76,8 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Image Source="{Binding ImagePath}" Width="80" Height="80" Margin="5"/>
+
+
 
                             <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Bold" Foreground="White"/>

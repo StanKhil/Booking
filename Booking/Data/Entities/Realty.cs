@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Booking.Data.Entities
 {
@@ -11,7 +14,7 @@ namespace Booking.Data.Entities
     {
         public Guid Id { get; set; }
         public Guid GroupId { get; set; }
-        public String Name { get; set; } = null!;
+        public String Name { get ; set; } = null!;
         public String? Description { get; set; }
         public String? Slug { get; set; }
         public String? ImageUrl { get; set; }
@@ -30,5 +33,20 @@ namespace Booking.Data.Entities
         public List<Feedback> Feedbacks { get; set; } = [];
 
         public List<AccRates> AccRates { get; set; } = [];
+
+        public string ImagePath
+        {
+            get
+            {
+                var fullPath = Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    "Images",
+                    Slug,
+                    ImageUrl ?? ""
+                );
+                return fullPath;
+            }
+        }
+
     }
 }

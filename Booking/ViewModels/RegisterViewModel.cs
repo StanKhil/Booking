@@ -107,10 +107,10 @@ namespace Booking.ViewModels
             OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteRegisterCommand(object? obj)
+        private async void ExecuteRegisterCommand(object? obj)
         {
             MessageBox.Show(name + password + email + login);
-            bool success = userModel.Register(name, email, login, password);
+            bool success = await userModel.RegisterAsync(name, email, login, password);
             if(!success)
             {
                 ErrorMessage = "Invalid data";
