@@ -63,12 +63,17 @@ namespace Booking.Models
         {
             try
             {
-                string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", slug);
+                string projectRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\.."));
+
+                string folderPath = Path.Combine(projectRoot, "Images", slug);
+
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
                 }
+
                 localFilePath = localFilePath.Trim().Replace("\u202A", "").Replace("\u200E", "");
+
                 if (!File.Exists(localFilePath))
                 {
                     MessageBox.Show("Local image file not found.");
@@ -77,9 +82,10 @@ namespace Booking.Models
 
                 string fileName = Path.GetFileName(localFilePath);
                 string destPath = Path.Combine(folderPath, fileName);
+
                 File.Copy(localFilePath, destPath, overwrite: true);
 
-                MessageBox.Show($"Image copied to {destPath}");
+                MessageBox.Show($"Image copied to: {destPath}");
                 return true;
             }
             catch (Exception ex)
@@ -88,5 +94,6 @@ namespace Booking.Models
                 return false;
             }
         }
+
     }
 }

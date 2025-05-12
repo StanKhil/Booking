@@ -46,7 +46,13 @@ namespace Booking.Views
             DataContext = viewModel;
 
             /*ImageModel imageModel = new ImageModel(context);
-            imageModel.LoadImageAsync("sun-villa", "‪C:\\Users\\user\\Downloads\\sun-villa.jpg");*/
+            imageModel.LoadImageAsync("villa-sunny", "‪C:\\Users\\user\\OneDrive\\Рабочий стол\\css.jpg");*/
+            //FeedbackModel feedbackModel = new FeedbackModel();
+            //feedbackModel.CreateFeedbackAsync(access.Id, Guid.Parse("37dcc68e-b7e7-4b55-b04e-147c1a4126b7"), "hello world", 5);
+            //feedbackModel.DeleteFeedbackAsync(Guid.Parse("6c7697be-f0be-4884-b12f-53ed7689a407"));
+            //BookingModel bookingModel = new BookingModel(context);
+            //bookingModel.CreateBookingAsync(access.Id, Guid.Parse("37dcc68e-b7e7-4b55-b04e-147c1a4126b7"), DateTime.Now, DateTime.Now.AddDays(5));
+            //bookingModel.DeleteBookingAsync(Guid.Parse("dba25ddc-a700-4dea-9769-23f05fe7691b"));
         }
 
         [DllImport("user32.dll")]

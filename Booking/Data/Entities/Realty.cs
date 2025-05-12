@@ -38,15 +38,20 @@ namespace Booking.Data.Entities
         {
             get
             {
+                var projectDir = Path.GetFullPath(Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory, @"..\..\.."));
+
                 var fullPath = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory,
+                    projectDir,
                     "Images",
-                    Slug,
+                    Slug ?? "",
                     ImageUrl ?? ""
                 );
+
                 return fullPath;
             }
         }
+
 
     }
 }

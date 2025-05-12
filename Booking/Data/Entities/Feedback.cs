@@ -15,6 +15,7 @@ namespace Booking.Data.Entities
         public int Rate { get; set; } 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
         public Realty Realty { get; set; } = null!;
         public UserAccess UserAccess { get; set; } = null!;

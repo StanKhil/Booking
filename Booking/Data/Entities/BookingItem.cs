@@ -14,6 +14,7 @@ namespace Booking.Data.Entities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
         public Realty Realty { get; set; } = null!;
         public UserAccess UserAccess { get; set; } = null!;

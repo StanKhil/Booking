@@ -145,7 +145,7 @@ namespace Booking.Models
                 MessageBox.Show("Realty not found");
                 return new List<Feedback>();
             }
-            return await context.Feedbacks.Where(f => f.RealtyId == realty.Id).ToListAsync();
+            return await context.Feedbacks.Where(f => f.RealtyId == realty.Id && f.DeletedAt == null).ToListAsync();
         }
 
         public async Task<List<Realty>> GetRealtiesByGroupAsync(string groupName)
@@ -206,6 +206,28 @@ namespace Booking.Models
                 return new List<BookingItem>();
             }
             return await context.BookingItems.Where(b => b.RealtyId == realty.Id).ToListAsync();
+        }
+
+        public async Task<List<BookingItem>> GetFutureBookingAsync(string slug)
+        {
+            var realty = await context.Realties.FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
+            if (realty == null)
+            {
+                MessageBox.Show("Realty not found");
+                return new List<BookingItem>();
+            }
+            var bookings = await context.BookingItems.Where(b => b.RealtyId == realty.Id).ToListAsync();
+            var futureBookings = new List<BookingItem>();
+
+            foreach(var booking in bookings)
+            {
+                if (booking.StartDate > DateTime.Now)
+                {
+                    futureBookings.Add(booking);
+                }
+            }
+
+            return futureBookings;
         }
 
         public async Task<float> GetAvgRateAsync(string slug)
