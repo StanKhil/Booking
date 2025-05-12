@@ -41,7 +41,6 @@ namespace Booking.ViewModels
 
         public async Task InitializeAsync()
         {
-
             Realties = await realtyModel.GetRealtiesAsync();
         }
 

@@ -27,8 +27,13 @@ namespace Booking.Models
             realty = context.Realties.FirstOrDefault(r => r.Slug == slug && r.DeletedAt == null);
         }
 
-        public async Task<bool> CreateRealtyAsync(string name, string? description, string? slug, string? imageUrl, decimal price, string cityName, string countryName, string groupName)
+        public async Task<bool> CreateRealtyAsync(string? name, string? description, string? slug, string? imageUrl, decimal price, string? cityName, string? countryName, string? groupName)
         {
+            if(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(slug) || string.IsNullOrEmpty(cityName) || string.IsNullOrEmpty(countryName) || string.IsNullOrEmpty(groupName))
+            {
+                MessageBox.Show("All fields are required");
+                return false;
+            }
             if (await context.Realties.AnyAsync(r => r.Slug == slug && r.DeletedAt == null))
             {
                 MessageBox.Show("Slug already exists");

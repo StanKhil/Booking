@@ -12,23 +12,35 @@ namespace Booking.ViewModels.admin
 {
     public class RealtyAdminViewModel : ViewModel
     {
-        private string name;
+        private string? name;
         private string? description;
         private string? slug;
-        private string? newSlug;
         private string? imageUrl;
         private decimal price;
-        private string city;
-        private string country;
-        private string group;
+        private string? city;
+        private string? country;
+        private string? group;
 
-        private string? errorMessage = "";
+        private string? updateSlug;
+
+        private string? newName;
+        private string? newDescription;
+        private string? newSlug;
+        private string? newImageUrl;
+        private decimal newPrice;
+        private string? newCity;
+        private string? newCountry;
+        private string? newGroup;
+
+        private string? errorMessageOnCreate = "";
+        private string? errorMessageOnUpdate = "";
+        private string? errorMessageOnDelete = "";
         private bool isViewVisible = true;
 
         DataContext context = new();
         RealtyModel realtyModel;
 
-        public string Name
+        public string? Name
         {
             get => name;
             set { name = value; OnPropertyChanged(nameof(Name)); }
@@ -43,11 +55,6 @@ namespace Booking.ViewModels.admin
             get => slug;
             set { slug = value; OnPropertyChanged(nameof(Slug)); }
         }
-        public string? NewSlug
-        {
-            get => newSlug;
-            set { newSlug = value; OnPropertyChanged(nameof(NewSlug)); }
-        }
         public string? ImageUrl
         {
             get => imageUrl;
@@ -58,26 +65,118 @@ namespace Booking.ViewModels.admin
             get => price;
             set { price = value; OnPropertyChanged(nameof(Price)); }
         }
-        public string City
+        public string? City
         {
             get => city;
             set { city = value; OnPropertyChanged(nameof(City)); }
         }
-        public string Country
+        public string? Country
         {
             get => country;
             set { country = value; OnPropertyChanged(nameof(Country)); }
         }
-        public string Group
+        public string? Group
         {
             get => group;
             set { group = value; OnPropertyChanged(nameof(Group)); }
         }
 
-        public string? ErrorMessage
+        public string? UpdateSlug
         {
-            get => errorMessage;
-            set { errorMessage = value; OnPropertyChanged(nameof(ErrorMessage)); }
+            get => updateSlug;
+            set
+            {
+                updateSlug = value;
+                OnPropertyChanged(nameof(UpdateSlug));
+            }
+        }
+        public string? NewName
+        {
+            get => newName;
+            set
+            {
+                newName = value;
+                OnPropertyChanged(nameof(NewName));
+            }
+        }
+        public string? NewDescription
+        {
+            get => newDescription;
+            set
+            {
+                newDescription = value;
+                OnPropertyChanged(nameof(NewDescription));
+            }
+        }
+        public string? NewSlug
+        {
+            get => newSlug;
+            set
+            {
+                newSlug = value;
+                OnPropertyChanged(nameof(NewSlug));
+            }
+        }
+        public string? NewImageUrl
+        {
+            get => newImageUrl;
+            set
+            {
+                newImageUrl = value;
+                OnPropertyChanged(nameof(NewImageUrl));
+            }
+        }
+        public decimal NewPrice
+        {
+            get => newPrice;
+            set
+            {
+                newPrice = value;
+                OnPropertyChanged(nameof(NewPrice));
+            }
+        }
+        public string? NewCity
+        {
+            get => newCity;
+            set
+            {
+                newCity = value;
+                OnPropertyChanged(nameof(NewCity));
+            }
+        }
+        public string? NewCountry
+        {
+            get => newCountry;
+            set
+            {
+                newCountry = value;
+                OnPropertyChanged(nameof(NewCountry));
+            }
+        }
+        public string? NewGroup
+        {
+            get => newGroup;
+            set
+            {
+                newGroup = value;
+                OnPropertyChanged(nameof(NewGroup));
+            }
+        }
+
+        public string? ErrorMessageOnCreate
+        {
+            get => errorMessageOnCreate;
+            set { errorMessageOnCreate = value; OnPropertyChanged(nameof(ErrorMessageOnCreate)); }
+        }
+        public string? ErrorMessageOnUpdate
+        {
+            get => errorMessageOnUpdate;
+            set { errorMessageOnUpdate = value; OnPropertyChanged(nameof(ErrorMessageOnUpdate)); }
+        }
+        public string? ErrorMessageOnDelete
+        {
+            get => errorMessageOnDelete;
+            set { errorMessageOnDelete = value; OnPropertyChanged(nameof(ErrorMessageOnDelete)); }
         }
         public bool IsViewVisible
         {
@@ -129,7 +228,7 @@ namespace Booking.ViewModels.admin
             bool success = await realtyModel.CreateRealtyAsync(name, description, slug, imageUrl, price, city, country, group);
             if (!success)
             {
-                ErrorMessage = "Invalid data";
+                ErrorMessageOnCreate = "Invalid data";
                 return;
             }
             OnRequestClearRealtyCreateForm?.Invoke(this, EventArgs.Empty);
@@ -140,7 +239,7 @@ namespace Booking.ViewModels.admin
             bool success = await realtyModel.DeleteRealtyAsync(slug);
             if (!success)
             {
-                ErrorMessage = "Invalid slug";
+                ErrorMessageOnDelete = "Invalid slug";
                 return;
             }
             OnRequestClearRealtyDeleteForm?.Invoke(this, EventArgs.Empty);
@@ -151,7 +250,7 @@ namespace Booking.ViewModels.admin
             bool success = await realtyModel.UpdateRealtyAsync(slug, name, description, newSlug, imageUrl, price, city, country, group);
             if (!success)
             {
-                ErrorMessage = "Invalid data";
+                ErrorMessageOnUpdate = "Invalid data";
                 return;
             }
             OnRequestClearRealtyUpdateForm?.Invoke(this, EventArgs.Empty);
