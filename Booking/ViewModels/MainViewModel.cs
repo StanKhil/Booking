@@ -21,11 +21,11 @@ namespace Booking.ViewModels
         ContentControl sceneContainer = new();
 
         HomeScene home;
-        Scheduled scheduled = new();
+        Scheduled scheduled;
         Catalogue catalogue;
         Item item = new();
         Administrator administrator = new();
-        Settings settings = new();
+        Settings settings;
 
         private string? errorMessage = "";
         private bool isViewVisible = true;
@@ -143,9 +143,12 @@ namespace Booking.ViewModels
 
             this.context = new();
             this.access = access;
+            scheduled = new(access);
             topIcon = IconChar.Home;
             home = new(this);
             catalogue = new(this);
+            settings = new(access);
+            settings.OnRequestClose += (s, e) => this.LogoutCommand(null);
             sceneContainer.Content = home;
         }
 

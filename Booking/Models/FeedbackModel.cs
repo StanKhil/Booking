@@ -57,6 +57,10 @@ namespace Booking.Models
                 System.Windows.MessageBox.Show("Realty not found");
                 return false;
             }
+
+            Feedback.UserAccess = await dataContext.UserAccesses
+                .Include(ua => ua.Feedbacks)
+                .FirstOrDefaultAsync(ua => ua.Id == userAccessId);
             Feedback.Realty = realty;
             realty.Feedbacks.Add(Feedback);
             dataContext.Feedbacks.Add(Feedback);

@@ -39,6 +39,18 @@ namespace Booking.Models
                 return false;
             }
 
+            bool hasOverlap = realty.BookingItems.Any(b =>
+                b.DeletedAt == null &&
+                ((start >= b.StartDate && start < b.EndDate) ||
+                 (finish > b.StartDate && finish <= b.EndDate) ||
+                 (start <= b.StartDate && finish >= b.EndDate)));
+
+            if (hasOverlap)
+            {
+                System.Windows.MessageBox.Show("This realty is already booked for the selected dates.");
+                return false;
+            }
+
             BookingItem bookingItem = new BookingItem()
             {
                 Id = Guid.NewGuid(),
@@ -50,6 +62,10 @@ namespace Booking.Models
                 UserAccessId = userAccessId
             };
 
+            bookingItem.UserAccess = await context.UserAccesses
+                .Include(ua => ua.BookingItems)
+                .FirstOrDefaultAsync(ua => ua.Id == userAccessId);
+            bookingItem.Realty = realty;
             realty.BookingItems.Add(bookingItem);
             context.BookingItems.Add(bookingItem);
             await context.SaveChangesAsync();

@@ -142,7 +142,7 @@ namespace Booking.Models
 
             if (!string.IsNullOrEmpty(loginNew))
             {
-                if (await context.UserAccesses.AnyAsync(ua => ua.Login == loginNew && ua.User.DeletedAt == null))
+                if (await context.UserAccesses.AnyAsync(ua => ua.Login == loginNew && ua.User.DeletedAt == null) && login!=loginNew)
                 {
                     System.Windows.MessageBox.Show("Login already exists");
                     return false;
@@ -182,6 +182,24 @@ namespace Booking.Models
 
             System.Windows.MessageBox.Show("Deleted", "System", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
+        }
+
+        public async Task<List<BookingItem>> GetFutureBookingsAsync(UserAccess userAccess)
+        {
+            if (userAccess == null)
+            {
+                System.Windows.MessageBox.Show("User not found");
+                return new List<BookingItem>();
+            }
+            var bookings = await context.BookingItems
+                .Include(b => b.Realty)
+                .Where(b => b.UserAccessId == userAccess.Id && b.DeletedAt == null && b.EndDate > DateTime.Now)
+                .ToListAsync();
+            if (bookings.Count == 0)
+            {
+                System.Windows.MessageBox.Show("No future bookings found");
+            }
+            return bookings;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Booking.Models
 
         public async Task<bool> CreateRealtyAsync(string? name, string? description, string? slug, string? imageUrl, decimal price, string? cityName, string? countryName, string? groupName)
         {
-            if(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(slug) || string.IsNullOrEmpty(cityName) || string.IsNullOrEmpty(countryName) || string.IsNullOrEmpty(groupName))
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(slug) || string.IsNullOrEmpty(cityName) || string.IsNullOrEmpty(countryName) || string.IsNullOrEmpty(groupName))
             {
                 MessageBox.Show("All fields are required");
                 return false;
@@ -219,7 +219,7 @@ namespace Booking.Models
             var bookings = await context.BookingItems.Where(b => b.RealtyId == realty.Id).ToListAsync();
             var futureBookings = new List<BookingItem>();
 
-            foreach(var booking in bookings)
+            foreach (var booking in bookings)
             {
                 if (booking.StartDate > DateTime.Now)
                 {

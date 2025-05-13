@@ -22,6 +22,7 @@ namespace Booking.ViewModels
 
         DataContext context = new();
         RealtyModel realtyModel;
+        ImageModel imageModel;
         List<Feedback> feedbacks;
         List<BookingItem> bookings;
         List<ItemImage> itemImages;
@@ -89,6 +90,7 @@ namespace Booking.ViewModels
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
             this.context = new DataContext();
             this.realtyModel = new RealtyModel(context, slug);
+            this.imageModel = new ImageModel(context);
         }
 
         public RealtyViewModel(DataContext context, RealtyModel model, string slug)
@@ -96,6 +98,7 @@ namespace Booking.ViewModels
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
             this.context = context;
             this.realtyModel = model;
+            imageModel = new ImageModel(context);
         }
 
         public async Task InitializeAsync(string slug)

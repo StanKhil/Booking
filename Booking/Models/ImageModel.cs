@@ -14,7 +14,7 @@ namespace Booking.Models
             this.context = context;
         }
 
-        public async Task<bool> CreateImage(Guid realtyId, string url)
+        public async Task<bool> CreateImageAsync(Guid realtyId, string url)
         {
             try
             {

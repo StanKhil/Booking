@@ -15,6 +15,7 @@ namespace Booking.ViewModels.admin
         private string? city;
         private string? country;
         private string? group;
+        private List<string> imageUrls = new List<string>();
 
         private string? updateSlug;
 
@@ -26,6 +27,7 @@ namespace Booking.ViewModels.admin
         private string? newCity;
         private string? newCountry;
         private string? newGroup;
+        private List<string> newImageUrls = new List<string>();
 
         private string? errorMessageOnCreate = "";
         private string? errorMessageOnUpdate = "";
@@ -33,9 +35,11 @@ namespace Booking.ViewModels.admin
         private bool isViewVisible = true;
 
         private string? selectedFilePath = "";
+        private string? newSelectedFilePath = "";
 
         DataContext context = new();
         RealtyModel realtyModel;
+        ImageModel imageModel;
 
         public string? Name
         {
@@ -76,6 +80,11 @@ namespace Booking.ViewModels.admin
         {
             get => group;
             set { group = value; OnPropertyChanged(nameof(Group)); }
+        }
+        public List<string> ImageUrls
+        {
+            get => imageUrls;
+            set { imageUrls = value; OnPropertyChanged(nameof(ImageUrls)); }
         }
 
         public string? UpdateSlug
@@ -159,6 +168,15 @@ namespace Booking.ViewModels.admin
                 OnPropertyChanged(nameof(NewGroup));
             }
         }
+        public List<string> NewImageUrls
+        {
+            get => newImageUrls;
+            set
+            {
+                newImageUrls = value;
+                OnPropertyChanged(nameof(NewImageUrls));
+            }
+        }
 
         public string? SelectedFilePath
         {
@@ -167,6 +185,15 @@ namespace Booking.ViewModels.admin
             {
                 selectedFilePath = value;
                 OnPropertyChanged(nameof(SelectedFilePath));
+            }
+        }
+        public string? NewSelectedFilePath
+        {
+            get => newSelectedFilePath;
+            set
+            {
+                newSelectedFilePath = value;
+                OnPropertyChanged(nameof(NewSelectedFilePath));
             }
         }
 
@@ -205,27 +232,24 @@ namespace Booking.ViewModels.admin
         public RealtyAdminViewModel()
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
-            AddImageOnCreateCommand = new RelayCommand(ExecuteAddImageOnCreateCommand);
             CreateRealtyCommand = new RelayCommand(ExecuteCreateRealtyCommand);
             DeleteRealtyCommand = new RelayCommand(ExecuteDeleteRealtyCommand);
             UpdateRealtyCommand = new RelayCommand(ExecuteUpdateRealtyCommand);
             this.context = new();
             this.realtyModel = new(context);
+            this.imageModel = new(context);
         }
-
-       
 
         public RealtyAdminViewModel(DataContext context, RealtyModel model)
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
-            AddImageOnCreateCommand = new RelayCommand(ExecuteAddImageOnCreateCommand);
             CreateRealtyCommand = new RelayCommand(ExecuteCreateRealtyCommand);
             DeleteRealtyCommand = new RelayCommand(ExecuteDeleteRealtyCommand);
             UpdateRealtyCommand = new RelayCommand(ExecuteUpdateRealtyCommand);
             this.context = context;
             this.realtyModel = model;
+            this.imageModel = new(context);
         }
-
 
         private void ExecuteMainWindowCommand(object? obj)
         {
@@ -235,42 +259,185 @@ namespace Booking.ViewModels.admin
             IsViewVisible = false;
             OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
-        private void ExecuteAddImageOnCreateCommand(object? obj)
-        {
-            
-        }
 
         private async void ExecuteCreateRealtyCommand(object? obj)
         {
+            ErrorMessageOnCreate = "";
+
+            if (!ValidateCreateInputs())
+                return;
+
+            realtyModel ??= new RealtyModel(context);
+            imageModel ??= new ImageModel(context);
+
             bool success = await realtyModel.CreateRealtyAsync(name, description, slug, imageUrl, price, city, country, group);
             if (!success)
             {
-                ErrorMessageOnCreate = "Invalid data";
+                ErrorMessageOnCreate = "Failed to create realty.";
                 return;
             }
+
+            var realty = await realtyModel.GetRealtyBySlugAsync(slug);
+            if (realty == null)
+            {
+                ErrorMessageOnCreate = "Realty not found after creation.";
+                return;
+            }
+
+            bool createMainImg = true;
+            if (!string.IsNullOrWhiteSpace(SelectedFilePath))
+            {
+                bool imgLoaded = await imageModel.LoadImageAsync(slug, SelectedFilePath);
+                createMainImg = await imageModel.CreateImageAsync(realty.Id, SelectedFilePath);
+                if (!imgLoaded || !createMainImg)
+                {
+                    ErrorMessageOnCreate = "Main image upload failed.";
+                    return;
+                }
+            }
+
+            bool allImagesCreated = true;
+
+            foreach (var imageUrl in imageUrls)
+            {
+                if (!string.IsNullOrWhiteSpace(imageUrl))
+                {
+                    bool loaded = await imageModel.LoadImageAsync(slug, imageUrl);
+                    bool imgCreated = await imageModel.CreateImageAsync(realty.Id, imageUrl);
+
+                    if (!loaded || !imgCreated)
+                    {
+                        allImagesCreated = false;
+                        ErrorMessageOnCreate = $"Failed to upload image: {imageUrl}";
+                        break;
+                    }
+                }
+            }
+
+
+            if (!allImagesCreated)
+                return;
+
             OnRequestClearRealtyCreateForm?.Invoke(this, EventArgs.Empty);
+            ClearCreateForm();
         }
 
         private async void ExecuteDeleteRealtyCommand(object? obj)
         {
+            ErrorMessageOnDelete = "";
+
+            if (string.IsNullOrWhiteSpace(slug))
+            {
+                ErrorMessageOnDelete = "Slug is empty.";
+                return;
+            }
+
+            realtyModel ??= new RealtyModel(context);
+
             bool success = await realtyModel.DeleteRealtyAsync(slug);
             if (!success)
             {
-                ErrorMessageOnDelete = "Invalid slug";
+                ErrorMessageOnDelete = "Invalid slug or delete failed.";
                 return;
             }
+
             OnRequestClearRealtyDeleteForm?.Invoke(this, EventArgs.Empty);
+            ClearDeleteForm();
         }
 
         private async void ExecuteUpdateRealtyCommand(object? obj)
         {
-            bool success = await realtyModel.UpdateRealtyAsync(slug, name, description, newSlug, imageUrl, price, city, country, group);
+            ErrorMessageOnUpdate = "";
+
+            if (!ValidateUpdateInputs())
+                return;
+
+            realtyModel ??= new RealtyModel(context);
+            imageModel ??= new ImageModel(context);
+
+            bool success = await realtyModel.UpdateRealtyAsync(slug, newName, newDescription, newSlug, newImageUrl, newPrice, newCity, newCountry, newGroup);
             if (!success)
             {
-                ErrorMessageOnUpdate = "Invalid data";
+                ErrorMessageOnUpdate = "Update failed.";
                 return;
             }
+
+            var realty = await realtyModel.GetRealtyBySlugAsync(newSlug);
+            if (realty == null)
+            {
+                ErrorMessageOnUpdate = "Realty not found after update.";
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(NewSelectedFilePath))
+            {
+                bool imgLoaded = await imageModel.LoadImageAsync(newSlug, NewSelectedFilePath);
+                bool createImg = await imageModel.CreateImageAsync(realty.Id, NewSelectedFilePath);
+                if (!imgLoaded || !createImg)
+                {
+                    ErrorMessageOnUpdate = "Failed to upload new main image.";
+                    return;
+                }
+            }
+
+            foreach (var imgPath in newImageUrls)
+            {
+                if (!string.IsNullOrWhiteSpace(imgPath))
+                {
+                    bool loaded = await imageModel.LoadImageAsync(newSlug, imgPath);
+                    bool added = await imageModel.CreateImageAsync(realty.Id, imgPath);
+
+                    if (!loaded || !added)
+                    {
+                        ErrorMessageOnUpdate = $"Failed to add image: {imgPath}";
+                        return;
+                    }
+                }
+            }
+
+
             OnRequestClearRealtyUpdateForm?.Invoke(this, EventArgs.Empty);
+            ClearUpdateForm();
         }
+
+        private bool ValidateCreateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(slug) || price <= 0)
+            {
+                ErrorMessageOnCreate = "Required fields (name, slug, price) must be filled.";
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateUpdateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(slug) || string.IsNullOrWhiteSpace(newSlug) || newPrice <= 0)
+            {
+                ErrorMessageOnUpdate = "Required fields (slug, newSlug, price) must be filled.";
+                return false;
+            }
+            return true;
+        }
+
+        private void ClearCreateForm()
+        {
+            Name = Description = Slug = ImageUrl = City = Country = Group = SelectedFilePath = null;
+            Price = 0;
+            ImageUrls = new List<string>();
+        }
+
+        private void ClearDeleteForm()
+        {
+            Slug = null;
+        }
+
+        private void ClearUpdateForm()
+        {
+            UpdateSlug = NewName = NewDescription = NewSlug = NewImageUrl = NewCity = NewCountry = NewGroup = NewSelectedFilePath = null;
+            NewPrice = 0;
+            NewImageUrls = new List<string>();
+        }
+
     }
 }
