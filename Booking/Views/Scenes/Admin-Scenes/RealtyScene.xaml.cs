@@ -1,4 +1,6 @@
-﻿using Booking.ViewModels;
+﻿using Booking.Data.Entities;
+using Booking.ViewModels;
+using Booking.ViewModels.admin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +24,13 @@ namespace Booking.Views.Scenes.Admin_Scenes
     /// </summary>
     public partial class RealtyScene : System.Windows.Controls.UserControl
     {
-        public RealtyScene()
+        private UserAccess access;
+
+        public RealtyScene(UserAccess access)
         {
             InitializeComponent();
+            this.access = access;
+            this.DataContext = new RealtyAdminViewModel(access);
         }
         private void ChooseFile_Click(object sender, RoutedEventArgs e)
         {
@@ -42,6 +48,7 @@ namespace Booking.Views.Scenes.Admin_Scenes
                 SelectedFileText.Text = selectedPath;
             }
         }
+
     }
     
 }

@@ -1,5 +1,7 @@
 ﻿using Booking.Data;
+using Booking.Data.Entities;
 using Booking.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -7,6 +9,8 @@ namespace Booking.ViewModels.admin
 {
     public class UserAdminViewModel : ViewModel
     {
+        UserAccess access;
+
         private string? name;
         private string? email;
         private string? login;
@@ -204,13 +208,14 @@ namespace Booking.ViewModels.admin
         public ICommand UpdateUserCommand { get; }
         public ICommand DeleteUserCommand { get; }
 
-        public UserAdminViewModel()
+        public UserAdminViewModel(UserAccess access)
         {
             CreateUserCommand = new RelayCommand(ExecuteCreateUserCommand);
             UpdateUserCommand = new RelayCommand(ExecuteUpdateUserCommand);
             DeleteUserCommand = new RelayCommand(ExecuteDeleteUserCommand);
             this.context = new();
             this.userModel = new(context);
+            this.access = access;
         }
         public UserAdminViewModel(DataContext context, UserModel model)
         {
@@ -222,6 +227,17 @@ namespace Booking.ViewModels.admin
         }
         private async void ExecuteCreateUserCommand(object? obj)
         {
+            var canCreate = await context.UserRoles
+                .Where(r => r.Id == access.RoleId)
+                .Select(r => r.CanCreate)
+                .FirstOrDefaultAsync();
+
+            if (!canCreate)
+            {
+                ErrorMessageOnCreate = "You do not have permission to create realty.";
+                return;
+            }
+
             bool success = await userModel.CreateUserAsync(name, email, login, password, userRole);
             if (!success)
             {
@@ -232,6 +248,17 @@ namespace Booking.ViewModels.admin
         }
         private async void ExecuteUpdateUserCommand(object? obj)
         {
+            var canUpdate = await context.UserRoles
+                .Where(r => r.Id == access.RoleId)
+                .Select(r => r.CanUpdate)
+                .FirstOrDefaultAsync();
+
+            if (!canUpdate)
+            {
+                ErrorMessageOnUpdate = "You do not have permission to create realty.";
+                return;
+            }
+
             bool success = await userModel.UpdateUserAsync(newName, newEmail, newLogin, newPassword, newRole, login);
             if (!success)
             {
@@ -242,6 +269,17 @@ namespace Booking.ViewModels.admin
         }
         private async void ExecuteDeleteUserCommand(object? obj)
         {
+            var canDelete = await context.UserRoles
+                .Where(r => r.Id == access.RoleId)
+                .Select(r => r.CanDelete)
+                .FirstOrDefaultAsync();
+
+            if (!canDelete)
+            {
+                ErrorMessageOnDelete = "You do not have permission to create realty.";
+                return;
+            }
+
             bool success = await userModel.DeleteUserAsync(updateLogin);
             if (!success)
             {

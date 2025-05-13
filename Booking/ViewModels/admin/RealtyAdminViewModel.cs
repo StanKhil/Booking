@@ -1,12 +1,16 @@
 ﻿using Booking.Data;
+using Booking.Data.Entities;
 using Booking.Models;
 using Booking.Views;
 using System.Windows.Input;
+using Microsoft.EntityFrameworkCore;
 
 namespace Booking.ViewModels.admin
 {
     public class RealtyAdminViewModel : ViewModel
     {
+        UserAccess access;
+
         private string? name;
         private string? description;
         private string? slug;
@@ -229,7 +233,7 @@ namespace Booking.ViewModels.admin
         public ICommand DeleteRealtyCommand { get; }
         public ICommand UpdateRealtyCommand { get; }
 
-        public RealtyAdminViewModel()
+        public RealtyAdminViewModel(UserAccess access)
         {
             MainWindowCommand = new RelayCommand(ExecuteMainWindowCommand);
             CreateRealtyCommand = new RelayCommand(ExecuteCreateRealtyCommand);
@@ -238,6 +242,7 @@ namespace Booking.ViewModels.admin
             this.context = new();
             this.realtyModel = new(context);
             this.imageModel = new(context);
+            this.access = access;
         }
 
         public RealtyAdminViewModel(DataContext context, RealtyModel model)
@@ -262,6 +267,17 @@ namespace Booking.ViewModels.admin
 
         private async void ExecuteCreateRealtyCommand(object? obj)
         {
+            var canCreate = await context.UserRoles
+                .Where(r => r.Id == access.RoleId)
+                .Select(r => r.CanCreate)
+                .FirstOrDefaultAsync();
+
+            if(!canCreate)
+            {
+                ErrorMessageOnCreate = "You do not have permission to create realty.";
+                return;
+            }
+
             ErrorMessageOnCreate = "";
 
             if (!ValidateCreateInputs())
@@ -324,6 +340,17 @@ namespace Booking.ViewModels.admin
 
         private async void ExecuteDeleteRealtyCommand(object? obj)
         {
+            var canDelete = await context.UserRoles
+                .Where(r => r.Id == access.RoleId)
+                .Select(r => r.CanDelete)
+                .FirstOrDefaultAsync();
+
+            if (!canDelete)
+            {
+                ErrorMessageOnDelete = "You do not have permission to create realty.";
+                return;
+            }
+
             ErrorMessageOnDelete = "";
 
             if (string.IsNullOrWhiteSpace(slug))
@@ -347,6 +374,17 @@ namespace Booking.ViewModels.admin
 
         private async void ExecuteUpdateRealtyCommand(object? obj)
         {
+            var canUpdate = await context.UserRoles
+                .Where(r => r.Id == access.RoleId)
+                .Select(r => r.CanUpdate)
+                .FirstOrDefaultAsync();
+
+            if (!canUpdate)
+            {
+                ErrorMessageOnUpdate = "You do not have permission to create realty.";
+                return;
+            }
+
             ErrorMessageOnUpdate = "";
 
             if (!ValidateUpdateInputs())

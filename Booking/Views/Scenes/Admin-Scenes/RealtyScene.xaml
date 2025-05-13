@@ -7,9 +7,9 @@
              xmlns:viewModels="clr-namespace:Booking.ViewModels.admin"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600">
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <viewModels:RealtyAdminViewModel/>
-    </UserControl.DataContext>
+    </UserControl.DataContext>-->
 
     <UserControl.Resources>
         <Style x:Key="ModernScrollBar" TargetType="ScrollBar">

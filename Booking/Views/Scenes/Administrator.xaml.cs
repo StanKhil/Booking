@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Booking.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Booking.ViewModels;
 
 namespace Booking.Views.Scenes
 {
@@ -20,9 +22,12 @@ namespace Booking.Views.Scenes
     /// </summary>
     public partial class Administrator : UserControl
     {
-        public Administrator()
+        private UserAccess access;
+        public Administrator(UserAccess access)
         {
             InitializeComponent();
+            this.access = access;
+            this.DataContext = new AdminViewModel(access);
         }
     }
 }

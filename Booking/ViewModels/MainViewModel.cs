@@ -1,6 +1,5 @@
 ﻿using Booking.Data;
 using Booking.Models;
-using Booking.Views.admin;
 using System.Windows.Input;
 using FontAwesome.Sharp;
 using System.Windows.Controls;
@@ -24,7 +23,7 @@ namespace Booking.ViewModels
         Scheduled scheduled;
         Catalogue catalogue;
         Item item = new();
-        Administrator administrator = new();
+        Administrator administrator;
         Settings settings;
 
         private string? errorMessage = "";
@@ -148,6 +147,7 @@ namespace Booking.ViewModels
             home = new(this);
             catalogue = new(this);
             settings = new(access);
+            administrator =  new(access);
             settings.OnRequestClose += (s, e) => this.LogoutCommand(null);
             sceneContainer.Content = home;
         }
@@ -225,7 +225,7 @@ namespace Booking.ViewModels
             OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ExecuteUserAdminWindowCommand(object? obj)
+        /*private void ExecuteUserAdminWindowCommand(object? obj)
         {
             //UserAdminView userAdminView = new UserAdminView(context);
             //userAdminView.Show();
@@ -241,6 +241,6 @@ namespace Booking.ViewModels
 
             IsViewVisible = false;
             OnRequestClose?.Invoke(this, EventArgs.Empty);
-        }
+        }*/
     }
 }

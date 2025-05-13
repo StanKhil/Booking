@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Booking.Data.Entities;
+using Booking.ViewModels.admin;
 
 namespace Booking.Views.Scenes.Admin_Scenes
 {
@@ -20,9 +22,12 @@ namespace Booking.Views.Scenes.Admin_Scenes
     /// </summary>
     public partial class UserScene : UserControl
     {
-        public UserScene()
+        private UserAccess access;
+        public UserScene(UserAccess access)
         {
             InitializeComponent();
+            this.access = access;
+            this.DataContext = new UserAdminViewModel(access);
         }
     }
 }
