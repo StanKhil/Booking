@@ -33,7 +33,6 @@ namespace Booking.ViewModels
             realtyModel = new RealtyModel(new DataContext());
         }
 
-
         public async Task InitializeAsync()
         {
             Realties = await realtyModel.GetRealtiesAsync();
@@ -51,6 +50,7 @@ namespace Booking.ViewModels
             Item item = new(realty);
             mainViewModel.Item = item;
             mainViewModel.ItemChecked.Execute(new object());
+            
             
         }
 

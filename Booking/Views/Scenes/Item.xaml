@@ -3,10 +3,127 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:Booking.Views.Scenes"
+             xmlns:viewModel="clr-namespace:Booking.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+
+    <UserControl.DataContext>
+        <viewModel:ItemViewModel/>
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <Style x:Key="ModernScrollBar" TargetType="ScrollBar">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="#1E1E1E" Width="8">
+                            <Track Name="PART_Track" IsDirectionReversed="true">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.LineUpCommand"
+                                      Style="{x:Null}" Height="0"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Background="#666" MinHeight="20">
+                                        <Thumb.Style>
+                                            <Style TargetType="Thumb">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Thumb">
+                                                            <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="4"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#999"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Thumb.Style>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.LineDownCommand"
+                                      Style="{x:Null}" Height="0"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer x:Name="itemScrollViewer">
+        <ScrollViewer.Resources>
+            <Style TargetType="ScrollBar" BasedOn="{StaticResource ModernScrollBar}"/>
+        </ScrollViewer.Resources>
+
+        <Grid Height="600">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <Image Source="{Binding Realty.ImagePath, UpdateSourceTrigger=PropertyChanged}" Height="250" Width="Auto" Grid.Column="0" Grid.Row="0"/>
+
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Realty.Name, UpdateSourceTrigger=PropertyChanged}" Foreground="WhiteSmoke" FontSize="18" FontWeight="UltraBold"/>
+                <TextBlock Text="Details" Foreground="DarkGray" FontSize="16" FontWeight="Bold" Margin="30,5,0,0"/>
+                <Border HorizontalAlignment="Left" Margin="10,0,0,0" Width="500" BorderThickness="0.5" BorderBrush="DarkGray"/>
+                <Grid Height="Auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="10,5,0,0" Text="Description: " Foreground="White" 
+                               FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
+                    <TextBlock Grid.Column="1" TextWrapping="Wrap" 
+                               Text="{Binding Realty.Description}" Foreground="White" 
+                               FontSize="14" FontWeight="Medium"/>
+
+                    <TextBlock Grid.Row="1" Margin="10,5,0,0" Text="Price: " Foreground="White" 
+                               FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" 
+                               Text="{Binding Realty.Price}" Foreground="White"
+                               FontSize="14" FontWeight="Medium"/>
+
+                    <TextBlock Grid.Row="2" Margin="10,5,0,0" Text="Country: " Foreground="White" 
+                                FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" 
+                               Text="{Binding Realty.Country.Name}" Foreground="White"
+                               FontSize="14" FontWeight="Medium"/>
+
+                    <TextBlock Grid.Row="3" Margin="10,5,0,0" Text="City: " Foreground="White" 
+                                FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" 
+                               Text="{Binding Realty.City.Name}" Foreground="White"
+                               FontSize="14" FontWeight="Medium"/>
+
+                </Grid>
+            </StackPanel>
+             
             
-    </Grid>
+        </Grid>
+    </ScrollViewer>
+    
+    
+    
 </UserControl>
