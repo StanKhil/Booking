@@ -5,27 +5,37 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text.Json;
+using System.Windows;
 
 namespace App.Services.CurrencyRate
 {
     public class NbuCurrencyRate : ICurrencyRate
     {
-        public async Task<List<CurrencyRate>> GetCurrencyRatesAsync()
+        public async Task<double> GetCurrencyRatesAsync()
         {
             using HttpClient client = new();
-            String json = await client.GetStringAsync($"https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
+            String json = "";
+            try
+            {
+                json = await client.GetStringAsync($"https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            
 
             var nbuRates = JsonSerializer.Deserialize<List<NbuRate>>(json)!;
 
-            return nbuRates
-                .Select(nbuRates => new CurrencyRate
+            foreach (var rate in nbuRates)
+            {
+                if (rate.cc == "UAH")
                 {
-                    FullName = nbuRates.txt,
-                    ShortName = nbuRates.cc,
-                    RateBuy = nbuRates.rate,
-                    RateSell = nbuRates.rate,
-                    Date = DateOnly.Parse(nbuRates.exchangedate)
-                }).ToList();
+                    return rate.rate;
+                }
+            }
+
+            return 0;
         }
 
         private class NbuRate

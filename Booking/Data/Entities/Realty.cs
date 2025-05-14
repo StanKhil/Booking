@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using App.Services.CurrencyRate;
 
 namespace Booking.Data.Entities
 {
@@ -32,8 +33,12 @@ namespace Booking.Data.Entities
         public List<ItemImage> Images { get; set; } = [];
         public List<Feedback> Feedbacks { get; set; } = [];
 
-        public List<AccRates> AccRates { get; set; } = [];
+        public AccRates AccRates { get; set; }
 
+        public double PriceUa
+        {
+            get => (new NbuCurrencyRate().GetCurrencyRatesAsync().Result) * (double)Price;
+        }
         public string ImagePath
         {
             get

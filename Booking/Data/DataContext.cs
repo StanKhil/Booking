@@ -118,8 +118,7 @@ namespace Booking.Data
 
             modelBuilder.Entity<Entities.AccRates>()
                 .HasOne(ar => ar.Realty)
-                .WithMany(r => r.AccRates)
-                .HasForeignKey(ar => ar.RealtyId);
+                .WithOne(r => r.AccRates);
 
 
             SeedData(modelBuilder);
@@ -314,8 +313,8 @@ namespace Booking.Data
                 {
                     Id = Guid.Parse("f1ea6b3f-0021-417b-95c8-f6cd333d7207"),
                     ParentId = null,
-                    Name = "Готелі",
-                    Description = "Багатономерні готелі ",
+                    Name = "Hotels",
+                    Description = "Multi-room hotels",
                     Slug = "hotels",
                     ImageUrl = "hotel.jpg"
                 },
@@ -323,8 +322,8 @@ namespace Booking.Data
                 {
                     Id = Guid.Parse("8806ca58-8daa-4576-92ba-797de42ffaa7"),
                     ParentId = null,
-                    Name = "Квартири",
-                    Description = "Квартири",
+                    Name = "Apartments",
+                    Description = "Apartments",
                     Slug = "apartments",
                     ImageUrl = "apartment.jpg"
                 },
@@ -332,8 +331,8 @@ namespace Booking.Data
                 {
                     Id = Guid.Parse("97191468-a02f-4a78-927b-9ea660e9ea36"),
                     ParentId = null,
-                    Name = "Будинки",
-                    Description = "Будинки",
+                    Name = "Houses",
+                    Description = "Houses",
                     Slug = "houses",
                     ImageUrl = "house.jpg"
                 },
@@ -341,8 +340,8 @@ namespace Booking.Data
                 {
                     Id = Guid.Parse("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
                     ParentId = null,
-                    Name = "Вілли",
-                    Description = "Вілли",
+                    Name = "Villas",
+                    Description = "Villas",
                     Slug = "villas",
                     ImageUrl = "villa.jpg"
                 }
@@ -352,12 +351,12 @@ namespace Booking.Data
                 new Country
                 {
                     Id = Guid.Parse("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d"),
-                    Name = "Україна"
+                    Name = "Ukraine"
                 },
                 new Country
                 {
                     Id = Guid.Parse("bdf41cd9-c0f1-4349-8a44-4e67755d0415"),
-                    Name = "Польща"
+                    Name = "Poland"
                 }
             );
 
@@ -365,12 +364,12 @@ namespace Booking.Data
                 new City
                 {
                     Id = Guid.Parse("03767d46-aab3-4cc4-989c-a696a7fdd434"),
-                    Name = "Львів",
+                    Name = "Lviv",
                 },
                 new City
                 {
                     Id = Guid.Parse("0d156354-89f1-4d58-a735-876b7add59d2"),
-                    Name = "Краків",
+                    Name = "Krakow",
                 }
             );
 

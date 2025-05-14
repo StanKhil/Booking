@@ -36,6 +36,22 @@ namespace Booking.ViewModels
         public async Task InitializeAsync()
         {
             Realties = await realtyModel.GetRealtiesAsync();
+            //List<Realty> r = await realtyModel.GetRealtiesAsync();
+            //foreach(var realty in r)
+            //{
+            //    realties.Add(new RealtyCardModel
+            //    {
+            //        Name = realty.Name,
+            //        Description = realty.Description,
+            //        Id = realty.Id,
+            //        GroupId = realty.GroupId,
+            //        Slug = realty.Slug,
+            //        ImageUrl = realty.ImageUrl,
+            //        Price = realty.Price,
+            //        DeletedAt = realty.DeletedAt,
+
+            //    });
+            //}
         }
 
         private void ExecuteViewItemInfoCommand(object? obj)
@@ -46,12 +62,10 @@ namespace Booking.ViewModels
                 MessageBox.Show("System", "Error reaching the item", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            MessageBox.Show(realty.Name);
+            MessageBox.Show(realty.Name + " | " + realty.Country.Name);
             Item item = new(realty);
             mainViewModel.Item = item;
             mainViewModel.ItemChecked.Execute(new object());
-            
-            
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

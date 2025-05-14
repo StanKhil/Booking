@@ -61,9 +61,16 @@ namespace Booking.Models
                 CountryId = country.Id,
                 GroupId = group.Id
             };
-
-            context.Realties.Add(realty);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Realties.Add(realty);
+                await context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("System", "Exception in SaveChangesOccured", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
 
             MessageBox.Show("Created", "System", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
@@ -129,7 +136,15 @@ namespace Booking.Models
 
         public async Task<List<Realty>> GetRealtiesAsync()
         {
-            return await context.Realties.Where(r => r.DeletedAt == null).ToListAsync();
+            return await context.Realties
+                .Include(r => r.Country)
+                .Include(r => r.AccRates)
+                .Include(r => r.Feedbacks)
+                .Include(r => r.Images)
+                .Include(r => r.BookingItems)
+                .Include(r => r.RealtyGroup)
+                .Include(r => r.City)
+                .Where(r => r.DeletedAt == null).ToListAsync();
         }
 
         public async Task<Realty?> GetRealtyBySlugAsync(string slug)

@@ -49,6 +49,23 @@ namespace Booking.Views.Scenes.Admin_Scenes
             }
         }
 
+        private void ChooseSecondaryFile_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = "Select a file",
+                Filter = "All files (*.*)|*.*",
+                Multiselect = false
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedPath = openFileDialog.FileName;
+                System.Windows.Forms.MessageBox.Show(selectedPath);
+                //imagesListBox.ItemsSource.Add(selectedPath);
+                //imagesListBox.Items.Add(selectedPath);
+            }
+        }
     }
     
 }

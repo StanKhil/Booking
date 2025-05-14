@@ -4,6 +4,7 @@ using Booking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booking.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250514135302_AccRatesUpdate")]
+    partial class AccRatesUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,12 +102,12 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("03767d46-aab3-4cc4-989c-a696a7fdd434"),
-                            Name = "Lviv"
+                            Name = "Львів"
                         },
                         new
                         {
                             Id = new Guid("0d156354-89f1-4d58-a735-876b7add59d2"),
-                            Name = "Krakow"
+                            Name = "Краків"
                         });
                 });
 
@@ -126,12 +129,12 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("7687bebd-e8a3-4b28-abc8-8fc9cc403a8d"),
-                            Name = "Ukraine"
+                            Name = "Україна"
                         },
                         new
                         {
                             Id = new Guid("bdf41cd9-c0f1-4349-8a44-4e67755d0415"),
-                            Name = "Poland"
+                            Name = "Польща"
                         });
                 });
 
@@ -399,33 +402,33 @@ namespace Booking.Migrations
                         new
                         {
                             Id = new Guid("f1ea6b3f-0021-417b-95c8-f6cd333d7207"),
-                            Description = "Multi-room hotels",
+                            Description = "Багатономерні готелі ",
                             ImageUrl = "hotel.jpg",
-                            Name = "Hotels",
+                            Name = "Готелі",
                             Slug = "hotels"
                         },
                         new
                         {
                             Id = new Guid("8806ca58-8daa-4576-92ba-797de42ffaa7"),
-                            Description = "Apartments",
+                            Description = "Квартири",
                             ImageUrl = "apartment.jpg",
-                            Name = "Apartments",
+                            Name = "Квартири",
                             Slug = "apartments"
                         },
                         new
                         {
                             Id = new Guid("97191468-a02f-4a78-927b-9ea660e9ea36"),
-                            Description = "Houses",
+                            Description = "Будинки",
                             ImageUrl = "house.jpg",
-                            Name = "Houses",
+                            Name = "Будинки",
                             Slug = "houses"
                         },
                         new
                         {
                             Id = new Guid("6a1d3de4-0d78-4d7d-8f6a-9e52694ff2ee"),
-                            Description = "Villas",
+                            Description = "Вілли",
                             ImageUrl = "villa.jpg",
-                            Name = "Villas",
+                            Name = "Вілли",
                             Slug = "villas"
                         });
                 });

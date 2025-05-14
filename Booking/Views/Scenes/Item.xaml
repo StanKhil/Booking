@@ -71,9 +71,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="3*"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
 
             <Image Source="{Binding Realty.ImagePath, UpdateSourceTrigger=PropertyChanged}" Height="250" Width="Auto" Grid.Column="0" Grid.Row="0"/>
@@ -92,34 +91,63 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <TextBlock Margin="10,5,0,0" Text="Description: " Foreground="White" 
                                FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
                     <TextBlock Grid.Column="1" TextWrapping="Wrap" 
-                               Text="{Binding Realty.Description}" Foreground="White" 
+                               Text="{Binding Realty.Description, UpdateSourceTrigger=PropertyChanged}" Foreground="White" 
                                FontSize="14" FontWeight="Medium"/>
 
                     <TextBlock Grid.Row="1" Margin="10,5,0,0" Text="Price: " Foreground="White" 
                                FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" 
-                               Text="{Binding Realty.Price}" Foreground="White"
+                               Text="{Binding Realty.Price, UpdateSourceTrigger=PropertyChanged}" Foreground="White"
                                FontSize="14" FontWeight="Medium"/>
 
-                    <TextBlock Grid.Row="2" Margin="10,5,0,0" Text="Country: " Foreground="White" 
-                                FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
+                    <TextBlock Grid.Row="2" Margin="10,5,0,0" Text="Price(UAH): " Foreground="White" 
+                                 FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
                     <TextBlock Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" 
-                               Text="{Binding Realty.Country.Name}" Foreground="White"
+                               Foreground="White"
                                FontSize="14" FontWeight="Medium"/>
 
-                    <TextBlock Grid.Row="3" Margin="10,5,0,0" Text="City: " Foreground="White" 
+                    <TextBlock Grid.Row="3" Margin="10,5,0,0" Text="Country: " Foreground="White" 
                                 FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
                     <TextBlock Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" 
-                               Text="{Binding Realty.City.Name}" Foreground="White"
+                               Text="{Binding Realty.Country.Name, UpdateSourceTrigger=PropertyChanged}" Foreground="White"
                                FontSize="14" FontWeight="Medium"/>
+
+                    <TextBlock Grid.Row="4" Margin="10,5,0,0" Text="City: " Foreground="White" 
+                                FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" TextWrapping="Wrap" 
+                               Text="{Binding Realty.City.Name, UpdateSourceTrigger=PropertyChanged}" Foreground="White"
+                               FontSize="14" FontWeight="Medium"/>
+                    
+                    <TextBlock Grid.Row="5" Margin="10,5,0,0" Text="Rate: " Foreground="White" 
+                                FontSize="14" FontWeight="Normal" FontStyle="Italic"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" 
+                               Text="{Binding Realty.AccRates.AvgRate, UpdateSourceTrigger=PropertyChanged}" Foreground="White"
+                               FontSize="14" FontWeight="Medium"/>
+
+                   
+
 
                 </Grid>
             </StackPanel>
-             
+
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+
+                <Button>
+                    
+                </Button>
+                <Image />
+                <Button>
+
+                </Button>
+
+            </StackPanel>
+            
             
         </Grid>
     </ScrollViewer>

@@ -103,8 +103,8 @@
                     Foreground="DarkGray" FontSize="12"
                     FontWeight="Medium" 
                     Margin="10,15,0,0"/>
-            <Button Margin="10,5,0,0" HorizontalAlignment="Left" Foreground="White"
-                    Content="Choose File" Click="ChooseFile_Click">
+            <Button FontWeight="Medium" Margin="10,5,0,0" HorizontalAlignment="Left" Foreground="White"
+                    Content="Choose File" Command="{Binding AddPrimaryImageCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="#2e2e2e"></Setter>
@@ -125,7 +125,7 @@
                 </Button.Template>
             </Button>
             <TextBlock Text="{Binding SelectedFilePath, UpdateSourceTrigger=PropertyChanged}" x:Name="SelectedFileText" Margin="10,5,0,0" TextWrapping="Wrap" />
-            
+
             <TextBlock Text="Price"
                     Foreground="DarkGray" FontSize="12"
                     FontWeight="Medium" 
@@ -166,6 +166,32 @@
                       Width="300" Height="28" HorizontalAlignment="Left" VerticalAlignment="Center"
                       VerticalContentAlignment="Center" Background="Transparent" Margin="10,5,0,0" Padding="30,0,0,0">
             </TextBox>
+
+
+            <ListBox Foreground="Black" x:Name="imagesListBox" ItemsSource="{Binding ImageUrls, UpdateSourceTrigger=PropertyChanged}">
+
+            </ListBox>
+            <Button FontWeight="Medium" Margin="10,5,0,0" HorizontalAlignment="Left" Foreground="White"
+                    Content="Choose File" Command="{Binding AddSecondaryImageCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#2e2e2e"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#121212"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="150" Height="40"
+                                CornerRadius="20" Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
             <TextBlock Text="{Binding ErrorMessageOnCreate}" HorizontalAlignment="Left"
                    Foreground="#D7596D" FontSize="12"
@@ -257,7 +283,7 @@
                 </StackPanel>
             </Grid>
 
-            <!--New User Data-->
+            <!--New Realty Data-->
             <TextBlock Text="New name"
                    Foreground="DarkGray" FontSize="12"
                    FontWeight="Medium" 

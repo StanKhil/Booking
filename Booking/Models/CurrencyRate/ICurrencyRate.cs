@@ -8,6 +8,6 @@ namespace App.Services.CurrencyRate
 {
     public interface ICurrencyRate
     {
-        Task<List<CurrencyRate>> GetCurrencyRatesAsync();
+        Task<double> GetCurrencyRatesAsync();
     }
 }

@@ -77,7 +77,7 @@ namespace Booking.Models
 
         public double PriceUa
         {
-            get => currencyRate.GetCurrencyRatesAsync().Result * Price;
+            get => (currencyRate.GetCurrencyRatesAsync().Result) * (double)Price;
         }
 
         public List<Feedback> Feedbacks

@@ -24,7 +24,6 @@ namespace Booking.Services.CurrencyRate
                     return rate.rate;
                 }
             }
-
             return 0;
         }
 
