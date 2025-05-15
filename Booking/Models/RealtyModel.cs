@@ -85,9 +85,23 @@ namespace Booking.Models
                 return false;
             }
 
-            if (!string.IsNullOrEmpty(name)) realty.Name = name;
+            if (!string.IsNullOrEmpty(newSlug))
+            {
+                if (slug != newSlug)
+                {
+                    if (await context.Realties.AnyAsync(r => r.Slug == newSlug && r.DeletedAt == null))
+                    {
+                        MessageBox.Show("Slug already exists");
+                        return false;
+                    }
+                }
+                realty.Slug = newSlug;
+            }
+                
+
+             if (!string.IsNullOrEmpty(name)) realty.Name = name;
             if (description != null) realty.Description = description;
-            if (!string.IsNullOrEmpty(newSlug)) realty.Slug = newSlug;
+            
             if (imageUrl != null) realty.ImageUrl = imageUrl;
             if (price.HasValue) realty.Price = price.Value;
 

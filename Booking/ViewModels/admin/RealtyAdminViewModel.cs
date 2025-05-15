@@ -47,6 +47,25 @@ namespace Booking.ViewModels.admin
         RealtyModel realtyModel;
         ImageModel imageModel;
 
+        public ObservableCollection<string> Groups { get; } = new ObservableCollection<string>
+        {
+            "Hotels",
+            "Apartments",
+            "Villas",
+            "Houses"
+        };
+
+        private string? _selectedGroup;
+        public string? SelectedGroup
+        {
+            get => _selectedGroup;
+            set
+            {
+                _selectedGroup = value;
+                OnPropertyChanged(nameof(IsViewVisible));
+            }
+        }
+
         public string? Name
         {
             get => name;
@@ -233,6 +252,9 @@ namespace Booking.ViewModels.admin
         public ICommand AddImageOnCreateCommand { get; set; }
         public ICommand AddPrimaryImageCommand {get;set;}
         public ICommand AddSecondaryImageCommand { get; set; }
+
+        public ICommand UpdatePrimaryImageCommand { get; set; }
+        public ICommand UpdateSecondaryImageCommand { get; set; }
         public ICommand CreateRealtyCommand { get; }
         public ICommand DeleteRealtyCommand { get; }
         public ICommand UpdateRealtyCommand { get; }
@@ -245,6 +267,8 @@ namespace Booking.ViewModels.admin
             CreateRealtyCommand = new RelayCommand(ExecuteCreateRealtyCommand);
             DeleteRealtyCommand = new RelayCommand(ExecuteDeleteRealtyCommand);
             UpdateRealtyCommand = new RelayCommand(ExecuteUpdateRealtyCommand);
+            UpdatePrimaryImageCommand = new RelayCommand(ExecuteUpdatePrimaryImageCommand);
+            UpdateSecondaryImageCommand = new RelayCommand(ExecuteUpdateSecondaryImageCommand);
             this.context = new();
             this.realtyModel = new(context);
             this.imageModel = new(context);
@@ -259,6 +283,8 @@ namespace Booking.ViewModels.admin
             CreateRealtyCommand = new RelayCommand(ExecuteCreateRealtyCommand);
             DeleteRealtyCommand = new RelayCommand(ExecuteDeleteRealtyCommand);
             UpdateRealtyCommand = new RelayCommand(ExecuteUpdateRealtyCommand);
+            UpdatePrimaryImageCommand = new RelayCommand(ExecuteUpdatePrimaryImageCommand);
+            UpdateSecondaryImageCommand = new RelayCommand(ExecuteUpdateSecondaryImageCommand);
             this.context = context;
             this.realtyModel = model;
             this.imageModel = new(context);
@@ -269,14 +295,14 @@ namespace Booking.ViewModels.admin
             var openFileDialog = new OpenFileDialog
             {
                 Title = "Select a file",
-                Filter = "All files (*.*)|*.*",
+                Filter = "Image Files (*.png;*.jpg;*.jpeg;*.bmp;*.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif",
                 Multiselect = false
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedPath = openFileDialog.FileName;
-                System.Windows.Forms.MessageBox.Show(selectedPath);
+                //System.Windows.Forms.MessageBox.Show(selectedPath);
                 SelectedFilePath = selectedPath;
             }
         }
@@ -286,15 +312,47 @@ namespace Booking.ViewModels.admin
             var openFileDialog = new OpenFileDialog
             {
                 Title = "Select a file",
-                Filter = "All files (*.*)|*.*",
+                Filter = "Image Files (*.png;*.jpg;*.jpeg;*.bmp;*.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif",
                 Multiselect = false
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedPath = openFileDialog.FileName;
-                System.Windows.Forms.MessageBox.Show(selectedPath);
+                //System.Windows.Forms.MessageBox.Show(selectedPath);
                 ImageUrls.Add(selectedPath);
+            }
+        }
+
+        private void ExecuteUpdatePrimaryImageCommand(object? obj)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = "Select a file",
+                Filter = "Image Files (*.png;*.jpg;*.jpeg;*.bmp;*.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif",
+                Multiselect = false
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedPath = openFileDialog.FileName;
+                //System.Windows.Forms.MessageBox.Show(selectedPath);
+                NewSelectedFilePath = selectedPath;
+            }
+        }
+
+        private void ExecuteUpdateSecondaryImageCommand(object? obj)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = "Select a file",
+                Filter = "Image Files (*.png;*.jpg;*.jpeg;*.bmp;*.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif",
+                Multiselect = false
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedPath = openFileDialog.FileName;
+                //System.Windows.Forms.MessageBox.Show(selectedPath);
+                NewImageUrls.Add(selectedPath);
             }
         }
 
@@ -435,7 +493,7 @@ namespace Booking.ViewModels.admin
             realtyModel ??= new RealtyModel(context);
             imageModel ??= new ImageModel(context);
 
-            bool success = await realtyModel.UpdateRealtyAsync(updateSlug!, newName, newDescription, newSlug, newImageUrl, newPrice, newCity, newCountry, newGroup);
+            bool success = await realtyModel.UpdateRealtyAsync(updateSlug!, newName, newDescription, newSlug, newSelectedFilePath, newPrice, newCity, newCountry, newGroup);
             if (!success)
             {
                 ErrorMessageOnUpdate = "Update failed.";
@@ -449,6 +507,17 @@ namespace Booking.ViewModels.admin
                 return;
             }
 
+            var oldImages = await realtyModel.GetImagesAsync(newSlug!);
+            foreach (var image in oldImages)
+            {
+                bool deleted = await imageModel.DeleteImagesByItemIdAsync(realty.Id);
+                if (!deleted)
+                {
+                    ErrorMessageOnUpdate = $"Failed to delete old image: {image.ImageUrl}";
+                    return;
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(NewSelectedFilePath))
             {
                 bool imgLoaded = await imageModel.LoadImageAsync(newSlug!, NewSelectedFilePath);
@@ -460,7 +529,7 @@ namespace Booking.ViewModels.admin
                 }
             }
 
-            foreach (var imgPath in newImageUrls)
+            foreach (var imgPath in NewImageUrls)
             {
                 if (!string.IsNullOrWhiteSpace(imgPath))
                 {
@@ -492,7 +561,7 @@ namespace Booking.ViewModels.admin
 
         private bool ValidateUpdateInputs()
         {
-            if (string.IsNullOrWhiteSpace(slug) || string.IsNullOrWhiteSpace(newSlug) || newPrice <= 0)
+            if (string.IsNullOrWhiteSpace(updateSlug) || string.IsNullOrWhiteSpace(newSlug) || newPrice <= 0)
             {
                 ErrorMessageOnUpdate = "Required fields (slug, newSlug, price) must be filled.";
                 return false;

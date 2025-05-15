@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="Booking.Views.Scenes.Scheduled"
              Loaded="Window_Loaded"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,16 +18,63 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Gray" BorderThickness="1" Padding="10" Margin="5">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Realty.Name}" FontSize="14" FontWeight="Bold" Foreground="White"/>
-                                <TextBlock Text="{Binding StartDate}" FontSize="14" Foreground="White"/>
-                                <TextBlock Text="{Binding EndDate}" FontSize="14" Foreground="White"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Booking.Realty.Name}" FontSize="14" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="{Binding Booking.StartDate}" FontSize="14" Foreground="White"/>
+                                    <TextBlock Text="{Binding Booking.EndDate}" FontSize="14" Foreground="White"/>
+                                </StackPanel>
+                                <Image Source="{Binding Booking.Realty.ImagePath}" Width="100" Height="100" Margin="10,0,0,0"/>
+                                <Button
+                                    BorderThickness="0"
+                                    Content="Delete" Foreground="White"
+                                    FontSize="12" Cursor="Hand" FontWeight="Medium"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,70,0,0"
+                                    Command="{Binding DeleteBookingCommnad}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#2e2e2e"></Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#121212"></Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Width="150" Height="40"
+                                    CornerRadius="20" Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
                             </StackPanel>
-                            <Image Source="{Binding Realty.ImagePath}" Width="100" Height="100" Margin="10,0,0,0"/>
-                        </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                                <TextBlock Text="Feedback:" Foreground="White" FontWeight="Bold"/>
+                                <TextBox Text="{Binding Text, Mode=TwoWay}" AcceptsReturn="True" Height="60" Margin="0,5,0,10"/>
+                                <TextBlock Text="Rate:" Foreground="White"/>
+                                <ComboBox SelectedValue="{Binding Rate, Mode=TwoWay}" SelectedValuePath="Content" Width="100">
+                                    <ComboBoxItem Content="1"/>
+                                    <ComboBoxItem Content="2"/>
+                                    <ComboBoxItem Content="3"/>
+                                    <ComboBoxItem Content="4"/>
+                                    <ComboBoxItem Content="5"/>
+                                </ComboBox>
+                                <Button Content="Send" Command="{Binding SubmitReviewCommand}" Margin="0,10,0,0"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
                 </DataTemplate>
+
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </ScrollViewer>

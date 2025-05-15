@@ -2,6 +2,7 @@
 using Booking.Data;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Models
 {
@@ -91,6 +92,28 @@ namespace Booking.Models
             catch (Exception ex)
             {
                 MessageBox.Show($"Error copying image: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteImagesByItemIdAsync(Guid itemId)
+        {
+            try
+            {
+                var images = await context.ItemImages.Where(i => i.ItemId == itemId).ToListAsync();
+                if (images.Count == 0)
+                {
+                    MessageBox.Show("No images found for this item.");
+                    return false;
+                }
+
+                context.ItemImages.RemoveRange(images);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error deleting images: {ex.Message}");
                 return false;
             }
         }
