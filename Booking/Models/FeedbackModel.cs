@@ -39,7 +39,7 @@ namespace Booking.Models
                 DeletedAt = null
             };
 
-            Realty realty = null;
+            Realty? realty = null;
             try
             {
                 realty = await dataContext.Realties
@@ -58,9 +58,9 @@ namespace Booking.Models
                 return false;
             }
 
-            Feedback.UserAccess = await dataContext.UserAccesses
-                .Include(ua => ua.Feedbacks)
-                .FirstOrDefaultAsync(ua => ua.Id == userAccessId);
+            Feedback!.UserAccess = await dataContext!.UserAccesses!
+                .Include(ua => ua.Feedbacks)!
+                .FirstOrDefaultAsync(ua => ua.Id == userAccessId)!;
             Feedback.Realty = realty;
             realty.Feedbacks.Add(Feedback);
             dataContext.Feedbacks.Add(Feedback);
@@ -75,7 +75,7 @@ namespace Booking.Models
                 .FirstOrDefaultAsync(f => f.Id == feedbackId && f.DeletedAt == null);
             var realty = await dataContext.Realties
                     .Include(r => r.Feedbacks)
-                    .FirstOrDefaultAsync(r => r.Id == feedback.RealtyId && r.DeletedAt == null);
+                    .FirstOrDefaultAsync(r => r.Id == feedback!.RealtyId && r.DeletedAt == null);
             
 
             if (feedback == null)

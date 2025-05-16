@@ -1,5 +1,7 @@
 ﻿using Booking.Data;
 using Booking.Data.Entities;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Booking.ViewModels
 {
@@ -7,6 +9,9 @@ namespace Booking.ViewModels
     {
         private DataContext context = new();
         private Realty? realty;
+        private ItemImage? activeImage; 
+        private int? activeImageIndex;
+
         public Realty? Realty
         {
             get => realty;
@@ -16,13 +21,62 @@ namespace Booking.ViewModels
                 OnPropertyChanged(nameof(Realty));
             }
         }
-        public ItemViewModel()
+        public ItemImage? ActiveImage
         {
-            realty = null;
+            get => activeImage;
+            set
+            {
+                activeImage = value;
+                OnPropertyChanged(nameof(ActiveImage));
+            }
         }
-        public ItemViewModel(Realty realty)
+        public ICommand ArrowLeftCommand { get; }
+        public ICommand ArrowRightCommand { get; }
+        public ItemViewModel() : this(null)
+        { }
+        public ItemViewModel(Realty? realty)
         {
+            ArrowLeftCommand = new RelayCommand(ExecuteArrowLeftCommand);
+            ArrowRightCommand = new RelayCommand(ExecuteArrowRightCommand);
             this.realty = realty;
+
+            if (this.realty?.Images.Count <= 1) activeImageIndex = null;
+            else activeImageIndex = 1;
+
+            if(activeImageIndex == 1) ActiveImage = realty?.Images[(int)activeImageIndex!];
+            else ActiveImage = null;
+
+            if(realty != null) MessageBox.Show(realty.Images.Count + "");
+
+
+        }
+
+        private void ExecuteArrowRightCommand(object? obj)
+        {
+            if (activeImage != null)
+            {
+                activeImageIndex++;
+                if (activeImageIndex > realty?.Images.Count - 1)
+                {
+                    activeImageIndex = 1;
+                }
+                ActiveImage = realty?.Images[(int)activeImageIndex!];
+            }
+        }
+
+        private void ExecuteArrowLeftCommand(object? obj)
+        {
+            //MessageBox.Show(activeImageIndex + "");
+            if (activeImageIndex != null)
+            {
+                activeImageIndex--;
+                if (activeImageIndex < 1)
+                {
+                    activeImageIndex = realty?.Images.Count - 1;
+                }
+                ActiveImage = realty?.Images[(int)activeImageIndex!];
+            }
+            
         }
     }
 }

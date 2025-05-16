@@ -138,12 +138,13 @@
 
             <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
 
-                <Button>
-                    
+                <Button Height="30" BorderBrush="Transparent" Command="{Binding ArrowLeftCommand}" Background="Transparent">
+                    <fa:IconImage Icon="ArrowLeft" Foreground="DarkGray" Width="20" Height="Auto"/>
                 </Button>
-                <Image />
-                <Button>
-
+                <Image x:Name="secondaryImage" Height="Auto" Width="345" 
+                       Source="{Binding ActiveImage.ImageUrl, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Height="30" BorderBrush="Transparent" Command="{Binding ArrowRightCommand}" Background="Transparent">
+                    <fa:IconImage Icon="ArrowRight" Foreground="DarkGray" Width="20" Height="Auto"/>
                 </Button>
 
             </StackPanel>
