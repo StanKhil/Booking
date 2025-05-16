@@ -124,7 +124,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <TextBlock Text="{Binding SelectedFilePath, UpdateSourceTrigger=PropertyChanged}" x:Name="SelectedFileText" Margin="10,5,0,0" TextWrapping="Wrap" />
+            <TextBlock Foreground="White" Text="{Binding SelectedFilePath, UpdateSourceTrigger=PropertyChanged}" x:Name="SelectedFileText" Margin="10,5,0,0" TextWrapping="Wrap" />
 
             <TextBlock Text="Price"
                     Foreground="DarkGray" FontSize="12"
@@ -160,12 +160,17 @@
                     Foreground="DarkGray" FontSize="12"
                     FontWeight="Medium" 
                     Margin="10,15,0,0"/>
-            <TextBox x:Name="createRealtyGroup" FontSize="12"
-                      Text="{Binding Group, UpdateSourceTrigger=PropertyChanged}" FontWeight="Medium"
-                      Foreground="White" BorderThickness="0,0,0,1" CaretBrush="LightGray"
-                      Width="300" Height="28" HorizontalAlignment="Left" VerticalAlignment="Center"
-                      VerticalContentAlignment="Center" Background="Transparent" Margin="10,5,0,0" Padding="30,0,0,0">
-            </TextBox>
+            <ComboBox x:Name="roleComboBox"
+                    Text="{Binding Group, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding Groups}" 
+                    SelectedItem="{Binding SelectedGroup, Mode=TwoWay}"
+                    FontSize="12" FontWeight="Medium"
+                    Foreground="Black"
+                    Background="Gray"
+                    BorderThickness="0,0,0,1"
+                    Height="28" Width="300" HorizontalAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Margin="10,5,0,0" Padding="10,0,0,0"/>
 
 
             <ListBox Foreground="Black" x:Name="imagesListBox" ItemsSource="{Binding ImageUrls, UpdateSourceTrigger=PropertyChanged}">
@@ -312,6 +317,35 @@
                         Foreground="White" BorderThickness="0,0,0,1" CaretBrush="LightGray"
                         Width="300" Height="28" HorizontalAlignment="Left" VerticalAlignment="Center"
                         VerticalContentAlignment="Center" Background="Transparent" Margin="10,5,0,0" Padding="30,0,0,0"/>
+
+            <TextBlock Text="Image"
+                    Foreground="DarkGray" FontSize="12"
+                    FontWeight="Medium" 
+                    Margin="10,15,0,0"/>
+            <Button FontWeight="Medium" Margin="10,5,0,0" HorizontalAlignment="Left" Foreground="White"
+        Content="Choose File" Command="{Binding UpdatePrimaryImageCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#2e2e2e"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#121212"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="150" Height="40"
+                    CornerRadius="20" Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <TextBlock Foreground="White" Text="{Binding NewSelectedFilePath, UpdateSourceTrigger=PropertyChanged}" x:Name="newSelectedFileText" Margin="10,5,0,0" TextWrapping="Wrap" />
+
+
             <TextBlock Text="New price"
                         Foreground="DarkGray" FontSize="12"
                         FontWeight="Medium" 
@@ -344,12 +378,42 @@
                         Foreground="DarkGray" FontSize="12"
                         FontWeight="Medium" 
                         Margin="10,15,0,0"/>
-            <TextBox x:Name="newRealtyGroup" FontSize="12"
-                        Text="{Binding NewGroup, UpdateSourceTrigger=PropertyChanged}" FontWeight="Medium"
-                        Foreground="White" BorderThickness="0,0,0,1" CaretBrush="LightGray"
-                        Width="300" Height="28" HorizontalAlignment="Left" VerticalAlignment="Center"
-                        VerticalContentAlignment="Center" Background="Transparent" Margin="10,5,0,0" Padding="30,0,0,0"/>
+            <ComboBox x:Name="newRoleComboBox"
+                    Text="{Binding NewGroup, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding Groups}" 
+                    SelectedItem="{Binding SelectedGroup, Mode=TwoWay}"
+                    FontSize="12" FontWeight="Medium"
+                    Foreground="Black"
+                    Background="Gray"
+                    BorderThickness="0,0,0,1"
+                    Height="28" Width="300" HorizontalAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    Margin="10,5,0,0" Padding="10,0,0,0"/>
+            
+            <ListBox Foreground="Black" x:Name="newImagesListBox" ItemsSource="{Binding NewImageUrls, UpdateSourceTrigger=PropertyChanged}">
 
+            </ListBox>
+            <Button FontWeight="Medium" Margin="10,5,0,0" HorizontalAlignment="Left" Foreground="White"
+        Content="Choose File" Command="{Binding UpdateSecondaryImageCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#2e2e2e"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#121212"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="150" Height="40"
+                    CornerRadius="20" Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
             <!--<TextBlock Text="New email"
                     Foreground="DarkGray" FontSize="12"

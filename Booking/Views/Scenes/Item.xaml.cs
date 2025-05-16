@@ -37,5 +37,13 @@ namespace Booking.Views.Scenes
             ItemViewModel itemViewModel = new(realty);
             DataContext = itemViewModel;
         }
+
+        private async void Item_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ItemViewModel viewModel)
+            {
+                await viewModel.Window_LoadedAsync();
+            }
+        }        
     }
 }

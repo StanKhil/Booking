@@ -1,5 +1,6 @@
 ﻿using Booking.Data;
 using Booking.Data.Entities;
+using Booking.Services.CurrencyRate;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,6 +13,18 @@ namespace Booking.ViewModels
         private ItemImage? activeImage; 
         private int? activeImageIndex;
 
+        private double priceUa;
+        private float rate;
+
+        public double PriceUa
+        {
+            get => priceUa;
+            set
+            {
+                priceUa = value;
+                OnPropertyChanged(nameof(PriceUa));
+            }
+        }
         public Realty? Realty
         {
             get => realty;
@@ -21,6 +34,17 @@ namespace Booking.ViewModels
                 OnPropertyChanged(nameof(Realty));
             }
         }
+
+        public double Rate
+        {
+            get => rate;
+            set
+            {
+                rate = (float)value;
+                OnPropertyChanged(nameof(Rate));
+            }
+        }
+        public ItemViewModel()
         public ItemImage? ActiveImage
         {
             get => activeImage;
@@ -77,6 +101,19 @@ namespace Booking.ViewModels
                 ActiveImage = realty?.Images[(int)activeImageIndex!];
             }
             
+        }
+
+        public async Task Window_LoadedAsync()
+        {
+            if (Realty != null)
+            {
+                var service = new NbuCurrencyRate();
+                var eurRate = await service.GetCurrencyRateAsync();
+
+                PriceUa = eurRate * (double)Realty.Price;
+
+                Rate = realty.AccRates.AvgRate;
+            }
         }
     }
 }

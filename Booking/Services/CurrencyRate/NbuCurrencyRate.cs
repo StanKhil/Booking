@@ -10,7 +10,7 @@ namespace Booking.Services.CurrencyRate
 {
     public class NbuCurrencyRate : ICurrencyRate
     {
-        public async Task<double> GetCurrencyRatesAsync()
+        public async Task<double> GetCurrencyRateAsync()
         {
             using HttpClient client = new();
             String json = await client.GetStringAsync($"https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
@@ -19,7 +19,7 @@ namespace Booking.Services.CurrencyRate
 
             foreach (var rate in nbuRates)
             {
-                if (rate.cc == "UAH")
+                if (rate.cc == "EUR")
                 {
                     return rate.rate;
                 }

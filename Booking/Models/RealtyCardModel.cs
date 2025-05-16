@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Booking.Data;
-using App.Services.CurrencyRate;
+using Booking.Services.CurrencyRate;
 using Booking.Data.Entities;
 
 
@@ -77,7 +77,7 @@ namespace Booking.Models
 
         public double PriceUa
         {
-            get => (currencyRate.GetCurrencyRatesAsync().Result) * (double)Price;
+            get => (currencyRate.GetCurrencyRateAsync().Result) * (double)Price;
         }
 
         public List<Feedback> Feedbacks

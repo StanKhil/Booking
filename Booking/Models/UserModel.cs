@@ -1,5 +1,6 @@
 ﻿using Booking.Data;
 using Booking.Data.Entities;
+using Booking.Services;
 using Booking.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic.Logging;
@@ -184,7 +185,7 @@ namespace Booking.Models
             return true;
         }
 
-        public async Task<List<BookingItem>> GetFutureBookingsAsync(UserAccess userAccess)
+        public async Task<List<BookingItem>> GetBookingsAsync(UserAccess userAccess)
         {
             if (userAccess == null)
             {
@@ -193,11 +194,11 @@ namespace Booking.Models
             }
             var bookings = await context.BookingItems
                 .Include(b => b.Realty)
-                .Where(b => b.UserAccessId == userAccess.Id && b.DeletedAt == null && b.EndDate > DateTime.Now)
+                .Where(b => b.UserAccessId == userAccess.Id && b.DeletedAt == null)
                 .ToListAsync();
             if (bookings.Count == 0)
             {
-                System.Windows.MessageBox.Show("No future bookings found");
+                System.Windows.MessageBox.Show("No bookings found");
             }
             return bookings;
         }

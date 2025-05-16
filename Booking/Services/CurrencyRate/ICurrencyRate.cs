@@ -8,6 +8,6 @@ namespace Booking.Services.CurrencyRate
 {
     public interface ICurrencyRate
     {
-        Task<double> GetCurrencyRatesAsync();
+        Task<double> GetCurrencyRateAsync();
     }
 }
