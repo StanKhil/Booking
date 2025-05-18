@@ -33,7 +33,7 @@ namespace Booking.Data.Entities
         public List<ItemImage> Images { get; set; } = [];
         public List<Feedback> Feedbacks { get; set; } = [];
 
-        public AccRates AccRates { get; set; }
+        public AccRates? AccRates { get; set; }
 
         public string ImagePath
         {

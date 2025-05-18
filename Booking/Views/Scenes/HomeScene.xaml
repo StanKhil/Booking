@@ -5,15 +5,190 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:Booking.Views"
              xmlns:local="clr-namespace:Booking.Views.Scenes"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
+    <UserControl.Resources>
+        <Style x:Key="ModernScrollBar" TargetType="ScrollBar">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="#1E1E1E" Width="8">
+                            <Track Name="PART_Track" IsDirectionReversed="true">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.LineUpCommand"
+                                  Style="{x:Null}" Height="0"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Background="#666" MinHeight="20">
+                                        <Thumb.Style>
+                                            <Style TargetType="Thumb">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Thumb">
+                                                            <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="4"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#999"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Thumb.Style>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.LineDownCommand"
+                                  Style="{x:Null}" Height="0"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Button Command="{Binding UserAdminWindowCommand}"  Width="60" Height="30">Admin</Button>
-        <TextBlock Grid.Column="1" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Home View"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <Border HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="800" Height="Auto"
+                Background="{StaticResource color2}" CornerRadius="7">
+
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="40,30,0,0" FontWeight="Bold" Foreground="White" FontSize="22" Text="Booking"></TextBlock>
+                    <fa:IconImage  Margin="10,30,0,0" Icon="MagnifyingGlass" Foreground="White" Width="25" Height="Auto"/>
+                </StackPanel>
+                <TextBlock Margin="50,20,0,0" FontWeight="Bold" Foreground="White" FontSize="24" Text="Find your next stay"></TextBlock>
+            </StackPanel>
+        
+        </Border>
+        <ScrollViewer Grid.Row="1" x:Name="itemScrollViewer">
+            <ScrollViewer.Resources>
+                <Style TargetType="ScrollBar" BasedOn="{StaticResource ModernScrollBar}"/>
+            </ScrollViewer.Resources>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="10,10,0,0" FontSize="16" Foreground="White" FontWeight="Medium" Text="Browse by property type"></TextBlock>
+
+                <Button Grid.Column="0" BorderThickness="0" Grid.Row="1" >
+                    <Image  Source="/Images/Hotels.jpeg"/>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="{StaticResource color10}"></Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource color9}"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="180" Height="Auto" CornerRadius="20" Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Grid.Column="1" BorderThickness="0" Grid.Row="1" >
+                    <Image Source="/Images/Apartments.jpeg"/>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="{StaticResource color10}"></Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource color9}"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="180" Height="Auto" CornerRadius="20" Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Grid.Column="2" BorderThickness="0" Grid.Row="1" >
+                    <Image Source="/Images/Resorts.jpeg"/>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="{StaticResource color10}"></Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource color9}"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="180" Height="Auto" CornerRadius="20" Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                
+                <Button Grid.Column="3" BorderThickness="0" Grid.Row="1" >
+                    <Image Source="/Images/Villas.jpeg"/>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="{StaticResource color10}"></Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource color9}"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="180" Height="Auto" CornerRadius="20" Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="14" Foreground="White" FontWeight="Medium" Text="Hotels"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="14" Foreground="White" FontWeight="Medium" Text="Apartments"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="14" Foreground="White" FontWeight="Medium" Text="Resorts"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center"  FontSize="14" Foreground="White" FontWeight="Medium" Text="Villas"></TextBlock>
+                
+
+            </Grid>
+            
+            
+        </ScrollViewer>
+        
     </Grid>
 </UserControl>

@@ -149,8 +149,29 @@
                 </Button>
 
             </StackPanel>
-            
-            
+
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                <Button VerticalAlignment="Top" Margin="0,10,0,0"  Height="30" BorderBrush="Transparent" Command="{Binding FeedbackArrowLeftCommand}" Background="Transparent">
+                    <fa:IconImage Icon="CircleArrowLeft" Foreground="DarkGray" Width="20" Height="Auto"/>
+                </Button>
+                <StackPanel Margin="0,5,0,0" Width="345" Height="Auto">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"   FontStyle="Italic"
+                                   Text="{Binding ActiveFeedback.UserAccess.Login}" Foreground="WhiteSmoke" FontSize="12" FontWeight="Medium"/>
+                        <TextBlock Margin="90,0,20,0"  HorizontalAlignment="Right" VerticalAlignment="Center"   FontStyle="Italic"
+                                    Text="{Binding ActiveFeedback.UpdatedAt}" Foreground="WhiteSmoke" FontSize="12" FontWeight="Medium"/>
+                        <TextBlock Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center"   FontStyle="Italic"
+                                    Text="{Binding ActiveFeedback.CreatedAt}" Foreground="WhiteSmoke" FontSize="12" FontWeight="Medium"/>
+                    </StackPanel>
+                    <TextBlock Margin="10,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                Text="{Binding ActiveFeedback.Text}" Foreground="DarkGray" FontSize="14" FontWeight="Normal"/>
+                </StackPanel>
+                <Button  Margin="0,10,0,0" VerticalAlignment="Top" Height="30" BorderBrush="Transparent" Command="{Binding FeedbackArrowRightCommand}" Background="Transparent">
+                    <fa:IconImage Icon="CircleArrowRight" Foreground="DarkGray" Width="20" Height="Auto"/>
+                </Button>
+            </StackPanel>
+
+
         </Grid>
     </ScrollViewer>
     

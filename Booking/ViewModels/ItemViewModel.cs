@@ -1,5 +1,6 @@
 ﻿using Booking.Data;
 using Booking.Data.Entities;
+using Booking.Models;
 using Booking.Services.CurrencyRate;
 using System.Windows;
 using System.Windows.Input;
@@ -10,8 +11,10 @@ namespace Booking.ViewModels
     {
         private DataContext context = new();
         private Realty? realty;
-        private ItemImage? activeImage; 
+        private ItemImage? activeImage;
         private int? activeImageIndex;
+        private Feedback? activeFeedback;
+        private int? activeFeedbackIndex;
 
         private double priceUa;
         private float rate;
@@ -44,7 +47,6 @@ namespace Booking.ViewModels
                 OnPropertyChanged(nameof(Rate));
             }
         }
-        public ItemViewModel()
         public ItemImage? ActiveImage
         {
             get => activeImage;
@@ -54,14 +56,27 @@ namespace Booking.ViewModels
                 OnPropertyChanged(nameof(ActiveImage));
             }
         }
+        public Feedback? ActiveFeedback
+        {
+            get => activeFeedback;
+            set
+            {
+                activeFeedback = value;
+                OnPropertyChanged(nameof(ActiveFeedback));
+            }
+        }
         public ICommand ArrowLeftCommand { get; }
         public ICommand ArrowRightCommand { get; }
+        public ICommand FeedbackArrowLeftCommand { get; }
+        public ICommand FeedbackArrowRightCommand { get; }
         public ItemViewModel() : this(null)
         { }
         public ItemViewModel(Realty? realty)
         {
             ArrowLeftCommand = new RelayCommand(ExecuteArrowLeftCommand);
             ArrowRightCommand = new RelayCommand(ExecuteArrowRightCommand);
+            FeedbackArrowLeftCommand = new RelayCommand(ExecuteFeedbackArrowLeftCommand);
+            FeedbackArrowRightCommand = new RelayCommand(ExecuteFeedbackArrowRightCommand);
             this.realty = realty;
 
             if (this.realty?.Images.Count <= 1) activeImageIndex = null;
@@ -70,11 +85,14 @@ namespace Booking.ViewModels
             if(activeImageIndex == 1) ActiveImage = realty?.Images[(int)activeImageIndex!];
             else ActiveImage = null;
 
-            if(realty != null) MessageBox.Show(realty.Images.Count + "");
+            if(this.realty?.Feedbacks.Count == 0) activeFeedbackIndex = null;
+            else activeFeedbackIndex = 0;
 
+            if(activeFeedbackIndex == 0) ActiveFeedback = realty?.Feedbacks[(int)activeFeedbackIndex];
+            else ActiveFeedback = null;
 
+            //if(realty != null) MessageBox.Show(realty.Feedbacks.Count + " | " + realty.Feedbacks.FirstOrDefault().UserAccess.Login);
         }
-
         private void ExecuteArrowRightCommand(object? obj)
         {
             if (activeImage != null)
@@ -90,7 +108,6 @@ namespace Booking.ViewModels
 
         private void ExecuteArrowLeftCommand(object? obj)
         {
-            //MessageBox.Show(activeImageIndex + "");
             if (activeImageIndex != null)
             {
                 activeImageIndex--;
@@ -102,7 +119,31 @@ namespace Booking.ViewModels
             }
             
         }
+        private void ExecuteFeedbackArrowRightCommand(object? obj)
+        {
+            if(activeFeedbackIndex != null)
+            {
+                activeFeedbackIndex++;
+                if(activeFeedbackIndex > realty?.Feedbacks.Count - 1)
+                {
+                    activeFeedbackIndex = 0;
+                }
+                ActiveFeedback = realty?.Feedbacks[(int)activeFeedbackIndex];
+            }
+        }
 
+        private void ExecuteFeedbackArrowLeftCommand(object? obj)
+        {
+            if(activeFeedbackIndex != null)
+            {
+                activeFeedbackIndex--;
+                if(activeFeedbackIndex < 0)
+                {
+                    activeFeedbackIndex = realty?.Feedbacks.Count - 1;
+                }
+                ActiveFeedback = realty?.Feedbacks[(int)activeFeedbackIndex!];
+            }
+        }
         public async Task Window_LoadedAsync()
         {
             if (Realty != null)
@@ -112,7 +153,8 @@ namespace Booking.ViewModels
 
                 PriceUa = eurRate * (double)Realty.Price;
 
-                Rate = realty.AccRates.AvgRate;
+                if(realty?.AccRates != null) Rate = realty.AccRates.AvgRate;
+
             }
         }
     }

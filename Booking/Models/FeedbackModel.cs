@@ -84,14 +84,12 @@ namespace Booking.Models
                 return false;
             }
             feedback.DeletedAt = DateTime.Now;
-            realty.Feedbacks.Remove(feedback);
+            realty?.Feedbacks.Remove(feedback);
 
             try
             {
                 //await dataContext.SaveChangesAsync();
-                await dataContext.Database.ExecuteSqlRawAsync(
-    "UPDATE Feedbacks SET DeletedAt = {0} WHERE Id = {1}", DateTime.Now, feedbackId);
-
+                await dataContext.Database.ExecuteSqlRawAsync("UPDATE Feedbacks SET DeletedAt = {0} WHERE Id = {1}", DateTime.Now, feedbackId);
             }
             catch (Exception ex)
             {

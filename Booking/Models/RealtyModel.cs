@@ -168,13 +168,21 @@ namespace Booking.Models
 
         public async Task<List<Feedback>> GetFeedbacksAsync(string slug)
         {
-            var realty = await context.Realties.FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
+            var realty = await context.Realties
+                .Include(r => r.Country)
+                .Include(r => r.AccRates)
+                .Include(r => r.Feedbacks)
+                .Include(r => r.Images)
+                .Include(r => r.BookingItems)
+                .Include(r => r.RealtyGroup)
+                .Include(r => r.City)
+                .FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
             if (realty == null)
             {
                 MessageBox.Show("Realty not found");
                 return new List<Feedback>();
             }
-            return await context.Feedbacks.Where(f => f.RealtyId == realty.Id && f.DeletedAt == null).ToListAsync();
+            return await context.Feedbacks.Include(f => f.UserAccess).Where(f => f.RealtyId == realty.Id && f.DeletedAt == null).ToListAsync();
         }
 
         public async Task<List<Realty>> GetRealtiesByGroupAsync(string groupName)

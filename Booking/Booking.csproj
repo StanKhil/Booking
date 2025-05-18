@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Apartments.jpeg" />
     <None Remove="Images\book.png" />
+    <None Remove="Images\Hotels.jpeg" />
     <None Remove="Images\key.png" />
+    <None Remove="Images\Resorts.jpeg" />
     <None Remove="Images\user.png" />
+    <None Remove="Images\Villas.jpeg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,9 +31,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\Apartments.jpeg" />
     <Resource Include="Images\book.png" />
+    <Resource Include="Images\Hotels.jpeg" />
     <Resource Include="Images\key.png" />
+    <Resource Include="Images\Resorts.jpeg" />
     <Resource Include="Images\user.png" />
+    <Resource Include="Images\Villas.jpeg" />
   </ItemGroup>
 
 </Project>
