@@ -31,4 +31,4 @@ This application was designed to simplify the real estate booking process by pro
 
 Feel free to share information or contribute to improving the app!
 
-# After cloning this repo, you need to rename file appsettings.json.example to appsettings.json and fill in the values.
+### After cloning this repo, you need to rename file appsettings.json.example to appsettings.json and fill in the values.
