@@ -56,7 +56,7 @@ namespace Booking.Models
 
             if (realty == null)
             {
-                System.Windows.MessageBox.Show("Realty not found");
+                CustomMessageBox.Show("System","Realty not found", MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
 
@@ -67,7 +67,7 @@ namespace Booking.Models
             realty.Feedbacks.Add(Feedback);
             dataContext.Feedbacks.Add(Feedback);
             await dataContext.SaveChangesAsync();
-            System.Windows.MessageBox.Show("Feedback created");
+            CustomMessageBox.Show("System", "Feedback created", MessageBoxButton.OK, IconChar.TriangleExclamation);
             return true;
         }
 
