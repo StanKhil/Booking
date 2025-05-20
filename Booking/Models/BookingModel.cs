@@ -1,6 +1,8 @@
 ﻿using Booking.Data;
 using Booking.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using FontAwesome.Sharp;
+using System.Windows;
 
 
 namespace Booking.Models
@@ -19,13 +21,13 @@ namespace Booking.Models
         {
             if (start == null || finish == null)
             {
-                System.Windows.MessageBox.Show("Start or finish date is empty");
+                CustomMessageBox.Show("System", "Start or finish date is empty", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
             if (start >= finish)
             {
-                System.Windows.MessageBox.Show("Start date is greater than finish date");
+                CustomMessageBox.Show("System", "Start date is greater than finish date", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
@@ -35,7 +37,7 @@ namespace Booking.Models
 
             if (realty == null)
             {
-                System.Windows.MessageBox.Show("Realty not found");
+                CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
@@ -47,7 +49,7 @@ namespace Booking.Models
 
             if (hasOverlap)
             {
-                System.Windows.MessageBox.Show("This realty is already booked for the selected dates.");
+                CustomMessageBox.Show("System", "This realty is already booked for the selected dates.", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
@@ -69,7 +71,7 @@ namespace Booking.Models
             realty.BookingItems.Add(bookingItem);
             context.BookingItems.Add(bookingItem);
             await context.SaveChangesAsync();
-            System.Windows.MessageBox.Show("Booking created successfully");
+            CustomMessageBox.Show("System", "Booking created successfully", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
 
@@ -84,19 +86,19 @@ namespace Booking.Models
                 .FirstOrDefaultAsync(r => r.Id == bookingItem.RealtyId && r.DeletedAt == null);
             if (bookingItem == null)
             {
-                System.Windows.MessageBox.Show("Booking not found");
+                CustomMessageBox.Show("System", "Booking not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
             if(bookingItem.StartDate.AddDays(-3) < DateTime.Now)
             {
-                System.Windows.MessageBox.Show("Booking cannot be deleted less than 3 days before the start date");
+                CustomMessageBox.Show("System", "Booking cannot be deleted less than 3 days before the start date", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
             bookingItem.DeletedAt = DateTime.Now;
             //realty.BookingItems.Remove(bookingItem);
             await context.SaveChangesAsync();
-            System.Windows.MessageBox.Show("Booking deleted successfully");
+            CustomMessageBox.Show("System", "Booking deleted successfully", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
     }

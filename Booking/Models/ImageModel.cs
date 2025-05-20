@@ -3,6 +3,8 @@ using Booking.Data;
 using System.Windows.Forms;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
+using FontAwesome.Sharp;
+using System.Windows;
 
 namespace Booking.Models
 {
@@ -21,7 +23,7 @@ namespace Booking.Models
             {
                 if(context.ItemImages.Any(i => i.ItemId == realtyId && i.ImageUrl == url))
                 {
-                    MessageBox.Show("Image already exists.");
+                    CustomMessageBox.Show("System", "Image already exists.", MessageBoxButton.OK, IconChar.CircleExclamation);
                     return true;
                 }
 
@@ -37,7 +39,7 @@ namespace Booking.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error creating image: {ex.Message}");
+                CustomMessageBox.Show("System", $"Error creating image: {ex.Message}", MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
         }
@@ -61,7 +63,7 @@ namespace Booking.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error creating images: {ex.Message}");
+                CustomMessageBox.Show("System", $"Error creating images: {ex.Message}", MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
         }
@@ -83,7 +85,7 @@ namespace Booking.Models
 
                 if (!File.Exists(localFilePath))
                 {
-                    MessageBox.Show("Local image file not found.");
+                    CustomMessageBox.Show("System", "Local image file not found.", MessageBoxButton.OK, IconChar.TriangleExclamation);
                     return false;
                 }
 
@@ -91,13 +93,11 @@ namespace Booking.Models
                 string destPath = Path.Combine(folderPath, fileName);
 
                 File.Copy(localFilePath, destPath, overwrite: true);
-
-                MessageBox.Show($"Image copied to: {destPath}");
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error copying image: {ex.Message}");
+                CustomMessageBox.Show("System", $"Error copying image: {ex.Message}", MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
         }
@@ -109,7 +109,7 @@ namespace Booking.Models
                 var images = await context.ItemImages.Where(i => i.ItemId == itemId).ToListAsync();
                 if (images.Count == 0)
                 {
-                    MessageBox.Show("No images found for this item.");
+                    CustomMessageBox.Show("System", "No images found for this item.", MessageBoxButton.OK, IconChar.CircleExclamation);
                     return false;
                 }
 
@@ -119,7 +119,7 @@ namespace Booking.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error deleting images: {ex.Message}");
+                CustomMessageBox.Show("System", "Error deleting images: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
         }

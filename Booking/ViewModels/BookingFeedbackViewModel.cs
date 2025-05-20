@@ -3,6 +3,7 @@ using Booking.Models;
 using System.Windows.Input;
 using System.Windows;
 using Booking.Data;
+using FontAwesome.Sharp;
 
 namespace Booking.ViewModels
 {
@@ -23,7 +24,6 @@ namespace Booking.ViewModels
                 OnPropertyChanged(nameof(Text));
             }
         }
-
         public int Rate
         {
             get => rate;
@@ -33,7 +33,6 @@ namespace Booking.ViewModels
                 OnPropertyChanged(nameof(Rate));
             }
         }
-
         public ICommand SubmitReviewCommand { get; }
         public ICommand DeleteBookingCommnad { get; }
 
@@ -55,25 +54,25 @@ namespace Booking.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Text) || Rate <= 0)
             {
-                MessageBox.Show("Text and Rate are required");
+                CustomMessageBox.Show("System", "Text and Rate are required", MessageBoxButton.OK, IconChar.CircleExclamation);
                 return;
             }
 
 
             bool result = await feedbackModel.CreateFeedbackAsync(access.Id, Booking.Realty.Id, Text, Rate);
-            if (result)
-                MessageBox.Show("Success");
-            else
-                MessageBox.Show("Error");
+            //if (result)
+               // MessageBox.Show("Success");
+            //else
+                //MessageBox.Show("Error");
         }
 
         private async void DeleteBookingCommand(object? obj)
         {
             var result = await bookingModel.DeleteBookingAsync(Booking.Id);
-            if (result)
-                MessageBox.Show("Booking deleted");
-            else
-                MessageBox.Show("Error deleting booking");
+            //if (result)
+            //    MessageBox.Show("Booking deleted");
+            //else
+            //    MessageBox.Show("Error deleting booking");
         }
     }
 }

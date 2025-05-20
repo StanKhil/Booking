@@ -34,7 +34,7 @@ namespace Booking.Views.Scenes
         {
             InitializeComponent();
             itemScrollViewer.Height = height;
-            ItemViewModel itemViewModel = new(realty,access);
+            ItemViewModel itemViewModel = new(realty, access);
             DataContext = itemViewModel;
         }
 

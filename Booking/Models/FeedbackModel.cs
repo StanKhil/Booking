@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FontAwesome.Sharp;
 using Microsoft.EntityFrameworkCore;
+using System.Windows;
 
 namespace Booking.Models
 {
@@ -23,7 +25,7 @@ namespace Booking.Models
         {
             if(string.IsNullOrEmpty(message))
             {
-                System.Windows.MessageBox.Show("Message cannot be empty");
+                CustomMessageBox.Show("System", "Message cannot be empty", MessageBoxButton.OK, IconChar.CircleExclamation);
                 return false;
             }
 
@@ -37,9 +39,9 @@ namespace Booking.Models
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 DeletedAt = null
-            };
+            }!;
 
-            Realty? realty = null;
+            Realty? realty = null!;
             try
             {
                 realty = await dataContext.Realties
@@ -48,7 +50,7 @@ namespace Booking.Models
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Error: " + ex.Message);
+                CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
 
@@ -58,9 +60,9 @@ namespace Booking.Models
                 return false;
             }
 
-            Feedback!.UserAccess = await dataContext!.UserAccesses!
-                .Include(ua => ua.Feedbacks)!
-                .FirstOrDefaultAsync(ua => ua.Id == userAccessId)!;
+            Feedback!.UserAccess = await dataContext!?.UserAccesses!?
+                .Include(ua => ua!.Feedbacks!)!?
+                .FirstOrDefaultAsync(ua => ua!.Id! == userAccessId!)!;
             Feedback.Realty = realty;
             realty.Feedbacks.Add(Feedback);
             dataContext.Feedbacks.Add(Feedback);
@@ -80,7 +82,7 @@ namespace Booking.Models
 
             if (feedback == null)
             {
-                System.Windows.MessageBox.Show("Feedback not found");
+               CustomMessageBox.Show("System","Feedback not found", MessageBoxButton.OK, IconChar.CircleExclamation);
                 return false;
             }
             feedback.DeletedAt = DateTime.Now;
@@ -93,11 +95,10 @@ namespace Booking.Models
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Error: " + ex.Message);
+                CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
-
-            System.Windows.MessageBox.Show("Feedback deleted");
+            CustomMessageBox.Show("System", "Feedback deleted", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
     }

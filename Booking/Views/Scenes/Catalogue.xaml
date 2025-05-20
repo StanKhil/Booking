@@ -56,41 +56,67 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel Orientation="Vertical">
-        <StackPanel Orientation="Horizontal" Margin="10">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-            <ComboBox Width="120" Margin="5"
-              ItemsSource="{Binding Countries}"
-              SelectedItem="{Binding CountryFilter, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0"/>
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Margin="10">
 
-            <ComboBox Width="120" Margin="5"
-              ItemsSource="{Binding Groups}"
-              SelectedItem="{Binding GroupFilter, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0"/>
+                <ComboBox Width="120" Margin="5"
+          ItemsSource="{Binding Countries}"
+          SelectedItem="{Binding CountryFilter, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0"/>
 
-            <ComboBox Width="120" Margin="5"
-              ItemsSource="{Binding Cities}"
-              SelectedItem="{Binding CityFilter, UpdateSourceTrigger=PropertyChanged}"
-              SelectedIndex="0"/>
+                <ComboBox Width="120" Margin="5"
+          ItemsSource="{Binding Groups}"
+          SelectedItem="{Binding GroupFilter, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0"/>
 
-            <ComboBox Width="130" Margin="5"
-          SelectedValuePath="Tag"
-          SelectedValue="{Binding SelectedSortOption, UpdateSourceTrigger=PropertyChanged}">
-                <ComboBoxItem Content="Sort by Rating" Tag="rating"/>
-                <ComboBoxItem Content="Sort by Price" Tag="price"/>
-            </ComboBox>
+                <ComboBox Width="120" Margin="5"
+                          ItemsSource="{Binding Cities}"
+                          SelectedItem="{Binding CityFilter, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedIndex="0"/>
+
+                <ComboBox Width="130" Margin="5"
+                      SelectedValuePath="Tag"
+                      SelectedValue="{Binding SelectedSortOption, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBoxItem Content="Sort by Rating" Tag="rating"/>
+                    <ComboBoxItem Content="Sort by Price" Tag="price"/>
+                </ComboBox>
 
 
-            <CheckBox Content="Ascending" Margin="5"
-              IsChecked="{Binding SortAscending, UpdateSourceTrigger=PropertyChanged}"/>
+                <CheckBox Foreground="White" VerticalAlignment="Center" FontWeight="Medium" Content="Ascending" Margin="5"
+                        IsChecked="{Binding SortAscending, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Button Content="Apply Filter" Margin="5"
-            Command="{Binding FilterCommand}"/>
+                <Button Foreground="White" Content="Apply Filter" Margin="5"
+                        Command="{Binding FilterCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#2e2e2e"></Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#121212"></Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="150" Height="40"
+                                    CornerRadius="20" Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
-            <!--<Button Content="Apply Sort" Margin="5"
-            Click="ApplySort_Click"/>-->
+                <!--<Button Content="Apply Sort" Margin="5"
+        Click="ApplySort_Click"/>-->
+            </StackPanel>
         </StackPanel>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <ScrollViewer.Resources>
                 <Style TargetType="ScrollBar" BasedOn="{StaticResource ModernScrollBar}"/>
             </ScrollViewer.Resources>
@@ -118,7 +144,7 @@
                                     <TextBlock FontStyle="Italic" Text="{Binding Description}" FontSize="12" Foreground="LightGray" TextWrapping="Wrap"/>
                                     <TextBlock Text="{Binding Price}" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource color3}" Margin="0,5,0,0"/>
                                     <Button Content="View" Command="{Binding DataContext.ViewItemInfoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" CommandParameter="{Binding}"
-                                    Background="#444" Foreground="White" Padding="6,3" Margin="0,5,0,0"/>
+                                            Background="#444" Foreground="White" Padding="6,3" Margin="0,5,0,0"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -126,6 +152,8 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-    </StackPanel>
+
+    </Grid>
+    
     
 </UserControl>

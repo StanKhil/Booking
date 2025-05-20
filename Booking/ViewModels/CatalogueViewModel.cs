@@ -7,6 +7,7 @@ using Booking.Views.Scenes;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Controls;
+using FontAwesome.Sharp;
 
 
 namespace Booking.ViewModels
@@ -171,10 +172,11 @@ namespace Booking.ViewModels
             Realty? realty = obj as Realty;
             if(realty == null)
             {
-                MessageBox.Show("System", "Error reaching the item", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("System", "Error reaching the item", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("System", "Error reaching the item", MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return;
             }
-            MessageBox.Show(realty.Name + " | " + realty.Country.Name);
+            //MessageBox.Show(realty.Name + " | " + realty.Country.Name);
             Item item = new(realty, access);
             mainViewModel.Item = item;
             mainViewModel.ItemChecked.Execute(new object());

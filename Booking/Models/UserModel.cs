@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using FontAwesome.Sharp;
 
 namespace Booking.Models
 {
@@ -30,7 +31,7 @@ namespace Booking.Models
 
             if (userAccess == null)
             {
-                System.Windows.MessageBox.Show("Login Not Found", "System", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                CustomMessageBox.Show("Login Not Found", "System", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
@@ -42,7 +43,8 @@ namespace Booking.Models
             }
 
             this.userAccess = userAccess;
-            System.Windows.MessageBox.Show($"Welcome {userAccess.User.Name}");
+            //System.Windows.MessageBox.Show($"Welcome {userAccess.User.Name}");
+            CustomMessageBox.Show("System", $"Welcome {userAccess.User.Name}", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
 
@@ -57,7 +59,7 @@ namespace Booking.Models
         {
             if (await context.UserAccesses.AnyAsync(ua => ua.Login == login && ua.User.DeletedAt == null))
             {
-                System.Windows.MessageBox.Show("Login already exists");
+                CustomMessageBox.Show("System", "Login already exists", MessageBoxButton.OK, IconChar.CircleExclamation);
                 return false;
             }
 
@@ -85,7 +87,7 @@ namespace Booking.Models
             context.UserAccesses.Add(userAccess);
             await context.SaveChangesAsync();
 
-            System.Windows.MessageBox.Show("Registered", "System", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageBox.Show("Registered", "System", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
 
@@ -123,7 +125,7 @@ namespace Booking.Models
                 context.UserAccesses.Add(userAccess);
                 await context.SaveChangesAsync();
 
-                System.Windows.MessageBox.Show("Created", "System", MessageBoxButton.OK, MessageBoxImage.Information);
+                CustomMessageBox.Show("Created", "System", MessageBoxButton.OK, IconChar.CircleInfo);
                 return true;
             }
             return false;
@@ -162,7 +164,7 @@ namespace Booking.Models
 
             await context.SaveChangesAsync();
 
-            System.Windows.MessageBox.Show("Updated", "System", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageBox.Show("System", "Updated", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
 
@@ -174,14 +176,14 @@ namespace Booking.Models
 
             if (userAccess == null)
             {
-                System.Windows.MessageBox.Show("User not found");
+                CustomMessageBox.Show("System", "User not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
             userAccess.User.DeletedAt = DateTime.Now;
             await context.SaveChangesAsync();
 
-            System.Windows.MessageBox.Show("Deleted", "System", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageBox.Show("Deleted", "System", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
 
@@ -189,7 +191,7 @@ namespace Booking.Models
         {
             if (userAccess == null)
             {
-                System.Windows.MessageBox.Show("User not found");
+                CustomMessageBox.Show("System", "User not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return new List<BookingItem>();
             }
             var bookings = await context.BookingItems
@@ -198,7 +200,7 @@ namespace Booking.Models
                 .ToListAsync();
             if (bookings.Count == 0)
             {
-                System.Windows.MessageBox.Show("No bookings found");
+                CustomMessageBox.Show("System", "No bookings found", MessageBoxButton.OK, IconChar.ExclamationCircle);
             }
             return bookings;
         }

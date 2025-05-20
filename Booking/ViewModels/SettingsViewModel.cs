@@ -153,7 +153,7 @@ namespace Booking.ViewModels
         {
             if (await userModel.DeleteUserAsync(Login))
             {
-                MessageBox.Show("User deleted successfully", "System", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show("System", "User deleted successfully", MessageBoxButton.OK, MessageBoxImage.Information);
                 OnRequestClose?.Invoke(this, EventArgs.Empty);
             }
             else

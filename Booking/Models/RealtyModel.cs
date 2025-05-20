@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using FontAwesome.Sharp;
 
 namespace Booking.Models
 {
@@ -31,12 +32,12 @@ namespace Booking.Models
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(slug) || string.IsNullOrEmpty(cityName) || string.IsNullOrEmpty(countryName) || string.IsNullOrEmpty(groupName))
             {
-                MessageBox.Show("All fields are required");
+                CustomMessageBox.Show("System", "All fields are required", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
             if (await context.Realties.AnyAsync(r => r.Slug == slug && r.DeletedAt == null))
             {
-                MessageBox.Show("Slug already exists");
+                CustomMessageBox.Show("System", "Slug already exists", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
@@ -68,7 +69,7 @@ namespace Booking.Models
             }
             catch (Exception e)
             {
-                MessageBox.Show("System", "Exception in SaveChangesOccured", MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.Show("System", "Exception in SaveChangesOccured", MessageBoxButton.OK, IconChar.TriangleExclamation);
             }
 
 
@@ -81,7 +82,7 @@ namespace Booking.Models
             var realty = await context.Realties.FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
             if (realty == null)
             {
-                MessageBox.Show("Realty not found");
+                CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
@@ -91,7 +92,7 @@ namespace Booking.Models
                 {
                     if (await context.Realties.AnyAsync(r => r.Slug == newSlug && r.DeletedAt == null))
                     {
-                        MessageBox.Show("Slug already exists");
+                        CustomMessageBox.Show("System", "Slug already exists", MessageBoxButton.OK, IconChar.ExclamationCircle);
                         return false;
                     }
                 }
@@ -128,7 +129,7 @@ namespace Booking.Models
 
             await context.SaveChangesAsync();
 
-            MessageBox.Show("Updated", "System", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageBox.Show("Updated", "System", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
 
@@ -144,7 +145,7 @@ namespace Booking.Models
             realty.DeletedAt = DateTime.Now;
             await context.SaveChangesAsync();
 
-            MessageBox.Show("Deleted", "System", MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageBox.Show("Deleted", "System", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
 
@@ -179,7 +180,7 @@ namespace Booking.Models
                 .FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
             if (realty == null)
             {
-                MessageBox.Show("Realty not found");
+                CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return new List<Feedback>();
             }
             return await context.Feedbacks.Include(f => f.UserAccess).Where(f => f.RealtyId == realty.Id && f.DeletedAt == null).ToListAsync();
@@ -190,7 +191,7 @@ namespace Booking.Models
             var group = await context.RealtyGroups.FirstOrDefaultAsync(g => g.Name == groupName);
             if (group == null)
             {
-                MessageBox.Show("Group not found");
+                CustomMessageBox.Show("System", "Group not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return new List<Realty>();
             }
             return await context.Realties.Where(r => r.GroupId == group.Id && r.DeletedAt == null).ToListAsync();
@@ -201,7 +202,7 @@ namespace Booking.Models
             var city = await context.Cities.FirstOrDefaultAsync(c => c.Name == cityName);
             if (city == null)
             {
-                MessageBox.Show("City not found");
+                CustomMessageBox.Show("System", "City not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return new List<Realty>();
             }
             return await context.Realties.Where(r => r.CityId == city.Id && r.DeletedAt == null).ToListAsync();
@@ -212,7 +213,7 @@ namespace Booking.Models
             var country = await context.Countries.FirstOrDefaultAsync(c => c.Name == countryName);
             if (country == null)
             {
-                MessageBox.Show("Country not found");
+                CustomMessageBox.Show("System", "Country not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return new List<Realty>();
             }
             return await context.Realties.Where(r => r.CountryId == country.Id && r.DeletedAt == null).ToListAsync();
@@ -228,7 +229,7 @@ namespace Booking.Models
             var realty = await context.Realties.FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
             if (realty == null)
             {
-                MessageBox.Show("Realty not found");
+                CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return new List<ItemImage>();
             }
             return await context.ItemImages.Where(i => i.ItemId == realty.Id).ToListAsync();
@@ -239,7 +240,7 @@ namespace Booking.Models
             var realty = await context.Realties.FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
             if (realty == null)
             {
-                MessageBox.Show("Realty not found");
+                CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return new List<BookingItem>();
             }
             return await context.BookingItems.Where(b => b.RealtyId == realty.Id).ToListAsync();
@@ -250,7 +251,7 @@ namespace Booking.Models
             var realty = await context.Realties.FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
             if (realty == null)
             {
-                MessageBox.Show("Realty not found");
+                CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return new List<BookingItem>();
             }
             var bookings = await context.BookingItems.Where(b => b.RealtyId == realty.Id).ToListAsync();
@@ -272,7 +273,7 @@ namespace Booking.Models
             var realty = await context.Realties.FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
             if (realty == null)
             {
-                MessageBox.Show("Realty not found");
+                CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return 0;
             }
 
@@ -303,15 +304,15 @@ namespace Booking.Models
             var query = context.Realties.AsQueryable();
             if (!string.IsNullOrEmpty(city) && city != "-")
             {
-                query = query.Where(r => r.City.Name == city);
+                query = query.Where(r => r.City.Name == city && r.DeletedAt == null);
             }
             if (!string.IsNullOrEmpty(country) && country != "-")
             {
-                query = query.Where(r => r.Country.Name == country);
+                query = query.Where(r => r.Country.Name == country && r.DeletedAt == null);
             }
             if (!string.IsNullOrEmpty(group) && group != "-")
             {
-                query = query.Where(r => r.RealtyGroup.Name == group);
+                query = query.Where(r => r.RealtyGroup.Name == group && r.DeletedAt == null);
             }
             return await query.ToListAsync();
         }
