@@ -1,4 +1,5 @@
-﻿using Booking.ViewModels;
+﻿using Booking.Data.Entities;
+using Booking.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,10 @@ namespace Booking.Views.Scenes
     /// </summary>
     public partial class HomeScene : UserControl
     {
-        public HomeScene(MainViewModel mainViewModel)
+        public HomeScene(MainViewModel mainViewModel, UserAccess access)
         {
             InitializeComponent();
-            this.DataContext = mainViewModel;
+            this.DataContext = new HomeViewModel(mainViewModel, access);
         }
     }
 }

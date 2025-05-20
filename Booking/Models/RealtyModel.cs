@@ -66,11 +66,11 @@ namespace Booking.Models
                 context.Realties.Add(realty);
                 await context.SaveChangesAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show("System", "Exception in SaveChangesOccured", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
+
 
             MessageBox.Show("Created", "System", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
@@ -97,11 +97,11 @@ namespace Booking.Models
                 }
                 realty.Slug = newSlug;
             }
-                
 
-             if (!string.IsNullOrEmpty(name)) realty.Name = name;
+
+            if (!string.IsNullOrEmpty(name)) realty.Name = name;
             if (description != null) realty.Description = description;
-            
+
             if (imageUrl != null) realty.ImageUrl = imageUrl;
             if (price.HasValue) realty.Price = price.Value;
 
@@ -258,7 +258,7 @@ namespace Booking.Models
 
             foreach (var booking in bookings)
             {
-                if (booking.StartDate > DateTime.Now)
+                if (booking.EndDate > DateTime.Now)
                 {
                     futureBookings.Add(booking);
                 }
@@ -280,28 +280,40 @@ namespace Booking.Models
             return accRate?.AvgRate ?? 0;
         }
 
-        public async Task<List<Realty>> GetRealtiesSortedByPriceAsync(bool ascending = true)
+        public async Task<List<Realty>> GetRealtiesSortedByPriceAsync(List<Realty> realties, bool ascending = false)
         {
-            return ascending
-                ? await context.Realties
-                .Where(r => r.DeletedAt == null)
-                .OrderBy(r => r.Price).ToListAsync()
-                : await context.Realties
-                .Where(r => r.DeletedAt == null)
-                .OrderByDescending(r => r.Price).ToListAsync();
+            return await Task.Run(() =>
+            {
+                return ascending
+                    ? realties.OrderBy(r => r.Price).ToList()
+                    : realties.OrderByDescending(r => r.Price).ToList();
+            });
         }
-
-        public async Task<List<Realty>> GetRealtiesSortedByRatingAsync(bool ascending = false)
+        public async Task<List<Realty>> GetRealtiesSortedByRatingAsync(List<Realty> realties, bool ascending = false)
         {
-            return ascending
-                ? await context.Realties
-                    .Where(r => r.DeletedAt == null)
-                    .OrderBy(r => context.AccRates.FirstOrDefault(ar => ar.RealtyId == r.Id).AvgRate)
-                    .ToListAsync()
-                : await context.Realties
-                    .Where(r => r.DeletedAt == null)
-                    .OrderByDescending(r => context.AccRates.FirstOrDefault(ar => ar.RealtyId == r.Id).AvgRate)
-                    .ToListAsync();
+            return await Task.Run(() =>
+            {
+                return ascending
+                    ? realties.OrderBy(r => r.AccRates?.AvgRate ?? 0).ToList()
+                    : realties.OrderByDescending(r => r.AccRates?.AvgRate ?? 0).ToList();
+            });
+        }
+        public async Task<List<Realty>> GetRealtiesByFilterAsync(string city, string country, string group)
+        {
+            var query = context.Realties.AsQueryable();
+            if (!string.IsNullOrEmpty(city) && city != "-")
+            {
+                query = query.Where(r => r.City.Name == city);
+            }
+            if (!string.IsNullOrEmpty(country) && country != "-")
+            {
+                query = query.Where(r => r.Country.Name == country);
+            }
+            if (!string.IsNullOrEmpty(group) && group != "-")
+            {
+                query = query.Where(r => r.RealtyGroup.Name == group);
+            }
+            return await query.ToListAsync();
         }
     }
 }

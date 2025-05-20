@@ -30,11 +30,11 @@ namespace Booking.Views.Scenes
             ItemViewModel itemViewModel = new();
             DataContext = itemViewModel;
         }
-        public Item(Realty realty)
+        public Item(Realty realty, UserAccess access)
         {
             InitializeComponent();
             itemScrollViewer.Height = height;
-            ItemViewModel itemViewModel = new(realty);
+            ItemViewModel itemViewModel = new(realty,access);
             DataContext = itemViewModel;
         }
 

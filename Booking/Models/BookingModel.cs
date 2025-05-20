@@ -87,6 +87,12 @@ namespace Booking.Models
                 System.Windows.MessageBox.Show("Booking not found");
                 return false;
             }
+            if(bookingItem.StartDate.AddDays(-3) < DateTime.Now)
+            {
+                System.Windows.MessageBox.Show("Booking cannot be deleted less than 3 days before the start date");
+                return false;
+            }
+
             bookingItem.DeletedAt = DateTime.Now;
             //realty.BookingItems.Remove(bookingItem);
             await context.SaveChangesAsync();

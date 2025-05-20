@@ -481,7 +481,7 @@ namespace Booking.ViewModels.admin
 
             if (!canUpdate)
             {
-                ErrorMessageOnUpdate = "You do not have permission to create realty.";
+                ErrorMessageOnUpdate = "You do not have permission to update realty.";
                 return;
             }
 

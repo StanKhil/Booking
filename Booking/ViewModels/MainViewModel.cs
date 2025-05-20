@@ -144,8 +144,8 @@ namespace Booking.ViewModels
             this.access = access;
             scheduled = new(access);
             topIcon = IconChar.Home;
-            home = new(this);
-            catalogue = new(this);
+            home = new(this, access);
+            catalogue = new(this, access);
             settings = new(access);
             administrator =  new(access);
             settings.OnRequestClose += (s, e) => this.LogoutCommand(null);
@@ -169,7 +169,7 @@ namespace Booking.ViewModels
             this.context = context;
             this.access = new();
             topIcon = IconChar.Home;
-            home = new(this);
+            home = new(this, access);
             sceneContainer.Content = home;
             //content = "Home";
         }

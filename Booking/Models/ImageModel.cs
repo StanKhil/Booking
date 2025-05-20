@@ -19,6 +19,12 @@ namespace Booking.Models
         {
             try
             {
+                if(context.ItemImages.Any(i => i.ItemId == realtyId && i.ImageUrl == url))
+                {
+                    MessageBox.Show("Image already exists.");
+                    return true;
+                }
+
                 itemImage = new ItemImage()
                 {
                     ItemId = realtyId,

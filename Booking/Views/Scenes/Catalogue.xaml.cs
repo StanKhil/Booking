@@ -1,4 +1,5 @@
-﻿using Booking.ViewModels;
+﻿using Booking.Data.Entities;
+using Booking.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,10 @@ namespace Booking.Views.Scenes
     /// </summary>
     public partial class Catalogue : UserControl
     {
-        public Catalogue(MainViewModel mainViewModel)
+        public Catalogue(MainViewModel mainViewModel, UserAccess access, string group = "-")
         {
             InitializeComponent();
-            CatalogueViewModel catalogueViewModel = new(mainViewModel);
+            CatalogueViewModel catalogueViewModel = new(mainViewModel, access, group);
             DataContext = catalogueViewModel;
         }
 
@@ -35,5 +36,30 @@ namespace Booking.Views.Scenes
                 await vm.InitializeAsync();
             }
         }
+
+        private void SortOptionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var vm = this.DataContext as CatalogueViewModel;
+            if (vm == null) return;
+
+            var selectedItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+            string? tag = selectedItem.Tag as string;
+
+            if (tag == "price")
+                vm.SortByPriceCommand.Execute(null);
+            else
+                vm.SortByRatingCommand.Execute(null);
+        }
+
+        /*private void ApplySort_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = this.DataContext as CatalogueViewModel;
+            if (vm == null) return;
+
+            if (vm.SortByPrice)
+                vm.SortByPriceCommand.Execute(null);
+            else
+                vm.SortByRatingCommand.Execute(null);
+        }*/
     }
 }

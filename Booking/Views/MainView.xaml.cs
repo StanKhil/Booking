@@ -47,7 +47,7 @@ namespace Booking.Views
 
             /*ImageModel imageModel = new ImageModel(context);
             imageModel.LoadImageAsync("villa-sunny", "‪C:\\Users\\user\\OneDrive\\Рабочий стол\\css.jpg");*/
-            FeedbackModel feedbackModel = new FeedbackModel();
+            // feedbackModel = new FeedbackModel();
             //feedbackModel.CreateFeedbackAsync(access.Id, Guid.Parse("4b851f3d-8af0-4b61-b508-1b4077da7408"), "Ahleehloya", 5);
             //feedbackModel.CreateFeedbackAsync(access.Id, Guid.Parse("4b851f3d-8af0-4b61-b508-1b4077da7408"), "Trash", 1);
             //feedbackModel.CreateFeedbackAsync(access.Id, Guid.Parse("4b851f3d-8af0-4b61-b508-1b4077da7408"), "Average", 4);
