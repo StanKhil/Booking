@@ -184,7 +184,7 @@ namespace Booking.Models
                 return new List<Feedback>();
             }
             return await context.Feedbacks.Include(f => f.UserAccess).Where(f => f.RealtyId == realty.Id && f.DeletedAt == null).ToListAsync();
-        }
+        }   
 
         public async Task<List<Realty>> GetRealtiesByGroupAsync(string groupName)
         {
