@@ -4,6 +4,9 @@ using Booking.Models;
 using Booking.Services.CurrencyRate;
 using System.Windows;
 using System.Windows.Input;
+using Booking.Views;
+using FontAwesome.Sharp;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Booking.ViewModels
 {
@@ -11,11 +14,12 @@ namespace Booking.ViewModels
     {
         private DataContext context = new();
         UserAccess access;
+        private RealtyModel reltyModel;
         private Realty? realty;
         private ItemImage? activeImage;
         private int? activeImageIndex;
         private Feedback? activeFeedback;
-        private int? activeFeedbackIndex;
+        private int activeFeedbackIndex;
 
         private List<BookingItem> futureBooking;
 
@@ -24,6 +28,7 @@ namespace Booking.ViewModels
 
         private DateTime startDate;
         private DateTime endDate;
+        private List<Feedback> feedbacks;
 
         public double PriceUa
         {
@@ -72,6 +77,7 @@ namespace Booking.ViewModels
             }
         }
 
+
         public List<BookingItem> FutureBooking
         {
             get => futureBooking;
@@ -107,6 +113,8 @@ namespace Booking.ViewModels
         public ICommand ArrowRightCommand { get; }
         public ICommand FeedbackArrowLeftCommand { get; }
         public ICommand FeedbackArrowRightCommand { get; }
+
+        public ICommand UpdateFeedbackCommand { get; }
         public ItemViewModel() : this(null, null) { }
         public ItemViewModel(Realty? realty, UserAccess access)
         {
@@ -115,9 +123,11 @@ namespace Booking.ViewModels
             FeedbackArrowLeftCommand = new RelayCommand(ExecuteFeedbackArrowLeftCommand);
             FeedbackArrowRightCommand = new RelayCommand(ExecuteFeedbackArrowRightCommand);
             BookCommand = new RelayCommand(ExecuteBookCommand);
+            UpdateFeedbackCommand = new RelayCommand(ExecuteUpdateFeedbackCommand);
 
             this.realty = realty;
-
+            reltyModel = new RealtyModel(context);
+            
 
             if (this.realty?.Images.Count <= 1) activeImageIndex = null;
             else activeImageIndex = 0;
@@ -125,11 +135,7 @@ namespace Booking.ViewModels
             if (activeImageIndex == 0) ActiveImage = realty?.Images[(int)activeImageIndex!];
             else ActiveImage = null;
 
-            if (this.realty?.Feedbacks.Count == 0) activeFeedbackIndex = null;
-            else activeFeedbackIndex = 0;
-
-            if (activeFeedbackIndex == 0) ActiveFeedback = realty?.Feedbacks[(int)activeFeedbackIndex];
-            else ActiveFeedback = null;
+            
             this.access = access;
 
             BookingStartDate = DateTime.Now;
@@ -164,29 +170,28 @@ namespace Booking.ViewModels
         }
         private void ExecuteFeedbackArrowRightCommand(object? obj)
         {
-            if(activeFeedbackIndex != null)
+            if(activeFeedbackIndex != -1)
             {
                 activeFeedbackIndex++;
-                if(activeFeedbackIndex > realty?.Feedbacks.Count - 1)
+                if(activeFeedbackIndex > feedbacks.Count - 1)
                 {
                     activeFeedbackIndex = 0;
                 }
-                ActiveFeedback = realty?.Feedbacks[(int)activeFeedbackIndex];
+                ActiveFeedback = feedbacks[activeFeedbackIndex];
             }
         }
         private void ExecuteFeedbackArrowLeftCommand(object? obj)
         {
-            if(activeFeedbackIndex != null)
+            if(activeFeedbackIndex != -1)
             {
                 activeFeedbackIndex--;
                 if(activeFeedbackIndex < 0)
                 {
-                    activeFeedbackIndex = realty?.Feedbacks.Count - 1;
+                    activeFeedbackIndex = feedbacks.Count - 1;
                 }
-                ActiveFeedback = realty?.Feedbacks[(int)activeFeedbackIndex!];
+                ActiveFeedback = feedbacks[activeFeedbackIndex!];
             }
         }
-
         private async void ExecuteBookCommand(object? obj)
         {
             if (realty != null)
@@ -195,6 +200,28 @@ namespace Booking.ViewModels
                 var result = await bookingModel.CreateBookingAsync(access.Id, realty.Id, startDate, endDate);
                 //if (result) MessageBox.Show("Booking created successfully");
                 //else MessageBox.Show("Booking failed");
+            }
+        }
+        private void ExecuteUpdateFeedbackCommand(object? obj)
+        {
+            if (access.Id != ActiveFeedback!.UserAccessId)
+            {
+                CustomMessageBox.Show("System", "You can't update this feedback", MessageBoxButton.OK, IconChar.CircleExclamation);
+                return;
+            }
+            if (realty != null)
+            {
+                UpdateFeedbackView feedbackUpdate = new(ActiveFeedback!);
+                feedbackUpdate.ShowDialog();
+            }
+
+            if (realty?.Feedbacks[activeFeedbackIndex].DeletedAt != null)
+            {
+                ArrowRightCommand.Execute(null);
+            }
+            else
+            {
+                ActiveFeedback = realty?.Feedbacks[activeFeedbackIndex];
             }
         }
         public async Task Window_LoadedAsync()
@@ -208,6 +235,14 @@ namespace Booking.ViewModels
 
                 if(realty?.AccRates != null) Rate = realty.AccRates.AvgRate;
                 FutureBooking = await new RealtyModel(context).GetFutureBookingAsync(realty!.Slug!);
+
+                feedbacks = await reltyModel.GetFeedbacksAsync(realty!.Slug!);
+
+                if (feedbacks.Count == 0) activeFeedbackIndex = -1;
+                else activeFeedbackIndex = 0;
+
+                if (activeFeedbackIndex == 0) ActiveFeedback = feedbacks[activeFeedbackIndex];
+                else ActiveFeedback = null;
             }
         }
     }
