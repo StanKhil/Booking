@@ -103,7 +103,7 @@ namespace Booking.ViewModels
 
         private async void ExecuteRegisterCommand(object? obj)
         {
-            MessageBox.Show(name + password + email + login);
+            //MessageBox.Show(name + password + email + login);
             bool success = await userModel.RegisterAsync(name, email, login, password);
             if(!success)
             {

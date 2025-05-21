@@ -71,6 +71,32 @@ namespace Booking.Models
             return true;
         }
 
+        public async Task<bool> UpdateFeedbackAsync(Guid feedbackId, string message, int rate)
+        {
+            var feedback = await dataContext.Feedbacks
+                .FirstOrDefaultAsync(f => f.Id == feedbackId && f.DeletedAt == null);
+            if (feedback == null)
+            {
+                CustomMessageBox.Show("System", "Feedback not found", MessageBoxButton.OK, IconChar.CircleExclamation);
+                return false;
+            }
+            feedback.Text = message;
+            feedback.Rate = rate;
+            feedback.UpdatedAt = DateTime.Now;
+            try
+            {
+                await dataContext.Database.ExecuteSqlInterpolatedAsync(
+    $"UPDATE Feedbacks SET Text = {message}, Rate = {rate}, UpdatedAt = {DateTime.Now} WHERE Id = {feedbackId}");
+
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
+                return false;
+            }
+            return true;
+        }
+
         public async Task<bool> DeleteFeedbackAsync(Guid feedbackId)
         {
             var feedback = await dataContext.Feedbacks
@@ -98,7 +124,6 @@ namespace Booking.Models
                 CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
-            CustomMessageBox.Show("System", "Feedback deleted", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
     }
