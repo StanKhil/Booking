@@ -44,5 +44,13 @@ namespace Booking.Views
         {
             System.Windows.Application.Current.Shutdown();
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((RegisterViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
+            }
+        }
     }
 }

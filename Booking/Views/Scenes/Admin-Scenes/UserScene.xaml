@@ -103,12 +103,12 @@
                         Foreground="DarkGray" FontSize="12"
                         FontWeight="Medium" 
                         Margin="10,15,0,0"/>
-            <TextBox x:Name="createUserPassword" FontSize="12"
-                      Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" FontWeight="Medium"
-                      Foreground="White" BorderThickness="0,0,0,1" CaretBrush="LightGray"
-                      Width="300" Height="28" HorizontalAlignment="Left" VerticalAlignment="Center"
-                      VerticalContentAlignment="Center" Background="Transparent" Margin="10,5,0,0" Padding="30,0,0,0">
-            </TextBox>
+            <PasswordBox x:Name="createUserPassword" FontSize="12" 
+                          PasswordChanged="PasswordBox_PasswordChanged" FontWeight="Medium"
+                          Foreground="White" BorderThickness="0,0,0,1" CaretBrush="LightGray"
+                          Width="300" Height="28" HorizontalAlignment="Left" VerticalAlignment="Center"
+                          VerticalContentAlignment="Center" Background="Transparent" Margin="10,5,0,0" Padding="30,0,0,0">
+            </PasswordBox>
             <TextBlock Text="Role"
                         Foreground="DarkGray" FontSize="12"
                         FontWeight="Medium" 
@@ -263,12 +263,12 @@
                     Foreground="DarkGray" FontSize="12"
                     FontWeight="Medium" 
                     Margin="10,15,0,0"/>
-            <TextBox x:Name="newUserPassword" FontSize="12"
-                      Text="{Binding NewPassword, UpdateSourceTrigger=PropertyChanged}" FontWeight="Medium"
+            <PasswordBox x:Name="newUserPassword" FontSize="12"
+                      FontWeight="Medium" PasswordChanged="PasswordBox_PasswordChanged_OnUpdate"
                       Foreground="White" BorderThickness="0,0,0,1" CaretBrush="LightGray"
                       Width="300" Height="28" HorizontalAlignment="Left" VerticalAlignment="Center"
                       VerticalContentAlignment="Center" Background="Transparent" Margin="10,5,0,0" Padding="30,0,0,0">
-            </TextBox>
+            </PasswordBox>
             <TextBlock Text="New role"
                         Foreground="DarkGray" FontSize="12"
                         FontWeight="Medium" 

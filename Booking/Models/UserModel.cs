@@ -87,7 +87,7 @@ namespace Booking.Models
             context.UserAccesses.Add(userAccess);
             await context.SaveChangesAsync();
 
-            CustomMessageBox.Show("Registered", "System", MessageBoxButton.OK, IconChar.CircleInfo);
+            CustomMessageBox.Show("System", "Registered", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
 
@@ -95,9 +95,9 @@ namespace Booking.Models
         {
             if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(userRole))
             {
-                if (await context.UserAccesses.AnyAsync(ua => ua.Login == login && ua.User.DeletedAt == null))
+                if (await context.UserAccesses.AnyAsync(ua => ua.Login == login /*&& ua.User.DeletedAt == null*/))
                 {
-                    System.Windows.MessageBox.Show("Login already exists");
+                    CustomMessageBox.Show("System", "Login already exists", MessageBoxButton.OK, IconChar.CircleExclamation);
                     return false;
                 }
 
@@ -125,7 +125,7 @@ namespace Booking.Models
                 context.UserAccesses.Add(userAccess);
                 await context.SaveChangesAsync();
 
-                CustomMessageBox.Show("Created", "System", MessageBoxButton.OK, IconChar.CircleInfo);
+                CustomMessageBox.Show("System", "Created", MessageBoxButton.OK, IconChar.CircleInfo);
                 return true;
             }
             return false;
@@ -133,13 +133,14 @@ namespace Booking.Models
 
         public async Task<bool> UpdateUserAsync(string? nameNew, string? emailNew, string? loginNew, string? passwordNew, string? userRoleNew, string? login)
         {
+            //System.Windows.MessageBox.Show(login);
             var userAccess = await context.UserAccesses
                 .Include(ua => ua.User)
                 .FirstOrDefaultAsync(ua => ua.Login == login && ua.User.DeletedAt == null);
 
             if (userAccess == null)
             {
-                System.Windows.MessageBox.Show("User not found");
+                CustomMessageBox.Show("System", "User not found", MessageBoxButton.OK, IconChar.CircleExclamation);
                 return false;
             }
 
@@ -147,7 +148,7 @@ namespace Booking.Models
             {
                 if (await context.UserAccesses.AnyAsync(ua => ua.Login == loginNew && ua.User.DeletedAt == null) && login!=loginNew)
                 {
-                    System.Windows.MessageBox.Show("Login already exists");
+                    CustomMessageBox.Show("System", "Login already exists", MessageBoxButton.OK, IconChar.CircleExclamation);
                     return false;
                 }
                 userAccess.Login = loginNew;

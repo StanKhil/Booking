@@ -24,5 +24,13 @@ namespace Booking.Views.Scenes
         {
             OnRequestClose?.Invoke(this, EventArgs.Empty);
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if(this.DataContext != null)
+            {
+                ((SettingsViewModel)this.DataContext).NewPassword = ((PasswordBox)sender).Password;
+            }
+        }
     }
 }

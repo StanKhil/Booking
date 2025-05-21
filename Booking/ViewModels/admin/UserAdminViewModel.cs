@@ -259,7 +259,7 @@ namespace Booking.ViewModels.admin
                 return;
             }
 
-            bool success = await userModel.UpdateUserAsync(newName, newEmail, newLogin, newPassword, newRole, login);
+            bool success = await userModel.UpdateUserAsync(newName, newEmail, newLogin, newPassword, newRole, updateLogin);
             if (!success)
             {
                 ErrorMessageOnUpdate = "Invalid data";

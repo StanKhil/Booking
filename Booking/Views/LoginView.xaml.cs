@@ -16,7 +16,9 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.TextFormatting;
 using System.Windows.Shapes;
+
 
 namespace Booking.Views
 {
@@ -45,6 +47,13 @@ namespace Booking.Views
         {
             System.Windows.Application.Current.Shutdown();
         }
-       
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((LoginViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
+            }
+        }
     }
 }

@@ -323,7 +323,7 @@
                     FontWeight="Medium" 
                     Margin="10,15,0,0"/>
             <Button FontWeight="Medium" Margin="10,5,0,0" HorizontalAlignment="Left" Foreground="White"
-        Content="Choose File" Command="{Binding UpdatePrimaryImageCommand}">
+                    Content="Choose File" Command="{Binding UpdatePrimaryImageCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="#2e2e2e"></Setter>
@@ -337,7 +337,7 @@
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Width="150" Height="40"
-                    CornerRadius="20" Background="{TemplateBinding Background}">
+                                CornerRadius="20" Background="{TemplateBinding Background}">
                             <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>

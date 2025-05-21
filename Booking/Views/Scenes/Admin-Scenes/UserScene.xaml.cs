@@ -29,5 +29,20 @@ namespace Booking.Views.Scenes.Admin_Scenes
             this.access = access;
             this.DataContext = new UserAdminViewModel(access);
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if(this.DataContext != null)
+            {
+                ((UserAdminViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
+            }
+        }
+        private void PasswordBox_PasswordChanged_OnUpdate(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((UserAdminViewModel)this.DataContext).NewPassword = ((PasswordBox)sender).Password;
+            }
+        }
     }
 }
