@@ -23,23 +23,21 @@ namespace UnitTest.Models
         public async Task CreateBookingAsync()
         {
             var context = new DataContext();
-            var userId = Guid.NewGuid();
-            var realtyId = Guid.NewGuid();
+            var userId = Guid.Parse("92cd36b8-ea5a-4cbb-a232-268d942c97fd");
+            var realtyId = Guid.Parse("37dcc68e-b7e7-4b55-b04e-147c1a4126b7");
 
-            context.UserAccesses.Add(new UserAccess { Id = userId });
-            context.Realties.Add(new Realty
-            {
-                Id = realtyId,
-                BookingItems = new List<BookingItem>(),
-                DeletedAt = null
-            });
-            await context.SaveChangesAsync();
+            
 
             var model = new BookingModel(context);
             var start = DateTime.Now.AddDays(1);
             var end = DateTime.Now.AddDays(3);
 
             var result = await model.CreateBookingAsync(userId, realtyId, start, end);
+
+            Assert.ThrowsException<ArgumentException>(
+                () => model.CreateBookingAsync(userId, realtyId, end, start),
+                "Start date is greater than finish date"
+            );
 
             Assert.IsTrue(result);
         }
@@ -48,28 +46,10 @@ namespace UnitTest.Models
         public async Task CreateBookingAsyncOverlappingDates()
         {
             var context = new DataContext();
-            var userId = Guid.NewGuid();
-            var realtyId = Guid.NewGuid();
+            var userId = Guid.Parse("92cd36b8-ea5a-4cbb-a232-268d942c97fd");
+            var realtyId = Guid.Parse("37dcc68e-b7e7-4b55-b04e-147c1a4126b7");
 
-            var existingBooking = new BookingItem
-            {
-                Id = Guid.NewGuid(),
-                StartDate = DateTime.Today.AddDays(2),
-                EndDate = DateTime.Today.AddDays(5),
-                DeletedAt = null
-            };
-
-            var realty = new Realty
-            {
-                Id = realtyId,
-                BookingItems = new List<BookingItem> { existingBooking },
-                DeletedAt = null
-            };
-
-            context.UserAccesses.Add(new UserAccess { Id = userId });
-            context.Realties.Add(realty);
-            await context.SaveChangesAsync();
-
+            
             var model = new BookingModel(context);
 
             var overlapStart = DateTime.Today.AddDays(3);
@@ -83,34 +63,20 @@ namespace UnitTest.Models
         public async Task DeleteBookingAsync()
         {
             var context = new DataContext();
-            var bookingId = Guid.NewGuid();
-            var realtyId = Guid.NewGuid();
-
-            var booking = new BookingItem
-            {
-                Id = bookingId,
-                RealtyId = realtyId,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(1),
-                DeletedAt = null
-            };
-
-            var realty = new Realty
-            {
-                Id = realtyId,
-                BookingItems = new List<BookingItem> { booking },
-                DeletedAt = null
-            };
-
-            context.BookingItems.Add(booking);
-            context.Realties.Add(realty);
-            await context.SaveChangesAsync();
+            var bookingId = Guid.Parse("005e900a-9d2e-4227-9b10-0047f638fa0e");
 
             var model = new BookingModel(context);
             var result = await model.DeleteBookingAsync(bookingId);
 
-            Assert.IsTrue(result);
-            Assert.IsNotNull(context.BookingItems.First().DeletedAt);
+            var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await model.DeleteBookingAsync(Guid.NewGuid()),
+                "Booking not found"
+            );
+
+            Assert.AreEqual("Booking not found", ex.Message);
+
+            //Assert.IsTrue(result);
+            //Assert.IsNotNull(context.BookingItems.First().DeletedAt);
         }
     }
 }

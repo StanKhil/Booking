@@ -23,9 +23,15 @@ namespace Booking.Models
 
         public async Task<bool> CreateFeedbackAsync(Guid userAccessId, Guid realtyId, string message, int rate)
         {
-            if(string.IsNullOrEmpty(message))
+            if(rate < 1 || rate > 5)
             {
-                CustomMessageBox.Show("System", "Message cannot be empty", MessageBoxButton.OK, IconChar.CircleExclamation);
+                throw new ArgumentException("Rate must be between 1 and 5");
+            }
+
+
+            if (string.IsNullOrEmpty(message))
+            {
+                //CustomMessageBox.Show("System", "Message cannot be empty", MessageBoxButton.OK, IconChar.CircleExclamation);
                 return false;
             }
 
@@ -50,13 +56,13 @@ namespace Booking.Models
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
+                //CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
 
             if (realty == null)
             {
-                CustomMessageBox.Show("System","Realty not found", MessageBoxButton.OK, IconChar.TriangleExclamation);
+                //CustomMessageBox.Show("System","Realty not found", MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
 
@@ -67,7 +73,7 @@ namespace Booking.Models
             realty.Feedbacks.Add(Feedback);
             dataContext.Feedbacks.Add(Feedback);
             await dataContext.SaveChangesAsync();
-            CustomMessageBox.Show("System", "Feedback created", MessageBoxButton.OK, IconChar.TriangleExclamation);
+            //CustomMessageBox.Show("System", "Feedback created", MessageBoxButton.OK, IconChar.TriangleExclamation);
             return true;
         }
 
@@ -77,7 +83,7 @@ namespace Booking.Models
                 .FirstOrDefaultAsync(f => f.Id == feedbackId && f.DeletedAt == null);
             if (feedback == null)
             {
-                CustomMessageBox.Show("System", "Feedback not found", MessageBoxButton.OK, IconChar.CircleExclamation);
+                //CustomMessageBox.Show("System", "Feedback not found", MessageBoxButton.OK, IconChar.CircleExclamation);
                 return false;
             }
             feedback.Text = message;
@@ -91,7 +97,7 @@ namespace Booking.Models
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
+                //CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
             return true;
@@ -101,16 +107,17 @@ namespace Booking.Models
         {
             var feedback = await dataContext.Feedbacks
                 .FirstOrDefaultAsync(f => f.Id == feedbackId && f.DeletedAt == null);
+
+            if(feedback == null)
+            {
+                throw new ArgumentException("Feedback not found");
+            }
+
             var realty = await dataContext.Realties
                     .Include(r => r.Feedbacks)
                     .FirstOrDefaultAsync(r => r.Id == feedback!.RealtyId && r.DeletedAt == null);
-            
 
-            if (feedback == null)
-            {
-               CustomMessageBox.Show("System","Feedback not found", MessageBoxButton.OK, IconChar.CircleExclamation);
-                return false;
-            }
+           
             feedback.DeletedAt = DateTime.Now;
             realty?.Feedbacks.Remove(feedback);
 
@@ -121,7 +128,7 @@ namespace Booking.Models
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
+                //CustomMessageBox.Show("System", "Error: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
                 return false;
             }
             return true;

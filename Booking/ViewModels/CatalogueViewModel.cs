@@ -154,10 +154,16 @@ namespace Booking.ViewModels
         {
             Realties = await realtyModel.GetRealtiesAsync();
             Realties = await realtyModel.GetRealtiesSortedByRatingAsync(Realties, SortAscending);
-            Cities = await context.Cities.Select(c => c.Name).ToListAsync();
-            Countries = await context.Countries.Select(c => c.Name).ToListAsync();
-            Cities.Add("-");
-            Countries.Add("-");
+            Cities = (await context.Cities.Select(c => c.Name).ToListAsync())
+            .Concat(new[] { "-" })
+            .ToList();
+
+            Countries = (await context.Countries.Select(c => c.Name).ToListAsync())
+               .Concat(new[] { "-" })
+               .ToList();
+
+            //Cities.Add("-");
+            //Countries.Add("-");
 
             CityFilter = Cities.Last();
             CountryFilter = Countries.Last();
@@ -195,11 +201,7 @@ namespace Booking.ViewModels
         {
             Realties = await realtyModel.GetRealtiesSortedByPriceAsync(Realties, SortAscending);
         }
-        /*private async void ExecuteSortByRatingCommand(object? obj)
-        {
-            Realties = await realtyModel.GetRealtiesSortedByRatingAsync(Realties, SortAscending);
-        }*/
-
+        
         private async void ApplySort()
         {
             if (SelectedSortOption == "price")
@@ -207,7 +209,5 @@ namespace Booking.ViewModels
             else
                 Realties = await realtyModel.GetRealtiesSortedByRatingAsync(Realties, SortAscending);
         }
-
-
     }
 }

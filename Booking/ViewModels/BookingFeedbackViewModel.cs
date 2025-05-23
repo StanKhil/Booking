@@ -60,19 +60,27 @@ namespace Booking.ViewModels
 
 
             bool result = await feedbackModel.CreateFeedbackAsync(access.Id, Booking.Realty.Id, Text, Rate);
-            //if (result)
-               // MessageBox.Show("Success");
-            //else
-                //MessageBox.Show("Error");
+            if(result)
+            {
+                CustomMessageBox.Show("System", "Feedback submitted successfully", MessageBoxButton.OK, IconChar.CircleCheck);
+            }
+            else
+            {
+                CustomMessageBox.Show("System", "Error submitting feedback", MessageBoxButton.OK, IconChar.CircleExclamation);
+            }
         }
 
         private async void DeleteBookingCommand(object? obj)
         {
             var result = await bookingModel.DeleteBookingAsync(Booking.Id);
-            //if (result)
-            //    MessageBox.Show("Booking deleted");
-            //else
-            //    MessageBox.Show("Error deleting booking");
+            if(result)
+            {
+                CustomMessageBox.Show("System", "Booking deleted", MessageBoxButton.OK, IconChar.CircleExclamation);
+            }
+            else
+            {
+                CustomMessageBox.Show("System", "Error deleting booking", MessageBoxButton.OK, IconChar.CircleExclamation);
+            }
         }
     }
 }

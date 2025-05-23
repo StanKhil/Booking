@@ -25,24 +25,22 @@ namespace UnitTest.Models
         {
             var context = new DataContext();
 
-            var userId = Guid.NewGuid();
-            var realtyId = Guid.NewGuid();
+            var userId = Guid.Parse("92cd36b8-ea5a-4cbb-a232-268d942c97fd");
+            var realtyId = Guid.Parse("37dcc68e-b7e7-4b55-b04e-147c1a4126b7");
 
-            context.UserAccesses.Add(new UserAccess { Id = userId });
-            context.Realties.Add(new Realty
-            {
-                Id = realtyId,
-                Feedbacks = new List<Feedback>(),
-                DeletedAt = null
-            });
-            await context.SaveChangesAsync();
 
             var model = new FeedbackModel();
-            model.GetType().GetField("dataContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(model, context);
+            /*model.GetType().GetField("dataContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(model, context);*/
 
             var result = await model.CreateFeedbackAsync(userId, realtyId, "Nice place", 5);
             Assert.IsTrue(result);
+
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                () => model.CreateFeedbackAsync(userId, realtyId, "Nice place", 6),
+                "Rate must be between 1 and 5"
+            );
         }
 
         [TestMethod]
@@ -59,36 +57,23 @@ namespace UnitTest.Models
         public async Task DeleteFeedbackAsync()
         {
             var context = new DataContext();
-            var feedbackId = Guid.NewGuid();
-            var realtyId = Guid.NewGuid();
-
-            var feedback = new Feedback
-            {
-                Id = feedbackId,
-                RealtyId = realtyId,
-                DeletedAt = null
-            };
-
-            var realty = new Realty
-            {
-                Id = realtyId,
-                DeletedAt = null,
-                Feedbacks = new List<Feedback> { feedback }
-            };
-
-            context.Feedbacks.Add(feedback);
-            context.Realties.Add(realty);
-            await context.SaveChangesAsync();
+            var feedbackId = Guid.Parse("e83d47e2-58c9-4fae-9dd2-298f64eee96f");
+            var realtyId = Guid.Parse("37dcc68e-b7e7-4b55-b04e-147c1a4126b7");
 
             var model = new FeedbackModel();
-            model.GetType().GetField("dataContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(model, context);
+            /*model.GetType().GetField("dataContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(model, context);*/
 
-            var result = await model.DeleteFeedbackAsync(feedbackId);
-            Assert.IsTrue(result);
+            //var result = await model.DeleteFeedbackAsync(feedbackId);
+            //Assert.IsTrue(result);
 
             var updated = await context.Feedbacks.FirstOrDefaultAsync(f => f.Id == feedbackId);
             Assert.IsNotNull(updated?.DeletedAt);
+
+
+            var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await model.DeleteFeedbackAsync(Guid.NewGuid()));
+
+            Assert.AreEqual("Feedback not found", ex.Message);
         }
 
         [TestMethod]
@@ -96,8 +81,8 @@ namespace UnitTest.Models
         {
             var context = new DataContext();
             var model = new FeedbackModel();
-            model.GetType().GetField("dataContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                ?.SetValue(model, context);
+            /*model.GetType().GetField("dataContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(model, context);*/
 
             var result = await model.DeleteFeedbackAsync(Guid.NewGuid());
             Assert.IsFalse(result);

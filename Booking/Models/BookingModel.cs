@@ -28,7 +28,7 @@ namespace Booking.Models
             if (start >= finish)
             {
                 CustomMessageBox.Show("System", "Start date is greater than finish date", MessageBoxButton.OK, IconChar.ExclamationCircle);
-                return false;
+                throw new ArgumentException("Start date is greater than finish date");
             }
 
             var realty = await context.Realties
@@ -81,24 +81,26 @@ namespace Booking.Models
                 .Include(b => b.Realty)
                 .FirstOrDefaultAsync(b => b.Id == bookingId && b.DeletedAt == null);
 
+            if (bookingItem == null)
+            {
+                //CustomMessageBox.Show("System", "Booking not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
+                throw new ArgumentException("Booking not found");
+            }
+
             var realty = await context.Realties
                 .Include(r => r.BookingItems)
                 .FirstOrDefaultAsync(r => r.Id == bookingItem.RealtyId && r.DeletedAt == null);
-            if (bookingItem == null)
-            {
-                CustomMessageBox.Show("System", "Booking not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
-                return false;
-            }
+            
             if(bookingItem.StartDate.AddDays(-3) < DateTime.Now)
             {
-                CustomMessageBox.Show("System", "Booking cannot be deleted less than 3 days before the start date", MessageBoxButton.OK, IconChar.ExclamationCircle);
+                //CustomMessageBox.Show("System", "Booking cannot be deleted less than 3 days before the start date", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
             bookingItem.DeletedAt = DateTime.Now;
             //realty.BookingItems.Remove(bookingItem);
             await context.SaveChangesAsync();
-            CustomMessageBox.Show("System", "Booking deleted successfully", MessageBoxButton.OK, IconChar.CircleInfo);
+            //CustomMessageBox.Show("System", "Booking deleted successfully", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
     }
