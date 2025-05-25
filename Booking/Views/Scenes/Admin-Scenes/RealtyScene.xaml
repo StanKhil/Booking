@@ -124,7 +124,11 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <TextBlock Foreground="White" Text="{Binding SelectedFilePath, UpdateSourceTrigger=PropertyChanged}" x:Name="SelectedFileText" Margin="10,5,0,0" TextWrapping="Wrap" />
+            <TextBlock Height="0" Width="0" Margin="0" Foreground="White" Text="{Binding SelectedFilePath, UpdateSourceTrigger=PropertyChanged}" x:Name="SelectedFileText" TextWrapping="Wrap" />
+            <Border Width="350" Height="Auto" CornerRadius="10" ClipToBounds="True">
+                <Image Source="{Binding ImageSource, UpdateSourceTrigger=PropertyChanged}" Stretch="Fill"/>
+            </Border>
+
 
             <TextBlock Text="Price"
                     Foreground="DarkGray" FontSize="12"
@@ -165,17 +169,35 @@
                     ItemsSource="{Binding Groups}" 
                     SelectedItem="{Binding SelectedGroup, Mode=TwoWay}"
                     FontSize="12" FontWeight="Medium"
-                    Foreground="Black"
+                    Foreground="White"
                     Background="Gray"
                     BorderThickness="0,0,0,1"
                     Height="28" Width="300" HorizontalAlignment="Left"
                     VerticalContentAlignment="Center"
                     Margin="10,5,0,0" Padding="10,0,0,0"/>
+            
+            <!--ItemsControl-->
+            <ItemsControl HorizontalAlignment="Center" ItemsSource="{Binding ImageSources, UpdateSourceTrigger=PropertyChanged}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" Margin="10" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-
-            <ListBox Foreground="Black" x:Name="imagesListBox" ItemsSource="{Binding ImageUrls, UpdateSourceTrigger=PropertyChanged}">
-
-            </ListBox>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10" Width="200" Background="#333" Padding="10" CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding}" Width="180" Height="Auto" Margin="5"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ListBox Width="0" Height="0" x:Name="imagesListBox" ItemsSource="{Binding ImageUrls, UpdateSourceTrigger=PropertyChanged}"/>
             <Button FontWeight="Medium" Margin="10,5,0,0" HorizontalAlignment="Left" Foreground="White"
                     Content="Choose File" Command="{Binding AddSecondaryImageCommand}">
                 <Button.Style>
@@ -230,7 +252,7 @@
                 </Button.Template>
             </Button>
 
-            <!--Data to find user-->
+            <!--Data to find realties-->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>

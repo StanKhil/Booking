@@ -1,4 +1,5 @@
 ﻿using Booking.Data;
+using Booking.Data.Entities;
 using Booking.Models;
 using Booking.Views;
 using Microsoft.Identity.Client;
@@ -11,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace UnitTest.Models
 {
-    [TestClass]
+    [STATestClass]
     public sealed class UserModelTest
     {
-        [TestMethod]
+        [STATestMethod]
         public void ConstructorTest()
         {
             DataContext context = new DataContext();
@@ -22,7 +23,7 @@ namespace UnitTest.Models
             Assert.IsNotNull(model, "UserModel constructor must initialize non-null DataContext instance");
         }
 
-        [TestMethod]
+        [STATestMethod]
         public void CrudTest()
         {
             DataContext context = new DataContext();
@@ -39,14 +40,14 @@ namespace UnitTest.Models
             Assert.IsInstanceOfType<Task<bool>>(resultOnDelete);
         }
 
-        [TestMethod]
+        [STATestMethod]
         public void RegisterTest()
         {
             DataContext context = new DataContext();
             UserModel model = new UserModel(context);
 
             var result = model?.RegisterAsync("name", "email", "login", "password");
-            Assert.IsInstanceOfType<Task<bool>>(result);
+            Assert.IsInstanceOfType<Task<List<BookingItem>>>(result);
             Assert.IsTrue(result.Result);
         }
 

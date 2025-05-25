@@ -67,8 +67,8 @@ namespace Booking.Models
             User user = new()
             {
                 Id = userId,
-                Name = name,
-                Email = email,
+                Name = name!,
+                Email = email!,
                 RegisteredAt = DateTime.Now,
             };
 
@@ -77,9 +77,9 @@ namespace Booking.Models
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
-                Login = login,
+                Login = login!,
                 Salt = salt,
-                Dk = Crypto.kdf(salt, password),
+                Dk = Crypto.kdf(salt, password!),
                 RoleId = "SelfRegistered"
             };
 

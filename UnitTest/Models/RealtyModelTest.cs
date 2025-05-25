@@ -134,7 +134,7 @@ namespace UnitTest.Models
             RealtyModel model = new(context);
             var realty = model.GetBookingsAsync("Slug");
 
-            Assert.IsInstanceOfType<Task<List<ItemImage>>>(realty);
+            Assert.IsInstanceOfType<Task<List<BookingItem>>>(realty);
         }
         [TestMethod]
         public void GetFutureBookingAsyncTest()

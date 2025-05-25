@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
+using System.Windows.Media;
 
 namespace Booking.ViewModels.admin
 {
@@ -22,6 +23,7 @@ namespace Booking.ViewModels.admin
         private string? country;
         private string? group;
         private ObservableCollection<string> imageUrls = new ObservableCollection<string>();
+        private ObservableCollection<ImageSource?> imageSources = new ObservableCollection<ImageSource?>();
 
         private string? updateSlug;
 
@@ -41,6 +43,7 @@ namespace Booking.ViewModels.admin
         private bool isViewVisible = true;
 
         private string? selectedFilePath = "";
+        private ImageSource? imageSource;
         private string? newSelectedFilePath = "";
 
         DataContext context = new();
@@ -110,6 +113,15 @@ namespace Booking.ViewModels.admin
         {
             get => imageUrls;
             set { imageUrls = value; OnPropertyChanged(nameof(ImageUrls)); }
+        }
+        public ObservableCollection<ImageSource?> ImageSources
+        {
+            get => imageSources;
+            set
+            {
+                imageSources = value;
+                OnPropertyChanged(nameof(ImageSources));
+            }
         }
 
         public string? UpdateSlug
@@ -212,6 +224,15 @@ namespace Booking.ViewModels.admin
                 OnPropertyChanged(nameof(SelectedFilePath));
             }
         }
+        public ImageSource? ImageSource
+        {
+            get => imageSource;
+            set
+            {
+                imageSource = value;
+                OnPropertyChanged(nameof(ImageSource));
+            }
+        }
         public string? NewSelectedFilePath
         {
             get => newSelectedFilePath;
@@ -302,8 +323,8 @@ namespace Booking.ViewModels.admin
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedPath = openFileDialog.FileName;
-                //System.Windows.Forms.MessageBox.Show(selectedPath);
                 SelectedFilePath = selectedPath;
+                ImageSource = new ImageSourceConverter().ConvertFromString(selectedPath) as ImageSource;
             }
         }
 
@@ -319,8 +340,8 @@ namespace Booking.ViewModels.admin
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedPath = openFileDialog.FileName;
-                //System.Windows.Forms.MessageBox.Show(selectedPath);
                 ImageUrls.Add(selectedPath);
+                ImageSources.Add(new ImageSourceConverter().ConvertFromString(selectedPath) as ImageSource);
             }
         }
 
@@ -335,7 +356,6 @@ namespace Booking.ViewModels.admin
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedPath = openFileDialog.FileName;
-                //System.Windows.Forms.MessageBox.Show(selectedPath);
                 NewSelectedFilePath = selectedPath;
             }
         }
@@ -351,7 +371,6 @@ namespace Booking.ViewModels.admin
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedPath = openFileDialog.FileName;
-                //System.Windows.Forms.MessageBox.Show(selectedPath);
                 NewImageUrls.Add(selectedPath);
             }
         }
@@ -401,7 +420,7 @@ namespace Booking.ViewModels.admin
             }
 
             bool createMainImg = true;
-            if (!string.IsNullOrWhiteSpace(SelectedFilePath))
+            if (SelectedFilePath != null)
             {
                 bool imgLoaded = await imageModel.LoadImageAsync(slug!, SelectedFilePath);
                 createMainImg = await imageModel.CreateImageAsync(realty.Id, SelectedFilePath);
@@ -418,7 +437,7 @@ namespace Booking.ViewModels.admin
             {
                 if (!string.IsNullOrWhiteSpace(imageUrl))
                 {
-                    bool loaded = await imageModel.LoadImageAsync(slug, imageUrl);
+                    bool loaded = await imageModel.LoadImageAsync(slug!, imageUrl);
                     bool imgCreated = await imageModel.CreateImageAsync(realty.Id, imageUrl);
 
                     if (!loaded || !imgCreated)
@@ -429,7 +448,6 @@ namespace Booking.ViewModels.admin
                     }
                 }
             }
-
 
             if (!allImagesCreated)
                 return;
@@ -571,7 +589,8 @@ namespace Booking.ViewModels.admin
 
         private void ClearCreateForm()
         {
-            Name = Description = Slug = ImageUrl = City = Country = Group = SelectedFilePath = null;
+            Name = Description = Slug = ImageUrl = City = Country = Group = null;
+            SelectedFilePath = null;
             Price = 0;
             ImageUrls = new ObservableCollection<string>();
         }
