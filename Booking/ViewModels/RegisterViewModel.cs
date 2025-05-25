@@ -3,6 +3,7 @@ using Booking.Models;
 using System.Windows.Input;
 using Booking.Views;
 using System.Windows;
+using FontAwesome.Sharp;
 
 namespace Booking.ViewModels
 {
@@ -104,14 +105,15 @@ namespace Booking.ViewModels
         private async void ExecuteRegisterCommand(object? obj)
         {
             //MessageBox.Show(name + password + email + login);
-            bool success = await userModel.RegisterAsync(name, email, login, password);
-            if(!success)
+            string success = await userModel.RegisterAsync(name, email, login, password);
+            if(success != "Registered")
             {
-                ErrorMessage = "Invalid data";
+                ErrorMessage = success;
                 return;
             }
             else
             {
+                CustomMessageBox.Show("System", "Registered", MessageBoxButton.OK, IconChar.CircleInfo);
                 LoginView loginView = new();
                 loginView.Show();
                 OnRequestClose?.Invoke(this, EventArgs.Empty);

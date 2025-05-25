@@ -28,17 +28,16 @@ namespace Booking.Models
             realty = context.Realties.FirstOrDefault(r => r.Slug == slug && r.DeletedAt == null);
         }
 
-        public async Task<bool> CreateRealtyAsync(string? name, string? description, string? slug, string? imageUrl, decimal price, string? cityName, string? countryName, string? groupName)
+        public async Task<string> CreateRealtyAsync(string? name, string? description, string? slug, string? imageUrl, decimal price, string? cityName, string? countryName, string? groupName)
         {
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(slug) || string.IsNullOrEmpty(cityName) || string.IsNullOrEmpty(countryName) || string.IsNullOrEmpty(groupName))
             {
-                CustomMessageBox.Show("System", "All fields are required", MessageBoxButton.OK, IconChar.ExclamationCircle);
-                return false;
+                //CustomMessageBox.Show("System", "All fields are required", MessageBoxButton.OK, IconChar.ExclamationCircle);
+                return "All fields are required";
             }
             if (await context.Realties.AnyAsync(r => r.Slug == slug && r.DeletedAt == null))
             {
-                CustomMessageBox.Show("System", "Slug already exists", MessageBoxButton.OK, IconChar.ExclamationCircle);
-                return false;
+                return "Slug already exists";
             }
 
             var city = await context.Cities.FirstOrDefaultAsync(c => c.Name == cityName) ?? new City { Id = Guid.NewGuid(), Name = cityName };
@@ -69,21 +68,18 @@ namespace Booking.Models
             }
             catch (Exception e)
             {
-                CustomMessageBox.Show("System", "Exception in SaveChangesOccured", MessageBoxButton.OK, IconChar.TriangleExclamation);
+                //CustomMessageBox.Show("System", "Exception in SaveChangesOccured", MessageBoxButton.OK, IconChar.TriangleExclamation);
             }
-
-
-            MessageBox.Show("Created", "System", MessageBoxButton.OK, MessageBoxImage.Information);
-            return true;
+            
+            return "Created";
         }
 
-        public async Task<bool> UpdateRealtyAsync(string slug, string? name, string? description, string? newSlug, string? imageUrl, decimal? price, string? cityName, string? countryName, string? groupName)
+        public async Task<string> UpdateRealtyAsync(string slug, string? name, string? description, string? newSlug, string? imageUrl, decimal? price, string? cityName, string? countryName, string? groupName)
         {
             var realty = await context.Realties.FirstOrDefaultAsync(r => r.Slug == slug && r.DeletedAt == null);
             if (realty == null)
             {
-                CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
-                return false;
+                return "Realty not found";
             }
 
             if (!string.IsNullOrEmpty(newSlug))
@@ -92,8 +88,7 @@ namespace Booking.Models
                 {
                     if (await context.Realties.AnyAsync(r => r.Slug == newSlug && r.DeletedAt == null))
                     {
-                        CustomMessageBox.Show("System", "Slug already exists", MessageBoxButton.OK, IconChar.ExclamationCircle);
-                        return false;
+                        return "Slug already exists";
                     }
                 }
                 realty.Slug = newSlug;
@@ -128,9 +123,7 @@ namespace Booking.Models
             }
 
             await context.SaveChangesAsync();
-
-            CustomMessageBox.Show("Updated", "System", MessageBoxButton.OK, IconChar.CircleInfo);
-            return true;
+            return "Updated";
         }
 
         public async Task<bool> DeleteRealtyAsync(string slug)

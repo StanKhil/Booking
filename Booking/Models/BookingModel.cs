@@ -17,17 +17,15 @@ namespace Booking.Models
             this.context = context;
         }
 
-        public async Task<bool> CreateBookingAsync(Guid userAccessId, Guid realtyId, DateTime start, DateTime finish)
+        public async Task<string> CreateBookingAsync(Guid userAccessId, Guid realtyId, DateTime start, DateTime finish)
         {
             if (start == null || finish == null)
             {
-                CustomMessageBox.Show("System", "Start or finish date is empty", MessageBoxButton.OK, IconChar.ExclamationCircle);
-                return false;
+                return "Start or finish date is empty";
             }
 
             if (start >= finish)
             {
-                CustomMessageBox.Show("System", "Start date is greater than finish date", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 throw new ArgumentException("Start date is greater than finish date");
             }
 
@@ -37,8 +35,8 @@ namespace Booking.Models
 
             if (realty == null)
             {
-                CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
-                return false;
+                //CustomMessageBox.Show("System", "Realty not found", MessageBoxButton.OK, IconChar.ExclamationCircle);
+                return "Realty not found";
             }
 
             bool hasOverlap = realty.BookingItems.Any(b =>
@@ -49,8 +47,8 @@ namespace Booking.Models
 
             if (hasOverlap)
             {
-                CustomMessageBox.Show("System", "This realty is already booked for the selected dates.", MessageBoxButton.OK, IconChar.ExclamationCircle);
-                return false;
+                //CustomMessageBox.Show("System", "This realty is already booked for the selected dates.", MessageBoxButton.OK, IconChar.ExclamationCircle);
+                return "This realty is already booked for the selected dates.";
             }
 
             BookingItem bookingItem = new BookingItem()
@@ -67,12 +65,13 @@ namespace Booking.Models
             bookingItem.UserAccess = await context.UserAccesses
                 .Include(ua => ua.BookingItems)
                 .FirstOrDefaultAsync(ua => ua.Id == userAccessId);
+
             bookingItem.Realty = realty;
             realty.BookingItems.Add(bookingItem);
             context.BookingItems.Add(bookingItem);
             await context.SaveChangesAsync();
-            CustomMessageBox.Show("System", "Booking created successfully", MessageBoxButton.OK, IconChar.CircleInfo);
-            return true;
+            //CustomMessageBox.Show("System", "Booking created successfully", MessageBoxButton.OK, IconChar.CircleInfo);
+            return "Booking created successfully";
         }
 
         public async Task<bool> DeleteBookingAsync(Guid bookingId)

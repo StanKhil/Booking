@@ -405,10 +405,10 @@ namespace Booking.ViewModels.admin
             realtyModel ??= new RealtyModel(context);
             imageModel ??= new ImageModel(context);
 
-            bool success = await realtyModel.CreateRealtyAsync(name, description, slug, selectedFilePath, price, city, country, group);
-            if (!success)
+            string success = await realtyModel.CreateRealtyAsync(name, description, slug, selectedFilePath, price, city, country, group);
+            if (success != "Created")
             {
-                ErrorMessageOnCreate = "Failed to create realty.";
+                ErrorMessageOnCreate = success;
                 return;
             }
 
@@ -419,37 +419,37 @@ namespace Booking.ViewModels.admin
                 return;
             }
 
-            bool createMainImg = true;
+            string createMainImg = "Created";
             if (SelectedFilePath != null)
             {
-                bool imgLoaded = await imageModel.LoadImageAsync(slug!, SelectedFilePath);
+                string imgLoaded = await imageModel.LoadImageAsync(slug!, SelectedFilePath);
                 createMainImg = await imageModel.CreateImageAsync(realty.Id, SelectedFilePath);
-                if (!imgLoaded || !createMainImg)
+                if (imgLoaded !="Created" || createMainImg != "Created")
                 {
                     ErrorMessageOnCreate = "Main image upload failed.";
                     return;
                 }
             }
 
-            bool allImagesCreated = true;
+            string allImagesCreated = "Created";
 
             foreach (var imageUrl in imageUrls)
             {
                 if (!string.IsNullOrWhiteSpace(imageUrl))
                 {
-                    bool loaded = await imageModel.LoadImageAsync(slug!, imageUrl);
-                    bool imgCreated = await imageModel.CreateImageAsync(realty.Id, imageUrl);
+                    string loaded = await imageModel.LoadImageAsync(slug!, imageUrl);
+                    string imgCreated = await imageModel.CreateImageAsync(realty.Id, imageUrl);
 
-                    if (!loaded || !imgCreated)
+                    if (loaded != "Created" || imgCreated != "Created")
                     {
-                        allImagesCreated = false;
+                        allImagesCreated = "Error";
                         ErrorMessageOnCreate = $"Failed to upload image: {imageUrl}";
                         break;
                     }
                 }
             }
 
-            if (!allImagesCreated)
+            if (allImagesCreated == "Error")
                 return;
 
             OnRequestClearRealtyCreateForm?.Invoke(this, EventArgs.Empty);
@@ -511,10 +511,10 @@ namespace Booking.ViewModels.admin
             realtyModel ??= new RealtyModel(context);
             imageModel ??= new ImageModel(context);
 
-            bool success = await realtyModel.UpdateRealtyAsync(updateSlug!, newName, newDescription, newSlug, newSelectedFilePath, newPrice, newCity, newCountry, newGroup);
-            if (!success)
+            string success = await realtyModel.UpdateRealtyAsync(updateSlug!, newName, newDescription, newSlug, newSelectedFilePath, newPrice, newCity, newCountry, newGroup);
+            if (success != "Updated")
             {
-                ErrorMessageOnUpdate = "Update failed.";
+                ErrorMessageOnUpdate = success;
                 return;
             }
 
@@ -528,8 +528,8 @@ namespace Booking.ViewModels.admin
             var oldImages = await realtyModel.GetImagesAsync(newSlug!);
             foreach (var image in oldImages)
             {
-                bool deleted = await imageModel.DeleteImagesByItemIdAsync(realty.Id);
-                if (!deleted)
+                string deleted = await imageModel.DeleteImagesByItemIdAsync(realty.Id);
+                if (deleted != "Deleted")
                 {
                     ErrorMessageOnUpdate = $"Failed to delete old image: {image.ImageUrl}";
                     return;
@@ -538,9 +538,9 @@ namespace Booking.ViewModels.admin
 
             if (!string.IsNullOrWhiteSpace(NewSelectedFilePath))
             {
-                bool imgLoaded = await imageModel.LoadImageAsync(newSlug!, NewSelectedFilePath);
-                bool createImg = await imageModel.CreateImageAsync(realty.Id, NewSelectedFilePath);
-                if (!imgLoaded || !createImg)
+                string imgLoaded = await imageModel.LoadImageAsync(newSlug!, NewSelectedFilePath);
+                string createImg = await imageModel.CreateImageAsync(realty.Id, NewSelectedFilePath);
+                if (imgLoaded != "Created" || createImg != "Created")
                 {
                     ErrorMessageOnUpdate = "Failed to upload new main image.";
                     return;
@@ -551,10 +551,10 @@ namespace Booking.ViewModels.admin
             {
                 if (!string.IsNullOrWhiteSpace(imgPath))
                 {
-                    bool loaded = await imageModel.LoadImageAsync(newSlug!, imgPath);
-                    bool added = await imageModel.CreateImageAsync(realty.Id, imgPath);
+                    string loaded = await imageModel.LoadImageAsync(newSlug!, imgPath);
+                    string added = await imageModel.CreateImageAsync(realty.Id, imgPath);
 
-                    if (!loaded || !added)
+                    if (loaded != "Created" || added != "Created")
                     {
                         ErrorMessageOnUpdate = $"Failed to add image: {imgPath}";
                         return;

@@ -198,8 +198,7 @@ namespace Booking.ViewModels
             {
                 BookingModel bookingModel = new(context);
                 var result = await bookingModel.CreateBookingAsync(access.Id, realty.Id, startDate, endDate);
-                //if (result) MessageBox.Show("Booking created successfully");
-                //else MessageBox.Show("Booking failed");
+                CustomMessageBox.Show("System", result, MessageBoxButton.OK, IconChar.CircleInfo);
             }
         }
         private void ExecuteUpdateFeedbackCommand(object? obj)

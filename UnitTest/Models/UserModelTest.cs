@@ -41,14 +41,13 @@ namespace UnitTest.Models
         }
 
         [STATestMethod]
-        public void RegisterTest()
+        public async Task RegisterTest()
         {
             DataContext context = new DataContext();
             UserModel model = new UserModel(context);
 
-            var result = model?.RegisterAsync("name", "email", "login", "password");
-            Assert.IsInstanceOfType<Task<List<BookingItem>>>(result);
-            Assert.IsTrue(result.Result);
+            var result = await model.RegisterAsync("name2", "email2", "login2", "password2");
+            Assert.IsTrue(result == "Registered");
         }
 
 
