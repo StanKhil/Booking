@@ -29,8 +29,8 @@ namespace UnitTest.Models
             RealtyModel model = new(context);
 
             var result = model.CreateRealtyAsync("", "Description", "Slug", "ImageUrl", (decimal)10.10, "City", "Country", "Group");
-            Assert.IsInstanceOfType<Task<bool>>(result);
-            Assert.IsFalse(result.Result); // As empty string was passed
+            Assert.IsInstanceOfType<Task<string>>(result);
+            Assert.IsFalse(result.Result == "Created"); // As empty string was passed
 
         }
         [TestMethod]
@@ -40,8 +40,8 @@ namespace UnitTest.Models
             RealtyModel model = new(context);
 
             var result = model.UpdateRealtyAsync("", "Name", "Description", "NewSlug", "ImageUrl", (decimal)10.10, "City", "Country", "Group");
-            Assert.IsInstanceOfType<Task<bool>>(result);
-            Assert.IsFalse(result.Result); // As empty string was passed
+            Assert.IsInstanceOfType<Task<string>>(result);
+            Assert.IsFalse(result.Result == "Updated"); // As empty string was passed
 
         }
         [TestMethod]

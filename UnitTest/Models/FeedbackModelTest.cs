@@ -83,9 +83,7 @@ namespace UnitTest.Models
             var model = new FeedbackModel();
             /*model.GetType().GetField("dataContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                 ?.SetValue(model, context);*/
-
-            var result = await model.DeleteFeedbackAsync(Guid.NewGuid());
-            Assert.IsFalse(result);
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await model.DeleteFeedbackAsync(Guid.NewGuid()));
         }
     }
 }

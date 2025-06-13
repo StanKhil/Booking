@@ -55,12 +55,12 @@ namespace Booking.Models
             return true;
         }
 
-        public async Task<bool> RegisterAsync(string? name, string? email, string? login, string? password)
+        public async Task<string> RegisterAsync(string? name, string? email, string? login, string? password)
         {
             if (await context.UserAccesses.AnyAsync(ua => ua.Login == login && ua.User.DeletedAt == null))
             {
-                CustomMessageBox.Show("System", "Login already exists", MessageBoxButton.OK, IconChar.CircleExclamation);
-                return false;
+                //CustomMessageBox.Show("System", "Login already exists", MessageBoxButton.OK, IconChar.CircleExclamation);
+                return "Login already exists";
             }
 
             Guid userId = Guid.NewGuid();
@@ -87,8 +87,7 @@ namespace Booking.Models
             context.UserAccesses.Add(userAccess);
             await context.SaveChangesAsync();
 
-            CustomMessageBox.Show("System", "Registered", MessageBoxButton.OK, IconChar.CircleInfo);
-            return true;
+            return "Registered";
         }
 
         public async Task<bool> CreateUserAsync(string? name, string? email, string? login, string? password, string? userRole)

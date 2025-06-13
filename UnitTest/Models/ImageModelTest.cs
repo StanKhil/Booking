@@ -28,12 +28,12 @@ namespace UnitTest.Models
             // A single image
             var creationResultSingle = model?.CreateImageAsync(new Guid(), "url");
             Assert.IsNotInstanceOfType<ItemImage>(creationResultSingle?.Result);
-            Assert.IsInstanceOfType<Task<bool>>(creationResultSingle);
+            Assert.IsInstanceOfType<Task<string>>(creationResultSingle);
 
             // Multiple images
             var creationResultMultiple = model?.CreateImages(new Guid(), [ "url1", "url2", "url3" ]);
             Assert.IsNotInstanceOfType<ItemImage>(creationResultMultiple?.Result);
-            Assert.IsInstanceOfType<bool>(creationResultMultiple?.Result);
+            Assert.IsInstanceOfType<string>(creationResultMultiple?.Result);
         }
         [TestMethod]
         public void ImageLoadingTest()
@@ -43,11 +43,7 @@ namespace UnitTest.Models
 
             var result = model?.LoadImageAsync("slug", "path");
             Assert.IsNotInstanceOfType<ItemImage>(result?.Result);
-            Assert.IsInstanceOfType<Task<bool>>(result);
+            Assert.IsInstanceOfType<Task<string>>(result);
         }
-
-
-
     }
-
 }

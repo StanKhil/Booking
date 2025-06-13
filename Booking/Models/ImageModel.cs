@@ -17,14 +17,13 @@ namespace Booking.Models
             this.context = context;
         }
 
-        public async Task<bool> CreateImageAsync(Guid realtyId, string url)
+        public async Task<string> CreateImageAsync(Guid realtyId, string url)
         {
             try
             {
                 if(context.ItemImages.Any(i => i.ItemId == realtyId && i.ImageUrl == url))
                 {
-                    CustomMessageBox.Show("System", "Image already exists.", MessageBoxButton.OK, IconChar.CircleExclamation);
-                    return true;
+                    return "Image already exists.";
                 }
 
                 itemImage = new ItemImage()
@@ -35,16 +34,16 @@ namespace Booking.Models
                 };
                 context.ItemImages.Add(itemImage);
                 await context.SaveChangesAsync();
-                return true;
+                return "Created";
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("System", $"Error creating image: {ex.Message}", MessageBoxButton.OK, IconChar.TriangleExclamation);
-                return false;
+                //CustomMessageBox.Show("System", $"Error creating image: {ex.Message}", MessageBoxButton.OK, IconChar.TriangleExclamation);
+                return $"Error creating image: {ex.Message}";
             }
         }
 
-        public async Task<bool> CreateImages(Guid realtyId, List<string> urls)
+        public async Task<string> CreateImages(Guid realtyId, List<string> urls)
         {
             try
             {
@@ -59,16 +58,16 @@ namespace Booking.Models
                     context.ItemImages.Add(itemImage);
                 }
                 await context.SaveChangesAsync();
-                return true;
+                return "Created";
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("System", $"Error creating images: {ex.Message}", MessageBoxButton.OK, IconChar.TriangleExclamation);
-                return false;
+                //CustomMessageBox.Show("System", $"Error creating images: {ex.Message}", MessageBoxButton.OK, IconChar.TriangleExclamation);
+                return $"Error creating images: {ex.Message}";
             }
         }
 
-        public async Task<bool> LoadImageAsync(string slug, string localFilePath)
+        public async Task<string> LoadImageAsync(string slug, string localFilePath)
         {
             try
             {
@@ -85,42 +84,39 @@ namespace Booking.Models
 
                 if (!File.Exists(localFilePath))
                 {
-                    CustomMessageBox.Show("System", "Local image file not found.", MessageBoxButton.OK, IconChar.TriangleExclamation);
-                    return false;
+                    return "Local image file not found.";
                 }
 
                 string fileName = Path.GetFileName(localFilePath);
                 string destPath = Path.Combine(folderPath, fileName);
 
                 File.Copy(localFilePath, destPath, overwrite: true);
-                return true;
+                return "Created";
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("System", $"Error copying image: {ex.Message}", MessageBoxButton.OK, IconChar.TriangleExclamation);
-                return false;
+                return $"Error copying image: {ex.Message}";
             }
         }
 
-        public async Task<bool> DeleteImagesByItemIdAsync(Guid itemId)
+        public async Task<string> DeleteImagesByItemIdAsync(Guid itemId)
         {
             try
             {
                 var images = await context.ItemImages.Where(i => i.ItemId == itemId).ToListAsync();
                 if (images.Count == 0)
                 {
-                    CustomMessageBox.Show("System", "No images found for this item.", MessageBoxButton.OK, IconChar.CircleExclamation);
-                    return false;
+                    return "No images found for this item.";
                 }
 
                 context.ItemImages.RemoveRange(images);
                 await context.SaveChangesAsync();
-                return true;
+                return "Deleted";
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("System", "Error deleting images: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
-                return false;
+                //CustomMessageBox.Show("System", "Error deleting images: " + ex.Message, MessageBoxButton.OK, IconChar.TriangleExclamation);
+                return "Error deleting images: " + ex.Message;
             }
         }
 
