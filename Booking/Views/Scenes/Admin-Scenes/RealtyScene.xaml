@@ -365,8 +365,10 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <TextBlock Foreground="White" Text="{Binding NewSelectedFilePath, UpdateSourceTrigger=PropertyChanged}" x:Name="newSelectedFileText" Margin="10,5,0,0" TextWrapping="Wrap" />
-
+            <TextBlock Width="0" Height="0" Foreground="White" Text="{Binding NewSelectedFilePath, UpdateSourceTrigger=PropertyChanged}" x:Name="newSelectedFileText" Margin="0" TextWrapping="Wrap" />
+            <Border Width="350" Height="Auto" CornerRadius="10" ClipToBounds="True">
+                <Image Source="{Binding UpdateImageSource, UpdateSourceTrigger=PropertyChanged}" Stretch="Fill"/>
+            </Border>
 
             <TextBlock Text="New price"
                         Foreground="DarkGray" FontSize="12"
@@ -405,18 +407,39 @@
                     ItemsSource="{Binding Groups}" 
                     SelectedItem="{Binding SelectedGroup, Mode=TwoWay}"
                     FontSize="12" FontWeight="Medium"
-                    Foreground="Black"
+                    Foreground="WhiteSmoke"
                     Background="Gray"
                     BorderThickness="0,0,0,1"
                     Height="28" Width="300" HorizontalAlignment="Left"
                     VerticalContentAlignment="Center"
                     Margin="10,5,0,0" Padding="10,0,0,0"/>
-            
-            <ListBox Foreground="Black" x:Name="newImagesListBox" ItemsSource="{Binding NewImageUrls, UpdateSourceTrigger=PropertyChanged}">
+
+            <!--ItemsControl-->
+            <ItemsControl HorizontalAlignment="Center" ItemsSource="{Binding NewImageSources, UpdateSourceTrigger=PropertyChanged}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" Margin="10" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10" Width="200" Background="#333" Padding="10" CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding}" Width="180" Height="Auto" Margin="5"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ListBox Width="0" Height="0" Foreground="Black" x:Name="newImagesListBox" ItemsSource="{Binding NewImageUrls, UpdateSourceTrigger=PropertyChanged}">
 
             </ListBox>
             <Button FontWeight="Medium" Margin="10,5,0,0" HorizontalAlignment="Left" Foreground="White"
-        Content="Choose File" Command="{Binding UpdateSecondaryImageCommand}">
+                    Content="Choose File" Command="{Binding UpdateSecondaryImageCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="#2e2e2e"></Setter>

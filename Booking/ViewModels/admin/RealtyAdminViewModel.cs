@@ -36,6 +36,7 @@ namespace Booking.ViewModels.admin
         private string? newCountry;
         private string? newGroup;
         private ObservableCollection<string> newImageUrls = new ObservableCollection<string>();
+        private ObservableCollection<ImageSource?> newImageSources = new ObservableCollection<ImageSource?>();
 
         private string? errorMessageOnCreate = "";
         private string? errorMessageOnUpdate = "";
@@ -45,6 +46,7 @@ namespace Booking.ViewModels.admin
         private string? selectedFilePath = "";
         private ImageSource? imageSource;
         private string? newSelectedFilePath = "";
+        private ImageSource? updateImageSource;
 
         DataContext context = new();
         RealtyModel realtyModel;
@@ -214,6 +216,15 @@ namespace Booking.ViewModels.admin
                 OnPropertyChanged(nameof(NewImageUrls));
             }
         }
+        public ObservableCollection<ImageSource?> NewImageSources
+        {
+            get => newImageSources;
+            set
+            {
+                newImageSources = value;
+                OnPropertyChanged(nameof(NewImageSources));
+            }
+        }
 
         public string? SelectedFilePath
         {
@@ -231,6 +242,15 @@ namespace Booking.ViewModels.admin
             {
                 imageSource = value;
                 OnPropertyChanged(nameof(ImageSource));
+            }
+        }
+        public ImageSource? UpdateImageSource
+        {
+            get => updateImageSource;
+            set
+            {
+                updateImageSource = value;
+                OnPropertyChanged(nameof(UpdateImageSource));
             }
         }
         public string? NewSelectedFilePath
@@ -357,6 +377,7 @@ namespace Booking.ViewModels.admin
             {
                 string selectedPath = openFileDialog.FileName;
                 NewSelectedFilePath = selectedPath;
+                UpdateImageSource = new ImageSourceConverter().ConvertFromString(selectedPath) as ImageSource;
             }
         }
 
@@ -372,6 +393,7 @@ namespace Booking.ViewModels.admin
             {
                 string selectedPath = openFileDialog.FileName;
                 NewImageUrls.Add(selectedPath);
+                NewImageSources.Add(new ImageSourceConverter().ConvertFromString(selectedPath) as ImageSource);
             }
         }
 
