@@ -44,7 +44,6 @@ namespace UnitTest.Models
             var bookingId = Guid.Parse("005e900a-9d2e-4227-9b10-0047f638fa0e");
 
             var model = new BookingModel(context);
-            var result = await model.DeleteBookingAsync(bookingId);
 
             var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(
                 async () => await model.DeleteBookingAsync(Guid.NewGuid()),

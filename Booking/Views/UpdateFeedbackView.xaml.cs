@@ -26,7 +26,8 @@ namespace Booking.Views
         }
         private void buttonClose_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            //System.Windows.Application.Current.Shutdown();
+            this.Close();
         }
         private void buttonMaximize_Click(object sender, RoutedEventArgs e)
         {

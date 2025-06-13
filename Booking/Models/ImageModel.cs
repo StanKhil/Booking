@@ -103,14 +103,12 @@ namespace Booking.Models
         {
             try
             {
-                var images = await context.ItemImages.Where(i => i.ItemId == itemId).ToListAsync();
-                if (images.Count == 0)
+                var images = await context.ItemImages.Include(i => i.ImageUrl).Where(i => i.ItemId == itemId).ToListAsync();
+                if (images.Count != 0)
                 {
-                    return "No images found for this item.";
+                    context.ItemImages.RemoveRange(images);
+                    await context.SaveChangesAsync();
                 }
-
-                context.ItemImages.RemoveRange(images);
-                await context.SaveChangesAsync();
                 return "Deleted";
             }
             catch (Exception ex)

@@ -530,6 +530,7 @@ namespace Booking.ViewModels.admin
             if (!ValidateUpdateInputs())
                 return;
 
+
             realtyModel ??= new RealtyModel(context);
             imageModel ??= new ImageModel(context);
 
@@ -540,14 +541,16 @@ namespace Booking.ViewModels.admin
                 return;
             }
 
-            var realty = await realtyModel.GetRealtyBySlugAsync(newSlug!);
+            string? currentSlug = newSlug! == null ? updateSlug! : newSlug!;
+
+            var realty = await realtyModel.GetRealtyBySlugAsync(currentSlug);
             if (realty == null)
             {
                 ErrorMessageOnUpdate = "Realty not found after update.";
                 return;
             }
 
-            var oldImages = await realtyModel.GetImagesAsync(newSlug!);
+            var oldImages = await realtyModel.GetImagesAsync(currentSlug);
             foreach (var image in oldImages)
             {
                 string deleted = await imageModel.DeleteImagesByItemIdAsync(realty.Id);
@@ -556,11 +559,14 @@ namespace Booking.ViewModels.admin
                     ErrorMessageOnUpdate = $"Failed to delete old image: {image.ImageUrl}";
                     return;
                 }
+                else MessageBox.Show(deleted);
             }
+
+            MessageBox.Show("GetImagesAsync success");
 
             if (!string.IsNullOrWhiteSpace(NewSelectedFilePath))
             {
-                string imgLoaded = await imageModel.LoadImageAsync(newSlug!, NewSelectedFilePath);
+                string imgLoaded = await imageModel.LoadImageAsync(currentSlug, NewSelectedFilePath);
                 string createImg = await imageModel.CreateImageAsync(realty.Id, NewSelectedFilePath);
                 if (imgLoaded != "Created" || createImg != "Created")
                 {
@@ -573,7 +579,7 @@ namespace Booking.ViewModels.admin
             {
                 if (!string.IsNullOrWhiteSpace(imgPath))
                 {
-                    string loaded = await imageModel.LoadImageAsync(newSlug!, imgPath);
+                    string loaded = await imageModel.LoadImageAsync(currentSlug, imgPath);
                     string added = await imageModel.CreateImageAsync(realty.Id, imgPath);
 
                     if (loaded != "Created" || added != "Created")
@@ -601,9 +607,9 @@ namespace Booking.ViewModels.admin
 
         private bool ValidateUpdateInputs()
         {
-            if (string.IsNullOrWhiteSpace(updateSlug) || string.IsNullOrWhiteSpace(newSlug) || newPrice <= 0)
+            if (string.IsNullOrWhiteSpace(updateSlug) /*|| string.IsNullOrWhiteSpace(newSlug) || newPrice <= 0*/)
             {
-                ErrorMessageOnUpdate = "Required fields (slug, newSlug, price) must be filled.";
+                ErrorMessageOnUpdate = "Required field (slug) must be filled.";
                 return false;
             }
             return true;
@@ -614,7 +620,10 @@ namespace Booking.ViewModels.admin
             Name = Description = Slug = ImageUrl = City = Country = Group = null;
             SelectedFilePath = null;
             Price = 0;
+            imageSource = null;
+            imageUrl = "";
             ImageUrls = new ObservableCollection<string>();
+            ImageSources = new ObservableCollection<ImageSource?>();
         }
 
         private void ClearDeleteForm()
@@ -626,7 +635,10 @@ namespace Booking.ViewModels.admin
         {
             UpdateSlug = NewName = NewDescription = NewSlug = NewImageUrl = NewCity = NewCountry = NewGroup = NewSelectedFilePath = null;
             NewPrice = 0;
+            updateImageSource = null;
+            newImageUrl = "";
             NewImageUrls = new ObservableCollection<string>();
+            NewImageSources = new ObservableCollection<ImageSource?>();
         }
 
     }

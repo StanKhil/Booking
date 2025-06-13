@@ -66,15 +66,15 @@
             <StackPanel Orientation="Horizontal" Margin="10">
 
                 <ComboBox Width="120" Margin="5"
-          ItemsSource="{Binding Countries}"
+          ItemsSource="{Binding Countries, UpdateSourceTrigger=PropertyChanged}"
           SelectedItem="{Binding CountryFilter, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0"/>
 
                 <ComboBox Width="120" Margin="5"
-          ItemsSource="{Binding Groups}"
+          ItemsSource="{Binding Groups, UpdateSourceTrigger=PropertyChanged}"
           SelectedItem="{Binding GroupFilter, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0"/>
 
                 <ComboBox Width="120" Margin="5"
-                          ItemsSource="{Binding Cities}"
+                          ItemsSource="{Binding Cities, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding CityFilter, UpdateSourceTrigger=PropertyChanged}"
                           SelectedIndex="0"/>
 
@@ -120,7 +120,7 @@
             <ScrollViewer.Resources>
                 <Style TargetType="ScrollBar" BasedOn="{StaticResource ModernScrollBar}"/>
             </ScrollViewer.Resources>
-            <ItemsControl HorizontalAlignment="Center" ItemsSource="{Binding Realties}">
+            <ItemsControl HorizontalAlignment="Center" ItemsSource="{Binding Realties, UpdateSourceTrigger=PropertyChanged}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel IsItemsHost="True" Margin="10" />
@@ -140,9 +140,9 @@
 
 
                                 <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Bold" Foreground="White"/>
-                                    <TextBlock FontStyle="Italic" Text="{Binding Description}" FontSize="12" Foreground="LightGray" TextWrapping="Wrap"/>
-                                    <TextBlock Text="{Binding Price}" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource color3}" Margin="0,5,0,0"/>
+                                    <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontSize="14" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock FontStyle="Italic" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" FontSize="12" Foreground="LightGray" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource color3}" Margin="0,5,0,0"/>
                                     <Button Content="View" Command="{Binding DataContext.ViewItemInfoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" CommandParameter="{Binding}"
                                             Background="#444" Foreground="White" Padding="6,3" Margin="0,5,0,0"/>
                                 </StackPanel>

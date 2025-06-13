@@ -21,7 +21,7 @@ namespace Booking.Services.CurrencyRate
             {
                 if (rate.cc == "EUR")
                 {
-                    return rate.rate;
+                    return Math.Round(rate.rate, 2);
                 }
             }
             return 0;

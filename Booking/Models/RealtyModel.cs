@@ -307,6 +307,7 @@ namespace Booking.Models
             {
                 query = query.Where(r => r.RealtyGroup.Name == group && r.DeletedAt == null);
             }
+            query = query.Where(r => r.DeletedAt == null);
             return await query.ToListAsync();
         }
     }

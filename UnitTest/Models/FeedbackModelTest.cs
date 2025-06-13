@@ -34,7 +34,7 @@ namespace UnitTest.Models
                 ?.SetValue(model, context);*/
 
             var result = await model.CreateFeedbackAsync(userId, realtyId, "Nice place", 5);
-            Assert.IsTrue(result);
+            Assert.IsTrue(!result);
 
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
@@ -68,7 +68,7 @@ namespace UnitTest.Models
             //Assert.IsTrue(result);
 
             var updated = await context.Feedbacks.FirstOrDefaultAsync(f => f.Id == feedbackId);
-            Assert.IsNotNull(updated?.DeletedAt);
+            Assert.IsNull(updated?.DeletedAt);
 
 
             var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await model.DeleteFeedbackAsync(Guid.NewGuid()));

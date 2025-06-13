@@ -203,6 +203,7 @@ namespace Booking.ViewModels
         }
         private void ExecuteUpdateFeedbackCommand(object? obj)
         {
+            if (ActiveFeedback == null) return;
             if (access.Id != ActiveFeedback!.UserAccessId)
             {
                 CustomMessageBox.Show("System", "You can't update this feedback", MessageBoxButton.OK, IconChar.CircleExclamation);
