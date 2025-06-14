@@ -31,14 +31,14 @@ namespace Booking.Models
 
             if (userAccess == null)
             {
-                CustomMessageBox.Show("Login Not Found", "System", MessageBoxButton.OK, IconChar.ExclamationCircle);
+                CustomMessageBox.Show("System", "Login Not Found", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
             string dk = Crypto.kdf(userAccess.Salt, password);
             if (dk != userAccess.Dk)
             {
-                System.Windows.MessageBox.Show("Wrong password");
+                CustomMessageBox.Show("System", "Wrong password", MessageBoxButton.OK, IconChar.ExclamationCircle);
                 return false;
             }
 
@@ -183,7 +183,7 @@ namespace Booking.Models
             userAccess.User.DeletedAt = DateTime.Now;
             await context.SaveChangesAsync();
 
-            CustomMessageBox.Show("Deleted", "System", MessageBoxButton.OK, IconChar.CircleInfo);
+            CustomMessageBox.Show("System", "Deleted", MessageBoxButton.OK, IconChar.CircleInfo);
             return true;
         }
 

@@ -550,19 +550,17 @@ namespace Booking.ViewModels.admin
                 return;
             }
 
-            var oldImages = await realtyModel.GetImagesAsync(currentSlug);
-            foreach (var image in oldImages)
-            {
-                string deleted = await imageModel.DeleteImagesByItemIdAsync(realty.Id);
-                if (deleted != "Deleted")
-                {
-                    ErrorMessageOnUpdate = $"Failed to delete old image: {image.ImageUrl}";
-                    return;
-                }
-                else MessageBox.Show(deleted);
-            }
-
-            MessageBox.Show("GetImagesAsync success");
+            //var oldImages = await realtyModel.GetImagesAsync(currentSlug);
+            //foreach (var image in oldImages)
+            //{
+            //    string deleted = await imageModel.DeleteImagesByItemIdAsync(realty.Id);
+            //    if (deleted != "Deleted")
+            //    {
+            //        ErrorMessageOnUpdate = $"Failed to delete old image: {image.ImageUrl}";
+            //        return;
+            //    }
+            //    else MessageBox.Show(deleted);
+            //}
 
             if (!string.IsNullOrWhiteSpace(NewSelectedFilePath))
             {

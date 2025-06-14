@@ -47,7 +47,15 @@ namespace Booking.Models
             if (!await context.Cities.AnyAsync(c => c.Id == city.Id)) context.Cities.Add(city);
             if (!await context.Countries.AnyAsync(c => c.Id == country.Id)) context.Countries.Add(country);
             if (!await context.RealtyGroups.AnyAsync(g => g.Id == group.Id)) context.RealtyGroups.Add(group);
-            await context.SaveChangesAsync();
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch(Exception)
+            {
+                return "Slug already exists";
+            }
+            
 
             Realty realty = new()
             {
