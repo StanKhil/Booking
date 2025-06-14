@@ -36,7 +36,7 @@
                                     Content="Delete" Foreground="White"
                                     FontSize="12" Cursor="Hand" FontWeight="Medium"
                                     HorizontalAlignment="Center"
-                                    Margin="0,70,0,0"
+                                    Margin="0,80,0,0"
                                     Command="{Binding DeleteBookingCommnad}">
                                     <Button.Style>
                                         <Style TargetType="Button">
@@ -50,8 +50,8 @@
                                     </Button.Style>
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
-                                            <Border Width="150" Height="40"
-                                    CornerRadius="20" Background="{TemplateBinding Background}">
+                                            <Border Width="100" Height="40"
+                                                    CornerRadius="20" Background="{TemplateBinding Background}">
                                                 <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                             </Border>
                                         </ControlTemplate>
@@ -60,7 +60,7 @@
                             </StackPanel>
                             <StackPanel Grid.Column="1" Margin="20,0,0,0">
                                 <TextBlock Text="Feedback:" Foreground="White" FontWeight="Bold"/>
-                                <TextBox Text="{Binding Text, Mode=TwoWay}" AcceptsReturn="True" Height="60" Margin="0,5,0,10"/>
+                                <TextBox BorderBrush="Gray" Background="{StaticResource color1}" Foreground="White" Text="{Binding Text, Mode=TwoWay}" AcceptsReturn="True" Height="60" Margin="0,5,0,10"/>
                                 <TextBlock Text="Rate:" Foreground="White"/>
                                 <ComboBox SelectedValue="{Binding Rate, Mode=TwoWay}" SelectedValuePath="Content" Width="100">
                                     <ComboBoxItem Content="1"/>
@@ -69,7 +69,32 @@
                                     <ComboBoxItem Content="4"/>
                                     <ComboBoxItem Content="5"/>
                                 </ComboBox>
-                                <Button Content="Send" Command="{Binding SubmitReviewCommand}" Margin="0,10,0,0"/>
+                                
+                                <Button BorderThickness="0"
+                                    Content="Send" Foreground="White"
+                                    FontSize="12" Cursor="Hand" FontWeight="Medium"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,10,0,0"
+                                    Command="{Binding SubmitReviewCommand}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#2e2e2e"></Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#121212"></Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Width="100" Height="40"
+                                                    CornerRadius="20" Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
                             </StackPanel>
                         </Grid>
                     </Border>
